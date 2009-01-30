@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.Enumeration;
 import java.util.zip.*;
 import org.pdfbox.pdmodel.*;
 

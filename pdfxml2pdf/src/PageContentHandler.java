@@ -11,10 +11,10 @@ import java.util.*;
 public class PageContentHandler extends DefaultHandler {
 	private PDPage page;
 	private File pageFile;
+	private PDFont font;
 	private HashMap<String, PDFont> fontMappings;
 	private HashMap<String, PDColorSpace> colorMappings;
 	private String fontFamily;
-	private PDFont font;
 	public PageContentHandler(File pageFile, PDPage page) {
 		this.pageFile = pageFile;
 		this.page = page;
@@ -33,25 +33,32 @@ public class PageContentHandler extends DefaultHandler {
 		
 		// process font-face tag
 		if (qName.equals("font-face")) {
-				fontFamily = attributes.getValue("font-family");
+			System.out.println("Process font-face");
+			fontFamily = attributes.getValue("font-family");
 		}
 		
 		// process pdf:font-information tag 
 		if (qName.equals("pdf:font-information")) {
+			System.out.println("Process font-information");
 			File fontFile = ConverterUtils.getFile(pageFile, attributes.getValue("xlink:href"));
-			(new FontProcessor(fontFile, font)).process();
-			
+			font = (new FontProcessor(fontFile)).process();
 		}
 		
 
 		
 	}
-	public void endElement(String uri, String localname, String qName, Attributes attributes) {
+	public void endElement(String uri, String localname, String qName) {
 		if (qName.equals("font-face")) {
 			if (fontMappings == null)
 				fontMappings = new HashMap<String, PDFont>();
 			if (fontFamily != null && font != null)
 				fontMappings.put(fontFamily, font);
+		}
+		
+		if (qName.equals("defs")) {
+			PDResources resources = new PDResources();
+			resources.setFonts(fontMappings);
+			page.setResources(resources);
 		}
 	}
 }
