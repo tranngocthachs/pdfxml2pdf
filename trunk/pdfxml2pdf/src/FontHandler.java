@@ -11,7 +11,7 @@ import java.util.*;
 public class FontHandler extends DefaultHandler {
 	private PDFont font;
 	private File fontFile;
-	
+	private StringBuffer buffer = null;
 	public final static HashMap<String, Integer> flagMappings = new HashMap<String, Integer>();
 	static {
 		flagMappings.put("FixedPitch", new Integer(1)); 	// FixedPitch bit position: 1
@@ -27,9 +27,12 @@ public class FontHandler extends DefaultHandler {
 	
 	
 	
-	public FontHandler(File fontFile, PDFont font) {
+	public FontHandler(File fontFile) {
 		this.fontFile = fontFile;
-		this.font = font;
+	}
+	
+	public PDFont getFont() {
+		return font;
 	}
 	
 	public void startDocument() {
@@ -152,10 +155,27 @@ public class FontHandler extends DefaultHandler {
 			// set CharSet
 			if (attributes.getValue("CharSet") != null)
 				fontDesc.setCharacterSet(attributes.getValue("CharSet"));
-			
+		}
+		
+		if (qName.equals("Widths")) {
+			buffer = new StringBuffer();
 		}
 	}
-	public void endElement(String uri, String localname, String qName, Attributes attributes) {
-		
+	public void endElement(String uri, String localname, String qName) {
+		if (qName.equals("Widths")) {
+			String[] widths = buffer.toString().split(" ");
+			ArrayList<Integer> widthArr = new ArrayList<Integer>(widths.length);
+			for (int i=0; i<widths.length; i++) {
+				widthArr.add(Integer.parseInt(widths[i]));
+			}
+			font.setWidths(widthArr);
+			buffer = null;
+		}
+	}
+	
+	public void characters(char[] text, int start, int length) {
+		if (buffer != null) {
+			buffer.append(text, start, length);
+		}
 	}
 }

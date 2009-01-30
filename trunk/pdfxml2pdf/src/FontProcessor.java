@@ -6,15 +6,14 @@ import java.io.*;
 
 public class FontProcessor {
 	
-	private PDFont font;
 	private File fontFile;
 	
-	public FontProcessor(File fontFile, PDFont font) {
+	public FontProcessor(File fontFile) {
 		this.fontFile = fontFile;
-		this.font = font;
 	}
 
-	public void process() {
+	public PDFont process() {
+		PDFont font = null;
 		try {
 			// Prepare the parser
 			XMLReader parser; 
@@ -31,9 +30,10 @@ public class FontProcessor {
 			}
 
 			// Set the correct handler
-			FontHandler fontHandler = new FontHandler(fontFile, font);
+			FontHandler fontHandler = new FontHandler(fontFile);
 			parser.setContentHandler(fontHandler);
 			parser.parse(new InputSource(new FileInputStream(fontFile)));
+			font = fontHandler.getFont();
 		}
 		catch (SAXException e) {
 			System.out.println(fontFile.getName() + " is not well-formed.");
@@ -44,5 +44,8 @@ public class FontProcessor {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		return font;
+		
 	}
+	
 }
