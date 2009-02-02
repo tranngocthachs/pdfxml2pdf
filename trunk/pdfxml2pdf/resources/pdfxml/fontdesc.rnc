@@ -1,0 +1,347 @@
+# © 2006, 2007, 2008 Adobe Systems Incorporated. All rights reserved.
+# This material is furnished for informational use only, and is subject to change without notice.
+# Preliminary PDFXML File Format Schema
+# Schema Datestamp 2008/09/15
+
+# RelaxNG Schema
+# Based on RelaxNG Compact Syntax
+
+namespace xsd="http://www.w3c.org/2001/XMLSchema-datatypes"
+default namespace pdf="http://ns.adobe.com/pdf/2006"
+grammar {
+start = font_file
+
+number = xsd:float
+number |= xsd:integer
+fixed = number
+name = xsd:string
+boolean = xsd:boolean
+rgb_color_array = xsd:string  # string if of form #xxxxxx or a series of numbers
+integer = xsd:integer
+object_reference = xsd:string
+date = xsd:date
+null = empty
+pdf_text_string = string
+pdf_byte_string = string
+pdf_ascii_string = string
+pdf_base64_string = string
+pdf_reference = string
+pdf_text_name = string
+pdf_xml_name = string
+any = element * { (attribute * { text } | text | any)* }
+
+default_dictionary =           element * { default_dict_element}*
+default_array =              default_array_element*
+default_array_element = 
+      element Dict { default_dictionary }
+default_array_element |= 
+      element Stream { array_stream_object }
+default_array_element |= 
+      element Array { default_array }
+default_array_element |=  element String { attribute Value { pdf_byte_string } & attribute Value_enc {token}? }
+
+default_array_element |= 
+      element Null { null }
+default_array_element |= 
+      element Name { 
+      attribute Value { name } & attribute Value_enc {token}? }
+default_array_element |= 
+      element Int { 
+      attribute Value { integer }}
+default_array_element |= 
+      element Number { 
+      attribute Value { fixed }}
+default_array_element |= 
+      element Bool { 
+      attribute Value { boolean }}
+array_stream_object =     attribute src { string } & common_stream_dictionary
+
+default_dict_element =      attribute type { "null" }
+
+default_dict_element |=     attribute type { "string" } & attribute Value { pdf_byte_string } & attribute Value_enc { token }? 
+
+default_dict_element |=     attribute type { "integer" } & attribute Value { integer } 
+
+default_dict_element |=     attribute type { "number" } & attribute Value { number } 
+
+default_dict_element |=     attribute type { "boolean" } & attribute Value { boolean } 
+
+default_dict_element |=    attribute type { "name" } & attribute Value { name } & attribute Value_enc { token }?
+
+default_dict_element |=    attribute type { "dictionary" } & element * { default_dict_element }*
+
+default_dict_element |=    attribute type { "array" } & default_array_element*
+
+default_dict_element |=    attribute type { "stream" } & attribute src { string } & common_stream_dictionary
+
+rectangle_blank_sep =  list {number, number, number, number}
+array_of_integer =       list { integer }
+array_of_number =       list { number }
+array_of_name = element Name { attribute Value { name } }*
+function_dictionary = 
+      element SampledFunction { sampled_function_dictionary }
+function_dictionary |= 
+      element InterpolatedFunction { interpolated_function_dictionary }
+function_dictionary |= 
+      element StitchingFunction { stitching_function_dictionary }
+function_dictionary |= 
+      element PostscriptFunction { postscript_function_dictionary }
+sampled_function_dictionary = 
+      attribute Domain { array_of_number }
+    & attribute Range { array_of_number }
+    & attribute Size { array_of_integer }
+    & attribute BitsPerSample { integer }
+    & attribute Order { number }?
+    & attribute Encode { array_of_number }?
+    & attribute Decode { array_of_number }?
+    &    attribute src { string } & common_stream_dictionary
+
+interpolated_function_dictionary = 
+      attribute Domain { array_of_number }
+    & attribute Range { array_of_number }
+    & attribute C0 { array_of_number }?
+    & attribute C1 { array_of_number }?
+    & attribute Exponent { number }
+stitching_function_dictionary = 
+      attribute Domain { array_of_number }
+    & attribute Range { array_of_number }
+    & element StitchingFunctions { array_of_function_dictionary }
+    & attribute Bounds { array_of_number }
+    & attribute Encode { array_of_number }
+postscript_function_dictionary = 
+      attribute Domain { array_of_number }
+    & attribute Range { array_of_number }
+    &    attribute src { string } & common_stream_dictionary
+
+array_of_function_dictionary = 
+      element Function { function_dictionary }*
+file_spec_dictionary = file_spec_dictionary1
+
+file_spec_dictionary1 = 
+      attribute FSType { pdf_byte_string }?    & attribute FSType_enc { token }?
+    & attribute Name { pdf_byte_string }    & attribute Name_enc { token }?
+    & attribute UName { pdf_text_string }?
+    & element FileId { array_of_2_strings }?
+    & attribute Volatile { boolean }?
+file_spec_dictionary1 &= embedded_file_stream_information_dictionary?
+
+file_spec_dictionary1 &= 
+      element RelatedFiles { file_spec_related_files }?
+    & element Desc { pdf_text_string }?
+    & element Collection { collection_item_dictionary_reference }?
+    & element Thumbnail { thumbnail_image_dictionary }?
+file_spec_dictionary |= 
+      attribute Name { pdf_byte_string }    & attribute Name_enc { token }?
+array_of_2_strings = 
+      attribute PermanentId { pdf_byte_string }    & attribute PermanentId_enc { token }?
+    & attribute ContentId { pdf_byte_string }    & attribute ContentId_enc { token }?
+embedded_file_stream_information_dictionary = 
+      element FileData { embedded_file_stream_dictionary }?
+    & element UFileData { pdf_text_string }?
+file_spec_related_files = 
+      element FileData { embedded_file_stream_dictionary }
+file_spec_related_files |= 
+      element Files { related_files_array }
+related_files_array =              related_files_array_element*
+related_files_array_element = 
+      element FileData { embedded_file_stream_dictionary }
+related_files_array_element |= 
+      element Name { attribute _enc {token}? & pdf_byte_string }
+embedded_file_stream_dictionary = 
+      attribute FileType { pdf_text_name }?
+    & element Params { embedded_file_stream_parameter_dictionary }
+    &    attribute src { string } & common_stream_dictionary
+
+embedded_file_stream_parameter_dictionary = 
+      attribute Size { integer }?
+    & attribute CreationDate { date }?
+    & attribute ModDate { date }?
+    & element Mac { embedded_file_stream_parameter_mac_dictionary }?
+    & attribute Checksum { pdf_base64_string }?
+embedded_file_stream_parameter_mac_dictionary = 
+      attribute FileType { integer }?
+    & attribute Creator { integer }?
+    & element ResFork { embedded_file_stream_dictionary }?
+collection_item_dictionary_reference = collection_item_dictionary
+
+collection_item_dictionary = 
+      element Field { attribute Name { text }, collection_item_value }+
+collection_item_value = 
+      attribute Prefix { pdf_text_string }?
+collection_item_value |=    attribute Value { pdf_text_string | number }, attribute type { "string" | "number" }
+
+color_space = name
+
+color_space |= color_space_array
+color_space_array = CalGray_color_space_array
+color_space_array |= CalRGB_color_space_array
+color_space_array |= Lab_color_space_array
+color_space_array |= ICC_profile_array
+CalGray_color_space_array = 
+      element CalGray { CalGray_color_space_dictionary }
+CalGray_color_space_dictionary = 
+      attribute WhitePoint { tristimulus_value }
+    & attribute BlackPoint { tristimulus_value }?
+    & attribute Gamma { number }?
+tristimulus_value =  list {number, number, number}
+gamma_value =  list {number, number, number}
+CalRGB_color_space_array = 
+      element CalRGB { CalRGB_color_space_dictionary }
+CalRGB_color_space_dictionary = 
+      attribute WhitePoint { tristimulus_value }
+    & attribute BlackPoint { tristimulus_value }?
+    & attribute Gamma { gamma_value }?
+    & attribute Matrix { linear_interpretation_array }?
+linear_interpretation_array =  list {number, number, number, number, number, number, number, number, number}
+Lab_color_space_array = 
+      element Lab { Lab_color_space_dictionary }
+Lab_color_space_dictionary = 
+      attribute WhitePoint { tristimulus_value }
+    & attribute BlackPoint { tristimulus_value }?
+    & attribute Range { lab_color_range }?
+lab_color_range =  list {number, number, number, number}
+ICC_profile_array = 
+      element ICCBased { ICC_profile_stream_dictionary }
+ICC_profile_stream_dictionary = 
+      attribute Count { integer }
+    & element Alternate { color_space }?
+    & attribute Range { array_of_number }?
+ICC_profile_stream_dictionary &= metadata_item
+
+ICC_profile_stream_dictionary &=     attribute src { string } & common_stream_dictionary
+
+metadata_item =  empty
+
+colorant_dictionary = 
+      element Colorant { attribute Name { text },  attribute Name_enc { token }?, separation_color_space }+
+thumbnail_image_dictionary = 
+      attribute Width { integer }
+    & attribute Height { integer }
+    & element ColorSpace { color_space }
+    & attribute BitsPerComponent { integer }
+    & element ColorSpaceMap { color_space_map }?
+    &    attribute src { string } & common_stream_dictionary
+
+color_space_map =       list { integer }
+font_file = 
+      element Font { font_dictionary }
+font_dictionary = 
+      element Type0 { type0_font_dictionary }
+font_dictionary |= 
+      element Type1 { type1_font_dictionary }
+font_dictionary |= 
+      element TrueType { truetype_font_dictionary }
+common_font_dictionary = 
+      attribute Name { name }?    & attribute Name_enc { token }?
+    & attribute BaseFont { name }    & attribute BaseFont_enc { token }?
+    & attribute FirstChar { integer }?
+    & attribute LastChar { integer }?
+    & element Widths { array_of_integer }
+    & element FontDescriptor { Font_descriptor_dictionary }
+type0_font_dictionary = 
+      element DescendantFonts { array_of_1_CIDFontDictionaries }?
+type0_font_dictionary &= common_font_dictionary
+
+type1_font_dictionary = common_font_dictionary
+
+truetype_font_dictionary = common_font_dictionary
+
+array_of_1_CIDFontDictionaries = 
+      element CIDFont { CIDFont_dictionary }
+CIDFont_dictionary = 
+      attribute Subtype { pdf_text_name }
+    & attribute BaseFont { name }    & attribute BaseFont_enc { token }?
+    & element CIDSystemInfo { CIDSystemInfo_dictionary }
+    & element FontDescriptor { Font_descriptor_dictionary }
+    & attribute DW { integer }?
+    & element Widths { default_array }?
+    & element DW2 { array_of_2_numbers }?
+    & element VerticalWidths { default_array }?
+    & element CIDToGIDMap { cidmap_stream_or_name }?
+array_of_2_numbers = 
+      attribute XFraction { number }
+    & attribute YFraction { number }
+cidmap_stream_or_name = cidmap_stream_object
+
+cidmap_stream_or_name |=   "Identity"
+
+cidmap_stream_object =     attribute src { string } & common_stream_dictionary
+
+CIDSystemInfo_dictionary = 
+      attribute Registry { pdf_ascii_string }
+    & attribute Ordering { pdf_ascii_string }
+    & attribute Supplement { integer }
+Font_descriptor_dictionary = 
+      attribute FontName { name }    & attribute FontName_enc { token }?
+    & attribute FontFamily { pdf_byte_string }?    & attribute FontFamily_enc { token }?
+    & attribute FontStretch { name }?    & attribute FontStretch_enc { token }?
+    & attribute FontWeight { number }?
+    & attribute Flags { ( list { "FixedPitch"? , "Serif"? , "Symbolic"? , "Script"? , "Nonsymbolic"? , "Italic"? , "AllCap"? , "SmallCap"? , "ForceBold"?  } ) }
+    & attribute FontBBox { rectangle_blank_sep }
+    & attribute ItalicAngle { number }
+    & attribute Ascent { number }
+    & attribute Descent { number }
+    & attribute Leading { number }?
+    & attribute CapHeight { number }
+    & attribute XHeight { number }?
+    & attribute StemV { number }
+    & attribute StemH { number }?
+    & attribute AvgWidth { number }?
+    & attribute MaxWidth { number }?
+    & attribute MissingWidth { number }?
+    & attribute CharSet { pdf_byte_string }?    & attribute CharSet_enc { token }?
+colorspace_name_or_array = 
+      attribute ColorSpaceName { name }    & attribute ColorSpaceName_enc { token }?
+colorspace_name_or_array |= 
+      element ColorSpace { color_space_array }
+color_space_array |= 
+      element Separation { separation_color_space }
+color_space_array |= 
+      element DeviceN { device_n_color_space }
+color_space_array |= 
+      element Indexed { indexed_color_space }
+color_space_array |= 
+      element PatternCS { pattern_color_space }
+separation_color_space = 
+      attribute Colorant { name }    & attribute Colorant_enc { token }?
+    & element AlternateSpace { color_space }
+    & element TintXform { function_dictionary }
+device_n_color_space = 
+      element Colorants { array_of_name }
+    & element AlternateSpace { color_space }
+    & element TintXform { function_dictionary }
+    & element Attrs { device_n_color_space_attributes_dictionary }?
+pattern_color_space = 
+      element UnderlyingSpace { color_space }?
+device_n_color_space_attributes_dictionary = 
+      element Colorants { colorant_dictionary }?
+    & attribute Subtype { pdf_text_name }?
+    & element Process { process_dictionary }?
+    & element MixingHints { mixing_hints_dictionary }?
+process_dictionary = 
+      element ColorSpace { colorspace_name_or_array }
+    & element Components { array_of_name }
+mixing_hints_dictionary = 
+      element Solidities { ink_density_dictionary }
+    & element PrintingOrder { array_of_name }
+ink_density_dictionary = element Density { number & attribute Name { pdf_byte_string }}
+
+indexed_color_space = 
+      element Base { color_space }
+    & attribute HiVal { integer }
+    & element LookupTable { lut_string_or_stream }
+lut_string_or_stream = pdf_base64_string
+
+lut_string_or_stream |=     attribute src { string } & common_stream_dictionary
+
+common_stream_dictionary = 
+      element File { file_spec_dictionary }?
+    & element FileFilters { filter_name_or_array }?
+    & element FDecodeParms { parm_dictionary_or_array }?
+parm_dictionary_or_array = 
+      element ParmDictionary { parm_dictionary }*
+parm_dictionary =           element * { default_dict_element}*
+filter_name_or_array = 
+      element Filter { attribute _enc {token}? & name }*
+}
+# end of schema

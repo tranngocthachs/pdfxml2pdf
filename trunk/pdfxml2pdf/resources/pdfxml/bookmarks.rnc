@@ -1,0 +1,884 @@
+# © 2006, 2007, 2008 Adobe Systems Incorporated. All rights reserved.
+# This material is furnished for informational use only, and is subject to change without notice.
+# Preliminary PDFXML File Format Schema
+# Schema Datestamp 2008/09/15
+
+# RelaxNG Schema
+# Based on RelaxNG Compact Syntax
+
+namespace xsd="http://www.w3c.org/2001/XMLSchema-datatypes"
+default namespace pdf="http://ns.adobe.com/pdf/2006"
+grammar {
+start = outline_dictionary_file
+
+number = xsd:float
+number |= xsd:integer
+fixed = number
+name = xsd:string
+boolean = xsd:boolean
+rgb_color_array = xsd:string  # string if of form #xxxxxx or a series of numbers
+integer = xsd:integer
+object_reference = xsd:string
+date = xsd:date
+null = empty
+pdf_text_string = string
+pdf_byte_string = string
+pdf_ascii_string = string
+pdf_base64_string = string
+pdf_reference = string
+pdf_text_name = string
+pdf_xml_name = string
+any = element * { (attribute * { text } | text | any)* }
+
+default_dictionary =           element * { default_dict_element}*
+default_array =              default_array_element*
+default_array_element = 
+      element Dict { default_dictionary }
+default_array_element |= 
+      element Stream { array_stream_object }
+default_array_element |= 
+      element Array { default_array }
+default_array_element |=  element String { attribute Value { pdf_byte_string } & attribute Value_enc {token}? }
+
+default_array_element |= 
+      element Null { null }
+default_array_element |= 
+      element Name { 
+      attribute Value { name } & attribute Value_enc {token}? }
+default_array_element |= 
+      element Int { 
+      attribute Value { integer }}
+default_array_element |= 
+      element Number { 
+      attribute Value { fixed }}
+default_array_element |= 
+      element Bool { 
+      attribute Value { boolean }}
+array_stream_object =     attribute src { string } & common_stream_dictionary
+
+default_dict_element =      attribute type { "null" }
+
+default_dict_element |=     attribute type { "string" } & attribute Value { pdf_byte_string } & attribute Value_enc { token }? 
+
+default_dict_element |=     attribute type { "integer" } & attribute Value { integer } 
+
+default_dict_element |=     attribute type { "number" } & attribute Value { number } 
+
+default_dict_element |=     attribute type { "boolean" } & attribute Value { boolean } 
+
+default_dict_element |=    attribute type { "name" } & attribute Value { name } & attribute Value_enc { token }?
+
+default_dict_element |=    attribute type { "dictionary" } & element * { default_dict_element }*
+
+default_dict_element |=    attribute type { "array" } & default_array_element*
+
+default_dict_element |=    attribute type { "stream" } & attribute src { string } & common_stream_dictionary
+
+rectangle_blank_sep =  list {number, number, number, number}
+array_of_integer =       list { integer }
+array_of_number =       list { number }
+array_of_name = element Name { attribute Value { name } }*
+function_dictionary = 
+      element SampledFunction { sampled_function_dictionary }
+function_dictionary |= 
+      element InterpolatedFunction { interpolated_function_dictionary }
+function_dictionary |= 
+      element StitchingFunction { stitching_function_dictionary }
+function_dictionary |= 
+      element PostscriptFunction { postscript_function_dictionary }
+sampled_function_dictionary = 
+      attribute Domain { array_of_number }
+    & attribute Range { array_of_number }
+    & attribute Size { array_of_integer }
+    & attribute BitsPerSample { integer }
+    & attribute Order { number }?
+    & attribute Encode { array_of_number }?
+    & attribute Decode { array_of_number }?
+    &    attribute src { string } & common_stream_dictionary
+
+interpolated_function_dictionary = 
+      attribute Domain { array_of_number }
+    & attribute Range { array_of_number }
+    & attribute C0 { array_of_number }?
+    & attribute C1 { array_of_number }?
+    & attribute Exponent { number }
+stitching_function_dictionary = 
+      attribute Domain { array_of_number }
+    & attribute Range { array_of_number }
+    & element StitchingFunctions { array_of_function_dictionary }
+    & attribute Bounds { array_of_number }
+    & attribute Encode { array_of_number }
+postscript_function_dictionary = 
+      attribute Domain { array_of_number }
+    & attribute Range { array_of_number }
+    &    attribute src { string } & common_stream_dictionary
+
+array_of_function_dictionary = 
+      element Function { function_dictionary }*
+file_spec_dictionary = file_spec_dictionary1
+
+file_spec_dictionary1 = 
+      attribute FSType { pdf_byte_string }?    & attribute FSType_enc { token }?
+    & attribute Name { pdf_byte_string }    & attribute Name_enc { token }?
+    & attribute UName { pdf_text_string }?
+    & element FileId { array_of_2_strings }?
+    & attribute Volatile { boolean }?
+file_spec_dictionary1 &= embedded_file_stream_information_dictionary?
+
+file_spec_dictionary1 &= 
+      element RelatedFiles { file_spec_related_files }?
+    & element Desc { pdf_text_string }?
+    & element Collection { collection_item_dictionary_reference }?
+    & element Thumbnail { thumbnail_image_dictionary }?
+file_spec_dictionary |= 
+      attribute Name { pdf_byte_string }    & attribute Name_enc { token }?
+array_of_2_strings = 
+      attribute PermanentId { pdf_byte_string }    & attribute PermanentId_enc { token }?
+    & attribute ContentId { pdf_byte_string }    & attribute ContentId_enc { token }?
+embedded_file_stream_information_dictionary = 
+      element FileData { embedded_file_stream_dictionary }?
+    & element UFileData { pdf_text_string }?
+file_spec_related_files = 
+      element FileData { embedded_file_stream_dictionary }
+file_spec_related_files |= 
+      element Files { related_files_array }
+related_files_array =              related_files_array_element*
+related_files_array_element = 
+      element FileData { embedded_file_stream_dictionary }
+related_files_array_element |= 
+      element Name { attribute _enc {token}? & pdf_byte_string }
+embedded_file_stream_dictionary = 
+      attribute FileType { pdf_text_name }?
+    & element Params { embedded_file_stream_parameter_dictionary }
+    &    attribute src { string } & common_stream_dictionary
+
+embedded_file_stream_parameter_dictionary = 
+      attribute Size { integer }?
+    & attribute CreationDate { date }?
+    & attribute ModDate { date }?
+    & element Mac { embedded_file_stream_parameter_mac_dictionary }?
+    & attribute Checksum { pdf_base64_string }?
+embedded_file_stream_parameter_mac_dictionary = 
+      attribute FileType { integer }?
+    & attribute Creator { integer }?
+    & element ResFork { embedded_file_stream_dictionary }?
+collection_item_dictionary_reference = collection_item_dictionary
+
+collection_item_dictionary = 
+      element Field { attribute Name { text }, collection_item_value }+
+collection_item_value = 
+      attribute Prefix { pdf_text_string }?
+collection_item_value |=    attribute Value { pdf_text_string | number }, attribute type { "string" | "number" }
+
+color_space = name
+
+color_space |= color_space_array
+color_space_array = CalGray_color_space_array
+color_space_array |= CalRGB_color_space_array
+color_space_array |= Lab_color_space_array
+color_space_array |= ICC_profile_array
+CalGray_color_space_array = 
+      element CalGray { CalGray_color_space_dictionary }
+CalGray_color_space_dictionary = 
+      attribute WhitePoint { tristimulus_value }
+    & attribute BlackPoint { tristimulus_value }?
+    & attribute Gamma { number }?
+tristimulus_value =  list {number, number, number}
+gamma_value =  list {number, number, number}
+CalRGB_color_space_array = 
+      element CalRGB { CalRGB_color_space_dictionary }
+CalRGB_color_space_dictionary = 
+      attribute WhitePoint { tristimulus_value }
+    & attribute BlackPoint { tristimulus_value }?
+    & attribute Gamma { gamma_value }?
+    & attribute Matrix { linear_interpretation_array }?
+linear_interpretation_array =  list {number, number, number, number, number, number, number, number, number}
+Lab_color_space_array = 
+      element Lab { Lab_color_space_dictionary }
+Lab_color_space_dictionary = 
+      attribute WhitePoint { tristimulus_value }
+    & attribute BlackPoint { tristimulus_value }?
+    & attribute Range { lab_color_range }?
+lab_color_range =  list {number, number, number, number}
+ICC_profile_array = 
+      element ICCBased { ICC_profile_stream_dictionary }
+ICC_profile_stream_dictionary = 
+      attribute Count { integer }
+    & element Alternate { color_space }?
+    & attribute Range { array_of_number }?
+ICC_profile_stream_dictionary &= metadata_item
+
+ICC_profile_stream_dictionary &=     attribute src { string } & common_stream_dictionary
+
+metadata_item =  empty
+
+colorant_dictionary = 
+      element Colorant { attribute Name { text },  attribute Name_enc { token }?, separation_color_space }+
+thumbnail_image_dictionary = 
+      attribute Width { integer }
+    & attribute Height { integer }
+    & element ColorSpace { color_space }
+    & attribute BitsPerComponent { integer }
+    & element ColorSpaceMap { color_space_map }?
+    &    attribute src { string } & common_stream_dictionary
+
+color_space_map =       list { integer }
+form_dictionary = 
+      attribute Name { name }?    & attribute Name_enc { token }?
+    & attribute LastModified { date }?
+    & attribute BBox { rectangle_blank_sep }
+    & attribute Matrix { coordinate_map_array }?
+    & element Attributes { group_attributes_dictionary }?
+    & element Ref { reference_dictionary }?
+form_dictionary &= metadata_item
+
+form_dictionary &= 
+      element ApplicationDatasets { page_piece_dictionary }?
+    & element OPI { opi_version_dictionary }?
+    & element ContentGroup { oc_group_or_membership_dictionary }?
+    & element MarkStyle { pdf_text_string }?
+    & element Colorants { colorant_dictionary }?
+    & attribute PCM { name }?    & attribute PCM_enc { token }?
+    & element SeparationColorNames { array_of_name }?
+    & element TrapRegions { trap_array_of_object_references }?
+    & attribute TrapStyles { pdf_text_string }?
+    & element Measure { measure_dictionary }?
+form_dictionary &= common_stream_dictionary
+
+form_dictionary &=  attribute src { string }
+coordinate_map_array = list { number, number, number, number, number, number}
+group_attributes_dictionary = 
+      attribute Type { name }    & attribute Type_enc { token }?
+    & element ColorSpace { color_space }?
+    & attribute Isolated { boolean }?
+    & attribute Knockout { boolean }?
+reference_dictionary = 
+      element File { file_spec_dictionary }
+    & element Page { pdf_text_string }
+    & element FileId { array_of_2_strings }?
+oc_membership_dictionary = 
+      element Groups { oc_group_dictionary_or_array }?
+    & attribute VisibilityPolicy { name }?    & attribute VisibilityPolicy_enc { token }?
+    & element Visibility { default_array }?
+oc_group_dictionary_or_array = 
+      element Group { 
+      attribute ref { pdf_reference }}+
+oc_group_dictionary_or_array |= 
+      element Group { 
+      attribute ref { pdf_reference }}
+oc_group_or_membership_dictionary = 
+      element Group { 
+      attribute ref { pdf_reference }}
+oc_group_or_membership_dictionary |= 
+      element Membership { oc_membership_dictionary }
+destination = destination_array
+destination |= 
+      attribute Name { pdf_byte_string }    & attribute Name_enc { token }?
+destination_array = tagged_xyz_destination_array
+destination_array |= tagged_fit_destination_array
+destination_array |= tagged_fith_destination_array
+destination_array |= tagged_fitv_destination_array
+destination_array |= tagged_fitr_destination_array
+destination_array |= tagged_fitb_destination_array
+destination_array |= tagged_fitbh_destination_array
+destination_array |= tagged_fitbv_destination_array
+tagged_xyz_destination_array = 
+      element XYZ { xyz_destination_array }
+tagged_fit_destination_array = 
+      element Fit { fit_destination_array }
+tagged_fith_destination_array = 
+      element FitH { fith_destination_array }
+tagged_fitv_destination_array = 
+      element FitV { fitv_destination_array }
+tagged_fitr_destination_array = 
+      element FitR { fitr_destination_array }
+tagged_fitb_destination_array = 
+      element FitB { fitb_destination_array }
+tagged_fitbh_destination_array = 
+      element FitBH { fitbh_destination_array }
+tagged_fitbv_destination_array = 
+      element FitBV { fitbv_destination_array }
+xyz_destination_array = destination_array_common
+    & attribute Left { number } ?
+    & attribute Top { number } ?
+    & attribute Zoom { number } ?
+fit_destination_array = destination_array_common
+fith_destination_array = destination_array_common
+    & attribute Top { number } ?
+fitv_destination_array = destination_array_common
+    & attribute Left { number } ?
+fitr_destination_array = destination_array_common
+    & attribute Left { number }
+    & attribute Bottom { number }
+    & attribute Right { number }
+    & attribute Top { number }
+fitb_destination_array = destination_array_common
+fitbh_destination_array = destination_array_common
+    & attribute Top { number } ?
+fitbv_destination_array = destination_array_common
+    & attribute Left { number } ?
+destination_array_common = page_link
+page_link = 
+      attribute Page_ref { string }
+page_link |= 
+      attribute PageNum { integer }
+outline_dictionary_file = 
+      element Bookmarks { outline_dictionary }
+outline_dictionary = 
+      outline_item_dictionary_reference_with_tag*
+    & element Count { integer }?
+outline_item_dictionary_reference_with_tag = 
+      element Bookmark { outline_item_dictionary }
+outline_item_dictionary = 
+      element Title { pdf_text_string }
+    & element Action { action_dictionary }?
+    & attribute Color { rgb_color_array }?
+    & attribute Styles { ( list { "Italic"? , "Bold"?  } ) }?
+    & outline_item_dictionary_reference_with_tag*
+    & element Count { integer }?
+transition_dictionary = 
+      attribute Duration { number }?
+    &  attribute Style { "Split" | "Blinds" | "Box" | "Wipe" | "Dissolve" | "Glitter" | "R" | "Fly" | "Push" | "Cover" | "Uncover" | "Fade" } ?
+
+    & attribute Dimension { ( "Horizontal" | "Vertical" ) }?
+    & attribute Motion { ( "Inward" | "Outward" ) }?
+    & attribute Direction { number }?
+    & attribute FlyScale { number }?
+    & attribute FlyRectangular { boolean }?
+movie_activation_dictionary = 
+      element Start { movie_time }?
+    & element Duration { movie_time }?
+    & attribute Rate { number }?
+    & attribute Volume { number }?
+    & attribute ShowControls { boolean }?
+    & attribute Mode { pdf_text_name }?
+    & attribute Synchronous { boolean }?
+    & element FWScale { scale_ratio_array }?
+    & element FWPosition { relative_position_array }?
+movie_time = attribute Scale { integer }? & attribute Time { integer }
+movie_time |=   attribute Time64 { pdf_base64_string }
+scale_ratio_array = 
+      attribute Numerator { number }
+    & attribute Denominator { number }
+relative_position_array = 
+      attribute XFraction { number }
+    & attribute YFraction { number }
+trap_array_of_object_references = 
+      element Obj { 
+      attribute ref { pdf_reference }}+
+action_dictionary_or_array =  action_dictionary*
+
+action_dictionary = 
+      element GoTo { goto_action_dictionary }
+action_dictionary |= 
+      element GoToR { gotor_action_dictionary }
+action_dictionary |= 
+      element GoToE { gotoe_action_dictionary }
+action_dictionary |= 
+      element Launch { launch_action_dictionary }
+action_dictionary |= 
+      element Thread { thread_action_dictionary }
+action_dictionary |= 
+      element URI { uri_action_dictionary }
+action_dictionary |= 
+      element Sound { sound_action_dictionary }
+action_dictionary |= 
+      element Movie { movie_action_dictionary }
+action_dictionary |= 
+      element Hide { hide_action_dictionary }
+action_dictionary |= 
+      element Named { named_action_dictionary }
+action_dictionary |= 
+      element SubmitForm { submitform_action_dictionary }
+action_dictionary |= 
+      element ResetForm { resetform_action_dictionary }
+action_dictionary |= 
+      element ImportData { importdata_action_dictionary }
+action_dictionary |= 
+      element JavaScript { javascript_action_dictionary }
+action_dictionary |= 
+      element SetOCGState { setocgstate_action_dictionary }
+action_dictionary |= 
+      element Rendition { rendition_action_dictionary }
+action_dictionary |= 
+      element Trans { trans_action_dictionary }
+action_dictionary |= 
+      element Goto3DView { goto_3d_view_action_dictionary }
+action_dictionary |= 
+      element RichMediaExecute { rich_media_execute_action_dictionary }
+action_dictionary |= 
+      element CustomAction { custom_action_dictionary }
+common_action_dictionary = 
+      element Next { action_dictionary_or_array }?
+custom_action_dictionary = common_action_dictionary
+
+goto_action_dictionary = 
+      element Dest { destination }
+goto_action_dictionary &= common_action_dictionary
+
+gotor_action_dictionary = 
+      element File { file_spec_dictionary }
+    & element Dest { destination }
+    & attribute NewWindow { boolean }?
+gotor_action_dictionary &= common_action_dictionary
+
+gotoe_action_dictionary = 
+      element File { file_spec_dictionary }?
+    & element Dest { destination }
+    & attribute NewWindow { boolean }?
+    & element Target { target_dictionary }?
+gotoe_action_dictionary &= common_action_dictionary
+
+target_dictionary = 
+      attribute Relationship { ( "Parent" | "Child" ) }
+    & attribute Filename { pdf_byte_string }?    & attribute Filename_enc { token }?
+target_dictionary &= destination_or_page?
+
+target_dictionary &= annotation_name_or_number?
+
+target_dictionary &= 
+      element Target { target_dictionary }?
+destination_or_page = 
+      attribute Dest { pdf_byte_string }    & attribute Dest_enc { token }?
+destination_or_page |= 
+      attribute PageNum { xsd:nonNegativeInteger }
+annotation_name_or_number = 
+      attribute AnnotName { pdf_text_string }
+annotation_name_or_number |= 
+      attribute AnnotNum { xsd:nonNegativeInteger }
+launch_action_dictionary = 
+      element File { file_spec_dictionary }?
+    & element Win { windows_launch_dictionary }?
+    & attribute NewWindow { boolean }?
+launch_action_dictionary &= common_action_dictionary
+
+windows_launch_dictionary = 
+      attribute Name { pdf_byte_string }    & attribute Name_enc { token }?
+    & attribute Dir { pdf_byte_string }?    & attribute Dir_enc { token }?
+    & attribute Action { pdf_ascii_string }?
+    & attribute Params { pdf_byte_string }?    & attribute Params_enc { token }?
+thread_action_dictionary = 
+      element File { file_spec_dictionary }?
+    & element ArticleThread { thread_action_thread_reference }
+    & element Bead { thread_action_bead_reference }?
+thread_action_dictionary &= common_action_dictionary
+
+thread_action_thread_reference = 
+      attribute Index { integer }
+thread_action_thread_reference |= 
+      attribute Title { pdf_text_string }
+thread_action_thread_reference |= 
+      attribute ref { pdf_reference }
+thread_action_bead_reference = 
+      attribute Index { integer }
+thread_action_bead_reference |= 
+      attribute ref { pdf_reference }
+uri_action_dictionary = 
+      attribute URI { pdf_ascii_string }
+    & attribute IsMap { boolean }?
+uri_action_dictionary &= common_action_dictionary
+
+sound_action_dictionary = 
+      element SoundFile { sound_stream_dictionary }
+    & attribute Volume { number }?
+    & attribute Synchronous { boolean }?
+    & attribute Repeat { boolean }?
+    & attribute Mix { boolean }?
+sound_action_dictionary &= common_action_dictionary
+
+movie_action_dictionary = 
+      element Annot { 
+      attribute ref { pdf_reference }}?
+    & attribute Title { pdf_text_string }?
+    & attribute Operation { pdf_text_name }?
+movie_action_dictionary &= common_action_dictionary
+
+movie_action_dictionary &= movie_activation_dictionary
+
+hide_action_dictionary = 
+      element Target { hide_action_target }
+    & attribute Hide { boolean }?
+hide_action_dictionary &= common_action_dictionary
+
+hide_action_target = 
+      element Field { 
+      attribute Pathname { pdf_text_string }}
+hide_action_target |= 
+      element Annotation { 
+      attribute ref { pdf_reference }}
+hide_action_target |= 
+      element Targets { hide_action_target_array }
+hide_action_target_array =              string_or_annotation_dictionary_reference*
+string_or_annotation_dictionary_reference = 
+      element Field { 
+      attribute Pathname { pdf_text_string }}
+string_or_annotation_dictionary_reference |= 
+      element Annotation { 
+      attribute ref { pdf_reference }}
+string_or_field_dictionary_reference = 
+      element Field { 
+      attribute Pathname { pdf_text_string }}
+string_or_field_dictionary_reference |= 
+      element Field { 
+      attribute ref { pdf_reference }}
+named_action_dictionary = 
+      attribute Name { pdf_byte_string }    & attribute Name_enc { token }?
+named_action_dictionary &= common_action_dictionary
+
+setocgstate_action_dictionary =  element State { element Group { attribute ref { string } & attribute Mode { "ON" | "OFF" | "Toggle" } }* }
+setocgstate_action_dictionary &= 
+      attribute PreserveRB { boolean }?
+setocgstate_action_dictionary &= common_action_dictionary
+
+rendition_action_dictionary = 
+      element MediaRendition { rendition_dictionary }?
+    & element Screen {       attribute ref { pdf_reference }}?
+    & attribute Operation { ( "PlayAndAssociate" | "Stop" | "Pause" | "Resume" | "PlayAssociated" ) }?
+    & element Script { javascript_action_js }?
+rendition_action_dictionary &= common_action_dictionary
+
+trans_action_dictionary = 
+      element Trans { transition_dictionary }
+trans_action_dictionary &= common_action_dictionary
+
+goto_3d_view_action_dictionary = 
+      element Target { 
+      attribute ref { pdf_reference }}
+    & element View { three_d_view }
+goto_3d_view_action_dictionary &= common_action_dictionary
+
+three_d_view = 
+      attribute ref { pdf_reference }
+three_d_view |= 
+      attribute Index { number }
+three_d_view |= 
+      attribute Name { pdf_text_string }
+three_d_view |= 
+      attribute Key { name }    & attribute Key_enc { token }?
+rich_media_execute_action_dictionary = 
+      element Target { 
+      attribute ref { pdf_reference }}
+    & element TargetInstance {       attribute ref { pdf_reference }}?
+    & element Command { rich_media_command_dictionary }
+rich_media_execute_action_dictionary &= common_action_dictionary
+
+rich_media_command_dictionary = 
+      attribute Script { pdf_text_string }
+    & element Arguments { default_dict_element }?
+submitform_action_dictionary = 
+      element File { file_spec_dictionary }
+    & element Fields { fields_array }?
+    & attribute Flags { ( list { "Exclude"? , "IncludeNoValueFields"? , "ExportFormat"? , "GetMethod"? , "SubmitCoordinates"? , "XFDF"? , "IncludeAppendSaves"? , "IncludeAnnotations"? , "SubmitPDF"? , "CanonicalFormat"? , "ExclNonUserAnnots"? , "ExclFKey"? , "EmbedForm"?  } ) }?
+submitform_action_dictionary &= common_action_dictionary
+
+fields_array =              string_or_field_dictionary_reference*
+resetform_action_dictionary = 
+      element Fields { fields_array }?
+    & attribute Flags { ( list { "Exclude"?  } ) }?
+resetform_action_dictionary &= common_action_dictionary
+
+importdata_action_dictionary = 
+      element File { file_spec_dictionary }
+importdata_action_dictionary &= common_action_dictionary
+
+javascript_action_dictionary = 
+      element Script { javascript_action_js }
+javascript_action_dictionary &= common_action_dictionary
+
+javascript_action_js = pdf_text_string
+
+javascript_action_js |=     attribute src { string } & common_stream_dictionary
+
+measure_dictionary = geospatial_measure_dictionary
+
+measure_dictionary |= rectilinear_measure_dictionary
+
+geospatial_measure_dictionary =   attribute Subtype { "GEO" }
+
+geospatial_measure_dictionary &= 
+      attribute Bounds { array_of_number }?
+    & element CoordinateSystem { coordinate_system_dictionary }
+    & element DisplayCoordinateSystem { coordinate_system_dictionary }?
+    & element PreferredDisplayUnits { preferred_display_units_array }?
+    & attribute GeoPoints { array_of_number }
+    & attribute LocalPoints { array_of_number }?
+coordinate_system_dictionary = 
+      attribute Type { ( "Geographic" | "Projected" ) }
+    & attribute EPSG { integer }?
+    & attribute WellKnownText { pdf_ascii_string }?
+preferred_display_units_array =   attribute Linear { "M" | "KM" | "FT" | "USFT" | "MI" | "NM" }
+
+preferred_display_units_array &=   attribute Area { "SQM" | "HA" | "SQKM" | "SQFT" | "A" | "SQMI" }
+
+preferred_display_units_array &=   attribute Angular { "DEG" | "GRD" }
+
+rectilinear_measure_dictionary = 
+      attribute ScaleRatio { pdf_text_string }
+    & element X { number_format_array }
+    & element Y { number_format_array }?
+    & element Distance { number_format_array }
+    & element Area { number_format_array }
+    & element Angle { number_format_array }?
+    & element Slope { number_format_array }?
+    & element Origin { origin_array }?
+    & attribute YtoXFactor { number }?
+origin_array = 
+      attribute X { number }
+    & attribute Y { number }
+number_format_array = 
+      element Unit { number_format_dictionary }*
+number_format_dictionary = 
+      attribute UnitLabel { pdf_text_string }
+    & attribute ConversionFactor { number }
+    & attribute Fraction { ( "Decimal" | "Fraction" | "Round" | "Truncate" ) }?
+    & attribute Precision { integer }?
+    & attribute NoTruncate { boolean }?
+    & attribute ThousandsDelimiter { pdf_text_string }?
+    & attribute DecimalPoint { pdf_text_string }?
+    & attribute LeftOfLabel { pdf_text_string }?
+    & attribute AfterLabel { pdf_text_string }?
+    & attribute LabelPosition { ( "Suffix" | "Prefix" ) }?
+media_rendition_dictionary = common_rendition_dictionary
+
+media_rendition_dictionary &= 
+      element Clip { media_clip_dictionary }?
+    & element PlayParameters { media_play_parameters_dictionary }?
+    & element PlayLocation { media_screen_parameters_dictionary }?
+selector_rendition_dictionary = common_rendition_dictionary
+
+selector_rendition_dictionary &= 
+      element Renditions { array_of_rendition_dictionary }
+array_of_rendition_dictionary = 
+      element MediaRendition { rendition_dictionary }*
+media_clip_dictionary = media_clip_data_dictionary
+
+media_clip_dictionary |= media_clip_section_dictionary
+
+common_media_clip_dictionary =   attribute Subtype { "MCD" | "MCS" }
+
+common_media_clip_dictionary &= 
+      attribute Name { pdf_text_string }?
+media_clip_data_dictionary = common_media_clip_dictionary
+
+media_clip_data_dictionary &= 
+      element Data { file_spec_or_form_XObject }
+    & attribute ContentType { pdf_ascii_string }?
+    & element Permissions { media_permissions_dictionary }?
+    & element AlternateText { multi_language_text_array }?
+    & element Players { media_players_dictionary }?
+media_clip_data_dictionary &= common_must_honor_best_effort
+
+file_spec_or_form_XObject = 
+      element File { file_spec_dictionary }
+file_spec_or_form_XObject |= 
+      element Form { form_dictionary }
+multi_language_text_array = 
+      element Val { pdf_text_string }*
+media_clip_section_dictionary = common_media_clip_dictionary
+
+media_clip_section_dictionary &= 
+      element Data { media_clip_dictionary }
+    & element AlternateText { multi_language_text_array }?
+media_clip_section_dictionary &= common_must_honor_best_effort
+
+media_play_parameters_dictionary = 
+      element Players { media_players_dictionary }?
+media_play_parameters_dictionary &= common_must_honor_best_effort
+
+media_screen_parameters_dictionary = common_must_honor_best_effort
+
+media_permissions_dictionary =   attribute TempFile { "TEMPNEVER" | "TEMPEXTRACT" | "TEMPACCESS" | "TEMPALWAYS" } ?
+
+rendition_dictionary = 
+      element Media { media_rendition_dictionary }
+rendition_dictionary |= 
+      element Selector { selector_rendition_dictionary }
+common_rendition_dictionary = 
+      attribute Name { pdf_text_string }?
+common_rendition_dictionary &= common_must_honor_best_effort
+
+common_must_honor_best_effort = 
+      element Required { media_criteria_dictionary_wrap }?
+    & element BestEffort { media_criteria_dictionary_wrap }?
+media_criteria_dictionary_wrap = media_criteria_dictionary?
+
+media_criteria_dictionary = 
+      attribute Audio { boolean }?
+    & attribute Captions { boolean }?
+    & attribute OverDubs { boolean }?
+    & attribute Subtitles { boolean }?
+    & attribute MinBandwidth { integer }?
+    & element MinimumBitDepth { minimum_bit_depth_dictionary }?
+    & element MinimumScreenSize { minimum_screen_size_dictionary }?
+    & element AllowableViewers { array_of_software_identifier_dictionaries }?
+    & element PDFVersion { array_of_PDF_versions }?
+    & element AllowableLanguages { array_of_language_identifiers }?
+minimum_bit_depth_dictionary = 
+      attribute Depth { integer }
+    & attribute Monitor { integer }?
+minimum_screen_size_dictionary = width_height_array
+
+minimum_screen_size_dictionary &= 
+      attribute Monitor { integer }?
+width_height_array = 
+      attribute Width { integer }
+    & attribute Height { integer }
+media_players_dictionary = 
+      element RequiredPlayers { media_player_info_array }?
+    & element AllowedPlayers { media_player_info_array }?
+    & element ForbiddenPlayers { media_player_info_array }?
+media_player_info_array = 
+      element Player { media_player_info_dictionary }*
+media_player_info_dictionary = 
+      element PlayerId { software_identifier_dictionary }
+media_player_info_dictionary &= common_must_honor_best_effort
+
+array_of_software_identifier_dictionaries = 
+      element Viewer { software_identifier_dictionary }*
+array_of_PDF_versions = 
+      attribute MinVersion { pdf_ascii_string }
+    & attribute MaxVersion { pdf_ascii_string }?
+array_of_language_identifiers = 
+      element Language { pdf_text_string }*
+software_identifier_dictionary = 
+      attribute URI { pdf_ascii_string }
+    & attribute MinVersion { version_array }?
+    & attribute MinInclusive { boolean }?
+    & attribute MaxVersion { version_array }?
+    & attribute MaxInclusive { boolean }?
+    & element OS { os_name_array }?
+version_array =       list { integer }
+os_name_array = 
+      element OSName { attribute _enc {token}? & pdf_byte_string }*
+sound_stream_dictionary = 
+      attribute SamplingRate { number }
+    & attribute ChannelCount { integer }?
+    & attribute BitsPerSample { integer }?
+    & attribute Encoding { pdf_text_name }?
+    & attribute Compression { name }?    & attribute Compression_enc { token }?
+    &    attribute src { string } & common_stream_dictionary
+
+colorspace_name_or_array = 
+      attribute ColorSpaceName { name }    & attribute ColorSpaceName_enc { token }?
+colorspace_name_or_array |= 
+      element ColorSpace { color_space_array }
+page_piece_dictionary = 
+      element ApplicationData { attribute Owner { text }, application_data_dictionary }+
+application_data_dictionary = 
+      attribute LastModified { date }
+    & element Private { default_dict_element }
+color_space_array |= 
+      element Separation { separation_color_space }
+color_space_array |= 
+      element DeviceN { device_n_color_space }
+color_space_array |= 
+      element Indexed { indexed_color_space }
+color_space_array |= 
+      element PatternCS { pattern_color_space }
+separation_color_space = 
+      attribute Colorant { name }    & attribute Colorant_enc { token }?
+    & element AlternateSpace { color_space }
+    & element TintXform { function_dictionary }
+device_n_color_space = 
+      element Colorants { array_of_name }
+    & element AlternateSpace { color_space }
+    & element TintXform { function_dictionary }
+    & element Attrs { device_n_color_space_attributes_dictionary }?
+pattern_color_space = 
+      element UnderlyingSpace { color_space }?
+device_n_color_space_attributes_dictionary = 
+      element Colorants { colorant_dictionary }?
+    & attribute Subtype { pdf_text_name }?
+    & element Process { process_dictionary }?
+    & element MixingHints { mixing_hints_dictionary }?
+process_dictionary = 
+      element ColorSpace { colorspace_name_or_array }
+    & element Components { array_of_name }
+mixing_hints_dictionary = 
+      element Solidities { ink_density_dictionary }
+    & element PrintingOrder { array_of_name }
+ink_density_dictionary = element Density { number & attribute Name { pdf_byte_string }}
+
+indexed_color_space = 
+      element Base { color_space }
+    & attribute HiVal { integer }
+    & element LookupTable { lut_string_or_stream }
+lut_string_or_stream = pdf_base64_string
+
+lut_string_or_stream |=     attribute src { string } & common_stream_dictionary
+
+opi_version_dictionary = 
+      element OPI13 { opi_13_dictionary }?
+    & element OPI20 { opi_20_dictionary }?
+opi_13_dictionary = 
+      element File { file_spec_dictionary }
+    & attribute ID { pdf_byte_string }?    & attribute ID_enc { token }?
+    & attribute Comments { pdf_text_string }?
+    & element Size { opi_size_array }
+    & element CropRect { opi_crop_rect_array }
+    & element CropFixed { opi_crop_rect_array }?
+    & element Position { opi_position_array }
+    & element Resolution { opi_resolution_array }?
+    & attribute ColorType { pdf_text_name }?
+    & element Color { opi_cmyk_color_array }?
+    & attribute Tint { number }?
+    & element Overprint { boolean }?
+    & element ImageType { opi_image_type_array }?
+    & element GrayMap { opi_graymap_array }?
+    & attribute Transparency { boolean }?
+    & element Tags { opi_tags_array }?
+opi_tags_array =              default_array_element*
+opi_graymap_array =       list { integer }
+opi_size_array = 
+      attribute Width { integer }
+    & attribute Height { integer }
+opi_image_type_array = 
+      attribute samples { integer }
+    & attribute bits { integer }
+opi_crop_rect_array = 
+      attribute Left { number }
+    & attribute Top { number }
+    & attribute Right { number }
+    & attribute Bottom { number }
+opi_position_array = 
+      attribute llx { number }
+    & attribute lly { number }
+    & attribute ulx { number }
+    & attribute uly { number }
+    & attribute urx { number }
+    & attribute ury { number }
+    & attribute lrx { number }
+    & attribute lry { number }
+opi_resolution_array = 
+      attribute horizRes { integer }
+    & attribute vertRes { integer }
+opi_cmyk_color_array = 
+      attribute C { number }
+    & attribute M { number }
+    & attribute Y { number }
+    & attribute K { number }
+    & attribute colorName { pdf_byte_string }    & attribute colorName_enc { token }?
+opi_20_dictionary = 
+      element File { file_spec_dictionary }
+    & element MainImage { attribute _enc {token}? & pdf_byte_string }?
+    & element Tags { opi_tags_array }?
+    & element Size { opi_size_array }?
+    & element CropRect { opi_crop_rect_array }?
+    & element Overprint { boolean }?
+    & element Inks { opi_ink_info }?
+    & element Dimensions { opi_size_array }?
+    & element IncludedImageQuality { number }?
+opi_ink_info = name
+
+opi_ink_info |=              default_array_element*
+common_stream_dictionary = 
+      element File { file_spec_dictionary }?
+    & element FileFilters { filter_name_or_array }?
+    & element FDecodeParms { parm_dictionary_or_array }?
+parm_dictionary_or_array = 
+      element ParmDictionary { parm_dictionary }*
+parm_dictionary =           element * { default_dict_element}*
+filter_name_or_array = 
+      element Filter { attribute _enc {token}? & name }*
+}
+# end of schema
