@@ -1,0 +1,63 @@
+# © 2006, 2007, 2008 Adobe Systems Incorporated. All rights reserved.
+# This material is furnished for informational use only, and is subject to change without notice.
+# Preliminary PDFXML File Format Schema
+# Schema Datestamp 2008/09/15
+
+# RelaxNG Schema
+# Based on RelaxNG Compact Syntax
+
+namespace xsd="http://www.w3c.org/2001/XMLSchema-datatypes"
+default namespace pdf="http://ns.adobe.com/pdf/2006"
+grammar {
+start = article_threads_file
+
+number = xsd:float
+number |= xsd:integer
+fixed = number
+name = xsd:string
+boolean = xsd:boolean
+rgb_color_array = xsd:string  # string if of form #xxxxxx or a series of numbers
+integer = xsd:integer
+object_reference = xsd:string
+date = xsd:date
+null = empty
+pdf_text_string = string
+pdf_byte_string = string
+pdf_ascii_string = string
+pdf_base64_string = string
+pdf_reference = string
+pdf_text_name = string
+pdf_xml_name = string
+any = element * { (attribute * { text } | text | any)* }
+
+rectangle = 
+      attribute x1 { number }
+    & attribute y1 { number }
+    & attribute x2 { number }
+    & attribute y2 { number }
+article_threads_file = 
+      element Threads { article_threads_array }
+thread_dictionary = 
+      bead_item_dictionary_reference_with_tag*
+    & element ThreadInfo { document_information_dictionary }?
+bead_item_dictionary_reference_with_tag = 
+      element Bead { bead_item_dictionary }
+bead_item_dictionary = 
+      attribute Page_ref { string }
+bead_item_dictionary &= rectangle
+
+document_information_dictionary = 
+      attribute Title { pdf_text_string }?
+    & attribute Author { pdf_text_string }?
+    & attribute Subject { pdf_text_string }?
+    & attribute Keywords { pdf_text_string }?
+    & attribute Creator { pdf_text_string }?
+    & attribute Producer { pdf_text_string }?
+    & attribute CreationDate { date }?
+    & attribute ModDate { date }?
+    & attribute Trapped { pdf_text_name }?
+    & attribute SavedBy { pdf_text_string }?
+article_threads_array = 
+      element ArticleThread { thread_dictionary }*
+}
+# end of schema

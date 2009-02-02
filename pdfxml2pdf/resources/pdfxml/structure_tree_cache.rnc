@@ -1,0 +1,41 @@
+# © 2006, 2007 Adobe Systems Incorporated. All rights reserved.
+# This material is furnished for informational use only, and is subject to change without notice.
+# Preliminary Mars File Format Schema
+# Schema Datestamp 2007/03/26
+
+# RelaxNG Schema
+# Based on RelaxNG Compact Syntax
+
+default namespace pdf="http://ns.adobe.com/pdf/2006"
+grammar {
+start = cache
+pdf_base64_string = string
+pdf_text_string = string
+name = xsd:string
+cache = element Cache {cache_header, cache_body}
+cache_header =
+	element Query {
+		element Files { element Pattern { attribute Value { text} }+ }?
+	    &	attribute XPath { text }?
+	    &	attribute Translate { text }? }?
+    & 	attribute Identifier { text }?
+    &	element Timestamp {
+			attribute Type { text }?
+		   &	attribute Time { text }?
+		   &	attribute DocumentID { pdf_base64_string }?
+		   &	attribute InstanceID { pdf_base64_string }?
+		}?
+
+cache_body = element Data { cache_data }
+cache_data = structure_cache_contents*
+structure_cache_contents = 
+      element MCR { marked_content_reference }
+    & element Elem { structure_file_element }
+marked_content_reference =
+       attribute ref { string }
+     & attribute Path { pdf_text_string }
+structure_file_element =
+       attribute Path { pdf_text_string }
+     & attribute ref { string }?
+}     
+

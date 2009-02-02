@@ -1,0 +1,90 @@
+# © 2006, 2007, 2008 Adobe Systems Incorporated. All rights reserved.
+# This material is furnished for informational use only, and is subject to change without notice.
+# Preliminary PDFXML File Format Schema
+# Schema Datestamp 2008/09/15
+
+# RelaxNG Schema
+# Based on RelaxNG Compact Syntax
+
+namespace xsd="http://www.w3c.org/2001/XMLSchema-datatypes"
+default namespace pdf="http://ns.adobe.com/pdf/2006"
+grammar {
+start = named_destinations_file
+
+number = xsd:float
+number |= xsd:integer
+fixed = number
+name = xsd:string
+boolean = xsd:boolean
+rgb_color_array = xsd:string  # string if of form #xxxxxx or a series of numbers
+integer = xsd:integer
+object_reference = xsd:string
+date = xsd:date
+null = empty
+pdf_text_string = string
+pdf_byte_string = string
+pdf_ascii_string = string
+pdf_base64_string = string
+pdf_reference = string
+pdf_text_name = string
+pdf_xml_name = string
+any = element * { (attribute * { text } | text | any)* }
+
+named_destinations_file = 
+      element Destinations { named_destinations_file_entry }
+named_destinations_file_entry = 
+      element Dest { named_destinations_file_destination }*
+named_destinations_file_destination = 
+      attribute Name { pdf_byte_string }    & attribute Name_enc { token }?
+named_destinations_file_destination &= destination_array
+
+destination_array = tagged_xyz_destination_array
+destination_array |= tagged_fit_destination_array
+destination_array |= tagged_fith_destination_array
+destination_array |= tagged_fitv_destination_array
+destination_array |= tagged_fitr_destination_array
+destination_array |= tagged_fitb_destination_array
+destination_array |= tagged_fitbh_destination_array
+destination_array |= tagged_fitbv_destination_array
+tagged_xyz_destination_array = 
+      element XYZ { xyz_destination_array }
+tagged_fit_destination_array = 
+      element Fit { fit_destination_array }
+tagged_fith_destination_array = 
+      element FitH { fith_destination_array }
+tagged_fitv_destination_array = 
+      element FitV { fitv_destination_array }
+tagged_fitr_destination_array = 
+      element FitR { fitr_destination_array }
+tagged_fitb_destination_array = 
+      element FitB { fitb_destination_array }
+tagged_fitbh_destination_array = 
+      element FitBH { fitbh_destination_array }
+tagged_fitbv_destination_array = 
+      element FitBV { fitbv_destination_array }
+xyz_destination_array = destination_array_common
+    & attribute Left { number } ?
+    & attribute Top { number } ?
+    & attribute Zoom { number } ?
+fit_destination_array = destination_array_common
+fith_destination_array = destination_array_common
+    & attribute Top { number } ?
+fitv_destination_array = destination_array_common
+    & attribute Left { number } ?
+fitr_destination_array = destination_array_common
+    & attribute Left { number }
+    & attribute Bottom { number }
+    & attribute Right { number }
+    & attribute Top { number }
+fitb_destination_array = destination_array_common
+fitbh_destination_array = destination_array_common
+    & attribute Top { number } ?
+fitbv_destination_array = destination_array_common
+    & attribute Left { number } ?
+destination_array_common = page_link
+page_link = 
+      attribute Page_ref { string }
+page_link |= 
+      attribute PageNum { integer }
+}
+# end of schema
