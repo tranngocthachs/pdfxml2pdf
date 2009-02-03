@@ -35,6 +35,7 @@ public class PageContentProcessor {
 			parser.parse(new InputSource(new FileInputStream(pageContentFile)));
 		}
 		catch (SAXException e) {
+			e.printStackTrace();
 			System.out.println(pageContentFile.getName() + " is not well-formed.");
 		}
 		catch (IOException e) {

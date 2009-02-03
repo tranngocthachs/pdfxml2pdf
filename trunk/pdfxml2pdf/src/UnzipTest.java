@@ -5,8 +5,7 @@ import org.pdfbox.pdmodel.*;
 public class UnzipTest {
 
 	public static void main(String[] args) throws IOException {
-		// Declare a PDF document to be created (from the provided pdfxml)
-		PDDocument targetPDF = null;
+
 		
 		
 //		File fileTest = new File("temp");
@@ -98,17 +97,17 @@ public class UnzipTest {
 			// set the srcRoot to be used by other classes
 			ConverterUtils.setSrcFolder(srcRoot);
 			
+			
 			// process the backbone
-			targetPDF = new PDDocument();
 			File bbFile = new File(srcRoot.getPath() + File.separator + "backbone.xml");
-			BackboneProcessor bbProcessor = new BackboneProcessor(bbFile, targetPDF);
+			BackboneProcessor bbProcessor = new BackboneProcessor(bbFile);
 			bbProcessor.process();
 
 			// generate an appropriate output filename
 			String outFilename = (args[0].split("\\."))[0] + ".pdf";
 			// save the file
-			if (targetPDF != null)
-				targetPDF.save(outFilename);
+			if (ConverterUtils.getTargetPDF() != null)
+				ConverterUtils.getTargetPDF().save(outFilename);
 
 
 
@@ -119,8 +118,8 @@ public class UnzipTest {
 			System.exit(1);
 		}
 		finally {
-			if (targetPDF != null)
-				targetPDF.close();
+			if (ConverterUtils.getTargetPDF() != null)
+				ConverterUtils.getTargetPDF().close();
 			if (srcRoot.exists()) {
 				deleteFolder(srcRoot);
 			}

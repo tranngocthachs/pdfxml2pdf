@@ -5,14 +5,13 @@ import java.io.*;
 
 public class BackboneProcessor {
 
-	private PDDocument targetPDF;
 	private File bbFile;
-	public BackboneProcessor(File bbFile, PDDocument targetPDF) {
+	public BackboneProcessor(File bbFile) {
 		this.bbFile = bbFile;
-		this.targetPDF = targetPDF;
 	}
 
 	public void process() {
+		
 		try {
 
 			// Prepare the parser
@@ -30,7 +29,7 @@ public class BackboneProcessor {
 			}
 			
 			// Set the correct handler
-			BackboneHandler bbHandler = new BackboneHandler(bbFile, targetPDF);
+			BackboneHandler bbHandler = new BackboneHandler(bbFile);
 			parser.setContentHandler(bbHandler);
 			InputSource inputSource = new InputSource(new FileInputStream(bbFile));
 			parser.parse(inputSource);
@@ -44,6 +43,5 @@ public class BackboneProcessor {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-//		return targetPDF;
 	}
 }
