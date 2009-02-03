@@ -7,12 +7,9 @@ import java.io.*;
 
 
 public class BackboneHandler extends DefaultHandler {
-	private PDDocument targetPDF;
 	private File bbFile;
-	public BackboneHandler(File bbFile, PDDocument targetPDF) {
+	public BackboneHandler(File bbFile) {
 		this.bbFile = bbFile;
-		this.targetPDF = targetPDF;
-		
 	}
 	
 	public void startDocument() {
@@ -26,6 +23,8 @@ public class BackboneHandler extends DefaultHandler {
 	public void startElement(String uri, String localname, String qName, Attributes attributes) {
 		// handle the <PDF> tag 
 		if (qName.equals("PDF")) {
+			
+			PDDocument targetPDF = ConverterUtils.getTargetPDF();
 			
 			// set the PDF's version
 			// PDFVersion is a required attribute 
@@ -49,8 +48,11 @@ public class BackboneHandler extends DefaultHandler {
 		// In PDFXML, it only has one <Pages> tag and a collection of <Page>s which are its
 		// direct children
 		if (qName.equals("Page")) {
-			// create a page 
-			PDPage page = new PDPage();
+			
+			// process the page file
+			File pageFile = ConverterUtils.getFile(bbFile, attributes.getValue("src"));
+			PageProcessor pageProcessor = new PageProcessor(pageFile);
+			PDPage page = pageProcessor.process();
 			
 			// set its MediaBox
 			PDRectangle pageMediaBox = new PDRectangle();
@@ -62,7 +64,7 @@ public class BackboneHandler extends DefaultHandler {
 			
 			
 			// add it to the target PDF
-			targetPDF.addPage(page);
+			ConverterUtils.getTargetPDF().addPage(page);
 			
 //			String pagePath = attributes.getValue("src");
 //			if (pagePath.charAt(0) == '/') {
@@ -74,9 +76,7 @@ public class BackboneHandler extends DefaultHandler {
 //				pagePath = bbFile.toURI().resolve(pagePath).getPath();
 //			}
 //			//System.out.println(pagePath);
-			File pageFile = ConverterUtils.getFile(bbFile, attributes.getValue("src"));
-			PageProcessor pageProcessor = new PageProcessor(pageFile, page);
-			pageProcessor.process();
+			
 			
 		}
 			

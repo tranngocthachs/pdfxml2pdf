@@ -1,6 +1,13 @@
 import java.io.File;
+import java.io.IOException;
+
+import org.pdfbox.pdmodel.PDDocument;
 public class ConverterUtils {
+	// solely for the purpose of resolving paths 
 	private static File srcRoot;
+	
+	// sometimes it's necessary to refer to the PDDocument
+	private static PDDocument targetPDF;
 	private ConverterUtils() {
 		
 	}
@@ -28,4 +35,16 @@ public class ConverterUtils {
 	}
 	
 	
+	
+	public static PDDocument getTargetPDF() {
+		if (targetPDF == null) {
+			try {
+				targetPDF = new PDDocument();
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return targetPDF;
+	}
 }

@@ -8,9 +8,12 @@ import java.io.*;
 public class PageHandler extends DefaultHandler {
 	private PDPage page;
 	private File pageFile;
-	public PageHandler(File pageFile, PDPage page) {
+	public PageHandler(File pageFile) {
 		this.pageFile = pageFile;
-		this.page = page;
+	}
+	
+	public PDPage getPage() {
+		return page;
 	}
 	
 	public void startDocument() {
@@ -22,6 +25,9 @@ public class PageHandler extends DefaultHandler {
 	}
 	
 	public void startElement(String uri, String localname, String qName, Attributes attributes) {
+		if (qName.equals("Page")) {
+			page = new PDPage();
+		}
 		if (qName.equals("Contents")) {
 			String pageContentPath = attributes.getValue("src");
 			File pageContentFile = ConverterUtils.getFile(pageFile, pageContentPath);

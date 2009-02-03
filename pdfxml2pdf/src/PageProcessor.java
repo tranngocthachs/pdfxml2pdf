@@ -5,15 +5,14 @@ import java.io.*;
 
 public class PageProcessor {
 	
-	private PDPage page;
 	private File pageFile;
 	
-	public PageProcessor(File pageFile, PDPage page) {
+	public PageProcessor(File pageFile) {
 		this.pageFile = pageFile;
-		this.page = page;
 	}
 
-	public void process() {
+	public PDPage process() {
+		PDPage page = null;
 		try {
 			// Prepare the parser
 			XMLReader parser; 
@@ -30,9 +29,10 @@ public class PageProcessor {
 			}
 
 			// Set the correct handler
-			PageHandler pageHandler = new PageHandler(pageFile, page);
+			PageHandler pageHandler = new PageHandler(pageFile);
 			parser.setContentHandler(pageHandler);
 			parser.parse(new InputSource(new FileInputStream(pageFile)));
+			page = pageHandler.getPage();
 		}
 		catch (SAXException e) {
 			System.out.println(pageFile.getName() + " is not well-formed.");
@@ -43,5 +43,6 @@ public class PageProcessor {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		return page;
 	}
 }

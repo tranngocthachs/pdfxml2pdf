@@ -191,6 +191,8 @@ public class HelloWorld
             PDICCBased col1 = new PDICCBased(iccArr);
             col1.setNumberOfComponents(3);
             
+            
+            
             COSArray indexedArr = new COSArray();
             indexedArr.add(COSName.getPDFName("Indexed"));
             indexedArr.add(col1);
