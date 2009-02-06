@@ -10,6 +10,7 @@ import org.pdfbox.pdmodel.graphics.color.*;
 import org.pdfbox.cos.*;
 
 import java.io.*;
+import java.text.NumberFormat;
 import java.util.*;
 
 
@@ -21,18 +22,33 @@ public class PageContentHandler extends DefaultHandler {
 	private HashMap<String, PDColorSpace> colorMappings;
 	private String fontFamily;
 	private PDPageContentStream pageContentStream;
-	
+	private NumberFormat formatDecimal = NumberFormat.getNumberInstance( Locale.US );
 	public PageContentHandler(File pageContentFile, PDPage page) {
 		this.pageContentFile = pageContentFile;
 		this.page = page;
 	}
 	
 	public void startDocument() {
+		try {
+			pageContentStream = new PDPageContentStream(ConverterUtils.getTargetPDF(), page, false, false);
+			float pageHeight = page.findMediaBox().getHeight();
+			pageContentStream.appendRawCommands("1 0 0 -1 " +
+					formatDecimal.format(pageHeight) + "\n");
+		}
+		catch (Exception e) { 
+			e.printStackTrace();
+		}
+		
 		
 	}
 	
 	public void endDocument() {
-		
+		try {
+			pageContentStream.close();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void startElement(String uri, String localname, String qName, Attributes attributes) {
@@ -119,14 +135,14 @@ public class PageContentHandler extends DefaultHandler {
 			// the array for Indexed color space has the form
 			// [/Indexed base hival lookup]
 			
-			String colorID = attributes.getValue("name");
+			String colorID = attributes.getValue("Name");
             
             
             // create an array representing the color space
             COSArray indexedArr = new COSArray();
             
             // the name of the color space is first (/Indexed)
-            indexedArr.add(COSName.getPDFName("PDIndexed"));
+            indexedArr.add(COSName.getPDFName(PDIndexed.NAME));
             
             // the base of this indexed color space is second, this should be a PDColorSpace's object
             indexedArr.add(colorMappings.get(attributes.getValue("Base")));
@@ -157,6 +173,9 @@ public class PageContentHandler extends DefaultHandler {
             colorMappings.put(colorID, colorSpace);
             
 		}
+		
+		
+		// 
 		
 		
 		
@@ -195,14 +214,18 @@ public class PageContentHandler extends DefaultHandler {
 //					if (fontMappings != null) 
 //						pageContentStream.setFont(fontMappings.get("F0"), 16.02f);
 //					if (colorMappings != null) {
-//						pageContentStream.setNonStrokingColorSpace(colorMappings.get("cs-0"));
-//						float[] colorComponents0 = {0.302f, 0.302f, 0.502f};
-//						pageContentStream.setNonStrokingColor(colorComponents0);
-//					}
+////						pageContentStream.setNonStrokingColorSpace(colorMappings.get("cs-0"));
+////						float[] colorComponents0 = {0.302f, 0.302f, 0.502f};
+////						pageContentStream.setNonStrokingColor(colorComponents0);
+//						pageContentStream.setNonStrokingColorSpace(colorMappings.get("cs-1"));
+//						float[] colorComponents1 = {5};
+//						pageContentStream.setNonStrokingColor(colorComponents1);
+//						}
 //						
 //		            pageContentStream.appendRawCommands("200 200 Td\n");
 //		            pageContentStream.drawString("Company Overview");
 //		            pageContentStream.endText();
+//		            
 //		            
 //		            pageContentStream.close();
 //		            System.out.println(pageContentStream.toString());
