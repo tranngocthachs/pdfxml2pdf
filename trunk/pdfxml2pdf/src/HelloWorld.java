@@ -1,4 +1,6 @@
 import java.io.*;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import org.pdfbox.exceptions.COSVisitorException;
 import org.pdfbox.pdmodel.*;
@@ -23,6 +25,8 @@ import org.pdfbox.pdmodel.graphics.xobject.*;
  */
 public class HelloWorld
 {
+	private float pageHeight;
+	private NumberFormat formatDecimal = NumberFormat.getNumberInstance( Locale.US );
     /**
      * Constructor.
      */
@@ -253,16 +257,60 @@ public class HelloWorld
 //            imgDict2.setItem("Decode", decodeArr1);
 
             
+            PDResources temp = new PDResources();
+            
+            temp.getXObjects().put("Im0", img1);
+            temp.getXObjects().put("Im1", img2);
+            page.setResources(temp);
+
+            pageHeight = page.findMediaBox().getHeight();
+            
             // Start page content
             PDPageContentStream contentStream = new PDPageContentStream(doc, page, false, false);
-            contentStream.appendRawCommands("q\n");
-            contentStream.appendRawCommands("1 0 0 -1 0 792 cm\n"); // transforming to svg coordinates
+
             
             // generated from svg's pages
-            contentStream.appendRawCommands("1 0 0 -1 0 792 cm\n");
-            contentStream.drawImage(img1, 72, 708.06f-(float)(img1.getHeight() * 0.4764), (float)(img1.getWidth() * 0.4805) , (float)(img1.getHeight() * 0.4764));
-            contentStream.drawImage(img2, 72, 668.52f-(float)(img2.getHeight() * 0.4764), (float)(img2.getWidth() * 0.4805) , (float)(img2.getHeight() * 0.4764));
+            float[] matrix = {1, 0, 0, -1, 0, 792};
+            float[] convertedMatrix = convertingMatrix(matrix);
+            contentStream.appendRawCommands(getStringOfMatrix(convertedMatrix) + " cm\n");
             
+            
+            // insert image
+            contentStream.appendRawCommands("q\n");
+            float[] convertedPoint = convertingPoint(72, 708.06f);
+            
+            // translate to the point
+            contentStream.appendRawCommands("1 0 0 1 " +
+            								formatDecimal.format(convertedPoint[0]) + 
+            								" " +
+            								formatDecimal.format(convertedPoint[1]) +
+            								" cm\n");
+            float[] matrix1 = {0.4805f, 0, 0, -0.4764f, 0, 0};
+            convertedMatrix = convertingMatrix(matrix1);
+            contentStream.appendRawCommands(getStringOfMatrix(convertedMatrix) + " cm\n");
+            contentStream.appendRawCommands("/Im0 Do\n");
+            contentStream.appendRawCommands("Q\n");
+            
+            
+            
+            //          insert image
+            contentStream.appendRawCommands("q\n");
+            convertedPoint = convertingPoint(72, 668.52f);
+            
+            // translate to the point
+            contentStream.appendRawCommands("1 0 0 1 " +
+            								formatDecimal.format(convertedPoint[0]) + 
+            								" " +
+            								formatDecimal.format(convertedPoint[1]) +
+            								" cm\n");
+            
+            contentStream.appendRawCommands(getStringOfMatrix(convertedMatrix) + " cm\n");
+            contentStream.appendRawCommands("/Im1 Do");
+            
+//            
+//            contentStream.drawImage(img1, 72, 708.06f-(float)(img1.getHeight() * 0.4764), (float)(img1.getWidth() * 0.4805) , (float)(img1.getHeight() * 0.4764));
+//            contentStream.drawImage(img2, 72, 668.52f-(float)(img2.getHeight() * 0.4764), (float)(img2.getWidth() * 0.4805) , (float)(img2.getHeight() * 0.4764));
+            /*
             contentStream.beginText();
             contentStream.setFont(font1, 16.02f);
             contentStream.setNonStrokingColorSpace(new PDDeviceGray());
@@ -273,7 +321,8 @@ public class HelloWorld
             contentStream.appendRawCommands("0 Tr\n");
             contentStream.drawString("Company Overview");
             contentStream.endText();
-            
+            */
+            /*
             // M101.82,186.3H352.8v99.72H101.82z
             contentStream.setNonStrokingColorSpace(new PDDeviceGray());
             float[] colorComponents1 = {1};
@@ -310,7 +359,7 @@ public class HelloWorld
             cmd+="f*\n";
             cmd+="Q\n";
             contentStream.appendRawCommands(cmd);
-            
+            */
             
             
             
@@ -327,6 +376,46 @@ public class HelloWorld
         }
     }
 
+    // implementing B.3.4 of Mars spec.
+    private float[] convertingPoint(float x, float y) {
+    	float[] convertedPoint = new float[2];
+    	convertedPoint[0] = x;
+    	convertedPoint[1] = pageHeight - y;
+    	return convertedPoint;
+    }
+    
+    private float[] convertingMatrix(float[] matrix) {
+    	if (matrix.length != 6)
+    		return matrix;
+    	else {
+    		float[] convertedMatrix = new float[6];
+    		convertedMatrix[0] = matrix[0];
+    		convertedMatrix[1] = matrix[1] * (-1);
+    		convertedMatrix[2] = matrix[2] * (-1);
+    		convertedMatrix[3] = matrix[3];
+    		convertedMatrix[4] = matrix[4] - (matrix[2]*pageHeight);
+    		convertedMatrix[5] = matrix[5]*(-1) + pageHeight*(1-matrix[3]);
+    		System.out.println(pageHeight);
+    		System.out.println("Before: " + getStringOfMatrix(matrix));
+    		System.out.println("After: " + getStringOfMatrix(convertedMatrix));
+    		return convertedMatrix;
+    	}
+    }
+    
+    private String getStringOfMatrix(float[] matrix) {
+    	String returnString = "";
+    	
+    	if (matrix.length == 6) {
+    		for (int i = 0; i<matrix.length; i++) {
+    			returnString = returnString + formatDecimal.format(matrix[i]);
+    			if (i<(matrix.length-1))
+    				returnString = returnString + " ";
+    		}
+    		 
+    	}
+    	return returnString;
+    }
+    
     /**
      * This will create a hello world PDF document.
      * <br />
