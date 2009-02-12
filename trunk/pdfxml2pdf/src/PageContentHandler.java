@@ -12,6 +12,7 @@ import org.pdfbox.cos.*;
 import java.io.*;
 import java.text.NumberFormat;
 import java.util.*;
+import java.util.regex.*;
 
 
 public class PageContentHandler extends DefaultHandler {
@@ -33,7 +34,7 @@ public class PageContentHandler extends DefaultHandler {
 			pageContentStream = new PDPageContentStream(ConverterUtils.getTargetPDF(), page, false, false);
 			float pageHeight = page.findMediaBox().getHeight();
 			pageContentStream.appendRawCommands("1 0 0 -1 " +
-					formatDecimal.format(pageHeight) + "\n");
+					formatDecimal.format(pageHeight) + " cm\n");
 		}
 		catch (Exception e) { 
 			e.printStackTrace();
@@ -174,8 +175,24 @@ public class PageContentHandler extends DefaultHandler {
             
 		}
 		
+		// process g tag
+		if (qName.equals("g")) {
+			try {
+				pageContentStream.appendRawCommands("q\n");
+				handlePaintPropertiesAtt(attributes);
+				if (attributes.getValue("transform") != null)
+					handleTransformAtt(attributes.getValue("transform"));
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
 		
-		// 
+		// process text tag
+		if (qName.equals("text")) {
+			handleText(attributes);
+		}
 		
 		
 		
@@ -200,6 +217,16 @@ public class PageContentHandler extends DefaultHandler {
 //					resources.setColorSpaces(colorMappings);
 //				page.setResources(resources);
 //			}
+			
+		}
+		
+		if (qName.equals("g")) {
+			try {
+				pageContentStream.appendRawCommands("Q\n");
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
 			
 		}
 		
@@ -238,4 +265,105 @@ public class PageContentHandler extends DefaultHandler {
 //		}
 
 	}
+	private void handleText(Attributes attributes) {
+		
+	}
+	
+	private void handlePaintPropertiesAtt(Attributes attributes) {
+		if (attributes.getValue("fill") != null)
+			handleFillAtt(attributes.getValue("fill"));
+		if (attributes.getValue("stroke") != null) 
+			handleStrokeAtt(attributes.getValue("stroke"));
+		
+		if (attributes.getValue("stroke-linecap") != null) {
+			String lineCapValue = attributes.getValue("stroke-linecap");
+			try {
+				if (lineCapValue.equals("butt"))
+					pageContentStream.appendRawCommands("0 J\n");
+				else if (lineCapValue.equals("round"))
+					pageContentStream.appendRawCommands("1 J\n");
+				else if (lineCapValue.equals("square"))
+					pageContentStream.appendRawCommands("2 J\n");
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		if (attributes.getValue("stroke-linejoin") != null) {
+			String lineJoinValue = attributes.getValue("stroke-linejoin");
+			try {
+				if (lineJoinValue.equals("miter"))
+					pageContentStream.appendRawCommands("0 j\n");
+				else if (lineJoinValue.equals("round"))
+					pageContentStream.appendRawCommands("1 j\n");
+				else if (lineJoinValue.equals("bevel"))
+					pageContentStream.appendRawCommands("2 j\n");
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		if (attributes.getValue("stroke-miterlimit") != null) {
+			try {
+				pageContentStream.appendRawCommands(attributes.getValue("stroke-miterlimit") + " M\n");
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (attributes.getValue("stroke-width") != null) {
+			try {
+				pageContentStream.appendRawCommands(attributes.getValue("stroke-width") + " w\n");
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+			
+		
+			
+	}
+	
+	private void handleTransformAtt(String transformString) {
+		String splitAt = "\\)(( *, *)|( +))";
+		
+		String[] transforms = transformString.split(splitAt);
+		transforms[transforms.length - 1] = transforms[transforms.length - 1].substring(0, transforms[transforms.length-1].length() - 1);
+		for (int i=0; i<transforms.length; i++) {
+//			System.out.println(i + ": " + transforms[i]);
+			if (transforms[i].startsWith("matrix")) {
+				char oPara = '(';
+				String numberStr = transforms[i].substring(transforms[i].indexOf(oPara) + 1);
+				try {
+					pageContentStream.appendRawCommands(numberStr + " cm\n");
+				}
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+//				System.out.println("Number string: " + numberStr);
+//				String[] numbers = numberStr.split("( *, *)|( +)");
+////				System.out.println("length: " + numbers.length);
+//				float[] matrix = new float[6];
+//				for(int j=0; j<numbers.length; j++)
+//					matrix[j] = Float.parseFloat(numbers[j]);
+				
+			}
+		}
+		
+		
+	}
+	
+	private void handleFillAtt(String fillAtt) {
+		
+	}
+	
+	private void handleStrokeAtt(String strokeAtt) {
+		
+	}
+	
 }
