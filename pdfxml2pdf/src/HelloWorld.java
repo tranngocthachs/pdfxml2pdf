@@ -13,8 +13,6 @@ import org.pdfbox.pdmodel.font.*;
 import org.pdfbox.io.*;
 import org.pdfbox.cos.*;
 import org.pdfbox.pdmodel.graphics.xobject.*;
-
-
 /**
  * This is an example that creates a simple document.
  *
@@ -269,44 +267,47 @@ public class HelloWorld
             PDPageContentStream contentStream = new PDPageContentStream(doc, page, false, false);
 
             
-            // generated from svg's pages
-            float[] matrix = {1, 0, 0, -1, 0, 792};
-            float[] convertedMatrix = convertingMatrix(matrix);
-            contentStream.appendRawCommands(getStringOfMatrix(convertedMatrix) + " cm\n");
+//            // generated from svg's pages
+//            float[] matrix = {1, 0, 0, -1, 0, 792};
+//            float[] convertedMatrix = convertingMatrix(matrix);
+//            contentStream.appendRawCommands(getStringOfMatrix(convertedMatrix) + " cm\n");
             
             
             // insert image
             contentStream.appendRawCommands("q\n");
-            float[] convertedPoint = convertingPoint(72, 708.06f);
-            
-            // translate to the point
+            float[] convertedPoint = convertingPoint(72, 83.94f);
+//            contentStream.drawImage(img1, convertedPoint[0], convertedPoint[1]);
+//             translate to the point
             contentStream.appendRawCommands("1 0 0 1 " +
             								formatDecimal.format(convertedPoint[0]) + 
             								" " +
             								formatDecimal.format(convertedPoint[1]) +
             								" cm\n");
-            float[] matrix1 = {0.4805f, 0, 0, -0.4764f, 0, 0};
-            convertedMatrix = convertingMatrix(matrix1);
-            contentStream.appendRawCommands(getStringOfMatrix(convertedMatrix) + " cm\n");
+            float[] matrix1 = {0.4805f, 0, 0, 0.4764f, 0, 0};
+            matrix1[5] = (matrix1[5]*(-1)) + ((img1.getHeight())*(1-matrix1[3])); 
+            //convertedMatrix = convertingMatrix(matrix1);
+            contentStream.appendRawCommands(getStringOfMatrix(matrix1) + " cm\n");
+//            contentStream.appendRawCommands("0.481 0 0 -0.476 0 39.5412 cm\n");
+            contentStream.appendRawCommands("619 0 0 83 0 0 cm\n");
             contentStream.appendRawCommands("/Im0 Do\n");
             contentStream.appendRawCommands("Q\n");
             
             
             
-            //          insert image
-            contentStream.appendRawCommands("q\n");
-            convertedPoint = convertingPoint(72, 668.52f);
-            
-            // translate to the point
-            contentStream.appendRawCommands("1 0 0 1 " +
-            								formatDecimal.format(convertedPoint[0]) + 
-            								" " +
-            								formatDecimal.format(convertedPoint[1]) +
-            								" cm\n");
-            
-            contentStream.appendRawCommands(getStringOfMatrix(convertedMatrix) + " cm\n");
-            contentStream.appendRawCommands("/Im1 Do");
-            
+//            //          insert image
+//            contentStream.appendRawCommands("q\n");
+//            convertedPoint = convertingPoint(72, 668.52f);
+//            
+//            // translate to the point
+//            contentStream.appendRawCommands("1 0 0 1 " +
+//            								formatDecimal.format(convertedPoint[0]) + 
+//            								" " +
+//            								formatDecimal.format(convertedPoint[1]) +
+//            								" cm\n");
+//            
+////            contentStream.appendRawCommands(getStringOfMatrix(convertedMatrix) + " cm\n");
+//            contentStream.appendRawCommands("/Im1 Do");
+//            contentStream.appendRawCommands("Q\n");
 //            
 //            contentStream.drawImage(img1, 72, 708.06f-(float)(img1.getHeight() * 0.4764), (float)(img1.getWidth() * 0.4805) , (float)(img1.getHeight() * 0.4764));
 //            contentStream.drawImage(img2, 72, 668.52f-(float)(img2.getHeight() * 0.4764), (float)(img2.getWidth() * 0.4805) , (float)(img2.getHeight() * 0.4764));
@@ -395,7 +396,6 @@ public class HelloWorld
     		convertedMatrix[3] = matrix[3];
     		convertedMatrix[4] = matrix[4] - (matrix[2]*pageHeight);
     		convertedMatrix[5] = matrix[5]*(-1) + pageHeight*(1-matrix[3]);
-    		System.out.println(pageHeight);
     		System.out.println("Before: " + getStringOfMatrix(matrix));
     		System.out.println("After: " + getStringOfMatrix(convertedMatrix));
     		return convertedMatrix;
