@@ -255,42 +255,42 @@ public class HelloWorld
 //            imgDict2.setItem("Decode", decodeArr1);
 
             
-            PDResources temp = new PDResources();
-            
-            temp.getXObjects().put("Im0", img1);
-            temp.getXObjects().put("Im1", img2);
-            page.setResources(temp);
-
-            pageHeight = page.findMediaBox().getHeight();
-            
+//            PDResources temp = new PDResources();
+//            
+//            temp.getXObjects().put("Im0", img1);
+//            temp.getXObjects().put("Im1", img2);
+//            page.setResources(temp);
+//
+//            pageHeight = page.findMediaBox().getHeight();
+//            
             // Start page content
             PDPageContentStream contentStream = new PDPageContentStream(doc, page, false, false);
-
-            
-//            // generated from svg's pages
-//            float[] matrix = {1, 0, 0, -1, 0, 792};
-//            float[] convertedMatrix = convertingMatrix(matrix);
-//            contentStream.appendRawCommands(getStringOfMatrix(convertedMatrix) + " cm\n");
-            
-            
-            // insert image
-            contentStream.appendRawCommands("q\n");
-            float[] convertedPoint = convertingPoint(72, 83.94f);
-//            contentStream.drawImage(img1, convertedPoint[0], convertedPoint[1]);
-//             translate to the point
-            contentStream.appendRawCommands("1 0 0 1 " +
-            								formatDecimal.format(convertedPoint[0]) + 
-            								" " +
-            								formatDecimal.format(convertedPoint[1]) +
-            								" cm\n");
-            float[] matrix1 = {0.4805f, 0, 0, 0.4764f, 0, 0};
-            matrix1[5] = (matrix1[5]*(-1)) + ((img1.getHeight())*(1-matrix1[3])); 
-            //convertedMatrix = convertingMatrix(matrix1);
-            contentStream.appendRawCommands(getStringOfMatrix(matrix1) + " cm\n");
-//            contentStream.appendRawCommands("0.481 0 0 -0.476 0 39.5412 cm\n");
-            contentStream.appendRawCommands("619 0 0 83 0 0 cm\n");
-            contentStream.appendRawCommands("/Im0 Do\n");
-            contentStream.appendRawCommands("Q\n");
+//
+//            
+////            // generated from svg's pages
+////            float[] matrix = {1, 0, 0, -1, 0, 792};
+////            float[] convertedMatrix = convertingMatrix(matrix);
+////            contentStream.appendRawCommands(getStringOfMatrix(convertedMatrix) + " cm\n");
+//            
+//            
+//            // insert image
+//            contentStream.appendRawCommands("q\n");
+//            float[] convertedPoint = convertingPoint(72, 83.94f);
+////            contentStream.drawImage(img1, convertedPoint[0], convertedPoint[1]);
+////             translate to the point
+//            contentStream.appendRawCommands("1 0 0 1 " +
+//            								formatDecimal.format(convertedPoint[0]) + 
+//            								" " +
+//            								formatDecimal.format(convertedPoint[1]) +
+//            								" cm\n");
+//            float[] matrix1 = {0.4805f, 0, 0, 0.4764f, 0, 0};
+//            matrix1[5] = (matrix1[5]*(-1)) + ((img1.getHeight())*(1-matrix1[3])); 
+//            //convertedMatrix = convertingMatrix(matrix1);
+//            contentStream.appendRawCommands(getStringOfMatrix(matrix1) + " cm\n");
+////            contentStream.appendRawCommands("0.481 0 0 -0.476 0 39.5412 cm\n");
+//            contentStream.appendRawCommands("619 0 0 83 0 0 cm\n");
+//            contentStream.appendRawCommands("/Im0 Do\n");
+//            contentStream.appendRawCommands("Q\n");
             
             
             
@@ -311,18 +311,25 @@ public class HelloWorld
 //            
 //            contentStream.drawImage(img1, 72, 708.06f-(float)(img1.getHeight() * 0.4764), (float)(img1.getWidth() * 0.4805) , (float)(img1.getHeight() * 0.4764));
 //            contentStream.drawImage(img2, 72, 668.52f-(float)(img2.getHeight() * 0.4764), (float)(img2.getWidth() * 0.4805) , (float)(img2.getHeight() * 0.4764));
-            /*
+            
             contentStream.beginText();
-            contentStream.setFont(font1, 16.02f);
+            contentStream.setFont(font2, 12);
             contentStream.setNonStrokingColorSpace(new PDDeviceGray());
             float[] colorComponents0 = {0};
             contentStream.setNonStrokingColor(colorComponents0);
-            contentStream.appendRawCommands("1 0 0 1 0 571.5643 Tm\n");
-            contentStream.appendRawCommands("72 0 Td\n");
-            contentStream.appendRawCommands("0 Tr\n");
-            contentStream.drawString("Company Overview");
+            contentStream.appendRawCommands("1 0 0 -1 0 554.1 cm\n");
+            contentStream.appendRawCommands("q\n");
+            contentStream.appendRawCommands("1 0 0 1 72 0 cm\n");
+            contentStream.appendRawCommands("1 0 0 -1 0 0 cm\n");
+            contentStream.drawString("Founded in 1999, Global Electronics is a leading manufacturer of consumer and busines");
+            contentStream.appendRawCommands("Q\n");
+            contentStream.appendRawCommands("q\n");
+            contentStream.appendRawCommands("1 0 0 1 72 13.8 cm\n");
+            contentStream.appendRawCommands("1 0 0 -1 0 0 cm\n");
+            contentStream.drawString("electronic products, including cellular phones, digital projectors, and PDAs to start. The");
+            contentStream.appendRawCommands("Q\n");
             contentStream.endText();
-            */
+            
             /*
             // M101.82,186.3H352.8v99.72H101.82z
             contentStream.setNonStrokingColorSpace(new PDDeviceGray());
