@@ -24,6 +24,8 @@ public class PageContentHandler extends DefaultHandler {
 	private String fontFamily;
 	private PDPageContentStream pageContentStream;
 	private NumberFormat formatDecimal = NumberFormat.getNumberInstance( Locale.US );
+	private StringBuffer buffer = null;
+	
 	public PageContentHandler(File pageContentFile, PDPage page) {
 		this.pageContentFile = pageContentFile;
 		this.page = page;
@@ -33,7 +35,7 @@ public class PageContentHandler extends DefaultHandler {
 		try {
 			pageContentStream = new PDPageContentStream(ConverterUtils.getTargetPDF(), page, false, false);
 			float pageHeight = page.findMediaBox().getHeight();
-			pageContentStream.appendRawCommands("1 0 0 -1 " +
+			pageContentStream.appendRawCommands("1 0 0 -1 0 " +
 					formatDecimal.format(pageHeight) + " cm\n");
 		}
 		catch (Exception e) { 
@@ -194,6 +196,10 @@ public class PageContentHandler extends DefaultHandler {
 			handleText(attributes);
 		}
 		
+		if (qName.equals("tspan")) {
+			handleTSpan(attributes);
+		}
+		
 		
 		
 		
@@ -230,6 +236,35 @@ public class PageContentHandler extends DefaultHandler {
 			
 		}
 		
+		// text and tspan below gonna fail on array of coordinates supplied for x-attributes or y-attributes
+		
+		if (qName.equals("text")) {
+			try {
+				String str = buffer.toString().trim();
+				if (str.length() != 0) {
+					pageContentStream.appendRawCommands("1 0 0 -1 0 0 cm\n");
+					pageContentStream.drawString(str);
+				}
+				buffer = null;
+				pageContentStream.endText();
+				pageContentStream.appendRawCommands("Q\n");
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		if (qName.equals("tspan")) {
+			try {
+				String str = buffer.toString().trim();
+				pageContentStream.appendRawCommands("1 0 0 -1 0 0 cm\n");
+				pageContentStream.drawString(str);
+				buffer = new StringBuffer();
+				pageContentStream.appendRawCommands("Q\n");
+			}
+			catch(IOException e) {
+				e.printStackTrace();
+			}
+		}
 		
 //		// testing
 //		if (qName.equals("svg")) {
@@ -263,10 +298,53 @@ public class PageContentHandler extends DefaultHandler {
 //			}
 //			
 //		}
-
 	}
+	
+	
+	public void characters(char[] text, int start, int length) {
+		if (buffer != null) {
+			buffer.append(text, start, length);
+		}
+	}
+	
+	
 	private void handleText(Attributes attributes) {
-		
+		try {
+			pageContentStream.appendRawCommands("q\n");
+			buffer = new StringBuffer();
+			pageContentStream.beginText();
+			handlePaintPropertiesAtt(attributes);
+			handleTextPropertiesAtt(attributes);
+			if (attributes.getValue("transform") != null) 
+				handleTransformAtt(attributes.getValue("transform"));
+			
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void handleTSpan(Attributes attributes) {
+		try {
+			if (buffer != null) {
+				String str = buffer.toString().trim();
+				if (str.length() != 0) {
+					pageContentStream.appendRawCommands("1 0 0 -1 0 0 cm\n");
+					pageContentStream.drawString(str);
+					buffer = new StringBuffer();
+				}
+					
+				pageContentStream.appendRawCommands("q\n");
+				handlePaintPropertiesAtt(attributes);
+				handleTextPropertiesAtt(attributes);
+				if (attributes.getValue("transform") != null) 
+					handleTransformAtt(attributes.getValue("transform"));
+				
+			}
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void handlePaintPropertiesAtt(Attributes attributes) {
@@ -359,11 +437,151 @@ public class PageContentHandler extends DefaultHandler {
 	}
 	
 	private void handleFillAtt(String fillAtt) {
+		String splitAt = "\\)(( *, *)|( +))";
+		String[] colors = fillAtt.split(splitAt);
+		colors[colors.length - 1] = colors[colors.length - 1].substring(0, colors[colors.length-1].length() - 1);
 		
+		
+		// device-color or icc-color might present
+		if (colors.length == 2) {
+			char oPara = '(';
+			// take content inside ()
+			String colorStr = colors[1].substring(colors[1].indexOf(oPara) + 1);
+			String[] colorElems = colorStr.split(" *, *");
+			
+			try {
+				// color specified with device-color function
+				if (colors[1].startsWith("device-color")) {
+					if (colorElems[0].equals("DeviceGray")) {
+						pageContentStream.setNonStrokingColor(Double.parseDouble(colorElems[1]));
+					}
+					else if (colorElems[0].equals("DeviceCMYK")) {
+						pageContentStream.setNonStrokingColor(	Double.parseDouble(colorElems[1]),
+																Double.parseDouble(colorElems[2]), 
+																Double.parseDouble(colorElems[3]),
+																Double.parseDouble(colorElems[4]));
+					}
+					
+				}
+				
+				else if (colors[1].startsWith("icc-color")) {
+					pageContentStream.setNonStrokingColorSpace(colorMappings.get(colorElems[0]));
+					float[] colorComponents = new float[colorElems.length-1];
+					for (int i = 0; i<colorComponents.length; i++) {
+						colorComponents[i] = Float.parseFloat(colorElems[i+1]);
+					}
+					pageContentStream.setNonStrokingColor(colorComponents);
+				}
+				
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}	
+		}
+		
+		// case of DeviceRGB
+		else if (colors.length == 1) {
+			char oPara = '(';
+			// take content inside ()
+			String colorStr = colors[0].substring(colors[0].indexOf(oPara) + 1);
+			String[] colorElems = colorStr.split(" *, *");
+			
+			try {
+				// color specified with rgb(...)
+				if (colors[0].startsWith("rgb") && colorElems.length == 3) {
+					pageContentStream.setNonStrokingColor(	Integer.parseInt(colorElems[0]), 
+															Integer.parseInt(colorElems[1]),
+															Integer.parseInt(colorElems[2]));
+				}
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private void handleStrokeAtt(String strokeAtt) {
+		String splitAt = "\\)(( *, *)|( +))";
+		String[] colors = strokeAtt.split(splitAt);
+		colors[colors.length - 1] = colors[colors.length - 1].substring(0, colors[colors.length-1].length() - 1);
 		
+		
+		// device-color or icc-color might present
+		if (colors.length == 2) {
+			char oPara = '(';
+			// take content inside ()
+			String colorStr = colors[1].substring(colors[1].indexOf(oPara) + 1);
+			String[] colorElems = colorStr.split(" *, *");
+			
+			try {
+				// color specified with device-color function
+				if (colors[1].startsWith("device-color")) {
+					if (colorElems[0].equals("DeviceGray")) {
+						pageContentStream.setStrokingColor(Double.parseDouble(colorElems[1]));
+					}
+					else if (colorElems[0].equals("DeviceCMYK")) {
+						pageContentStream.setStrokingColor(	Double.parseDouble(colorElems[1]),
+															Double.parseDouble(colorElems[2]), 
+															Double.parseDouble(colorElems[3]),
+															Double.parseDouble(colorElems[4]));
+					}
+					
+				}
+				
+				else if (colors[1].startsWith("icc-color")) {
+					pageContentStream.setStrokingColorSpace(colorMappings.get(colorElems[0]));
+					float[] colorComponents = new float[colorElems.length-1];
+					for (int i = 0; i<colorComponents.length; i++) {
+						colorComponents[i] = Float.parseFloat(colorElems[i+1]);
+					}
+					pageContentStream.setStrokingColor(colorComponents);
+				}
+				
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}	
+		}
+		
+		// case of DeviceRGB
+		else if (colors.length == 1) {
+			char oPara = '(';
+			// take content inside ()
+			String colorStr = colors[0].substring(colors[0].indexOf(oPara) + 1);
+			String[] colorElems = colorStr.split(" *, *");
+			
+			try {
+				// color specified with rgb(...)
+				if (colors[0].startsWith("rgb") && colorElems.length == 3) {
+					pageContentStream.setStrokingColor(	Integer.parseInt(colorElems[0]), 
+														Integer.parseInt(colorElems[1]),
+														Integer.parseInt(colorElems[2]));
+				}
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
-	
+
+	private void handleTextPropertiesAtt(Attributes attributes) {
+		try {
+			if (attributes.getValue("font-family") != null &&
+				attributes.getValue("font-size") != null) {
+					pageContentStream.setFont(	fontMappings.get(attributes.getValue("font-family")), 
+												Float.parseFloat(attributes.getValue("font-size")));
+			}
+			if (attributes.getValue("x") != null) {
+				String cmd = "1 0 0 1 " + attributes.getValue("x") + " ";
+				if (attributes.getValue("y") != null) 
+					cmd = cmd + attributes.getValue("y") + " ";
+				else
+					cmd = cmd + "0 ";
+				pageContentStream.appendRawCommands(cmd + "cm \n");
+			}
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
