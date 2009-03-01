@@ -35,26 +35,28 @@ endobj
 /Length 8 0 R
 >>
 stream
-1 0 0 -1 0 792 cm
-1 0 0 -1 0 792 cm
 BT
 /F0 12 Tf
 /DeviceGray cs
 0 sc
-1 0 0 -1 0 554.1 Tm
+1 0 0 -1 0 554.1 cm
 q
-72 0 Td
-1 0 0 -1 0 0 Tm
-(Founded in 1999, Global Electronics is a leading manufacturer of consumer and busines) Tj
+1 0 0 1 72 0 cm
+1 0 0 -1 0 0 cm
+(Founded in 1999, Global Electronics ) Tj
+q
+/DeviceRGB cs
+255 255 0 sc
+(is a leading manufacturer) Tj
+Q
+(of consumer and busines) Tj
 Q
 q
-72 13.8 Td
-1 0 0 -1 0 0 Tm
+1 0 0 1 72 13.8 cm
+1 0 0 -1 0 0 cm
 (electronic products, including cellular phones, digital projectors, and PDAs to start. The) Tj
 Q
 ET
-200 10 200 200 re
-f
 
 endstream
 endobj
@@ -68,7 +70,7 @@ endobj
 >>
 endobj
 8 0 obj
-358
+360
 endobj
 9 0 obj
 <<
@@ -127,17 +129,17 @@ xref
 0000000158 00000 n
 0000000262 00000 n
 0000000310 00000 n
-0000000723 00000 n
-0000000754 00000 n
-0000000775 00000 n
-0000000794 00000 n
-0000001526 00000 n
+0000000725 00000 n
+0000000756 00000 n
+0000000777 00000 n
+0000000796 00000 n
+0000001528 00000 n
 trailer
 <<
 /Root 1 0 R
-/ID [<D755888D2884D949D8402A44DCC7B673> <D755888D2884D949D8402A44DCC7B673>]
+/ID [<2CAFAB9563C410D928BD20F620DE2902> <2CAFAB9563C410D928BD20F620DE2902>]
 /Size 11
 >>
 startxref
-1788
+1790
 %%EOF
