@@ -1,5 +1,14 @@
 package svg.simplestructure;
+import org.pdfbox.pdmodel.edit.PDPageContentStream;
+import org.pdfbox.pdmodel.PDPage;
 
-public interface SVGComponent { 
-	public void serialise() throws java.io.IOException;
+public abstract class SVGComponent {
+	protected PDPageContentStream pageContentStream = null;
+	protected PDPage page = null;
+	
+	protected SVGComponent(PDPageContentStream pageContentStream, PDPage page) {
+		this.pageContentStream = pageContentStream;
+		this.page = page;
+	}
+	abstract void serialise() throws java.io.IOException;
 }

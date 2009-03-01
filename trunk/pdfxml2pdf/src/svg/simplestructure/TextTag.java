@@ -7,7 +7,7 @@ import org.pdfbox.pdmodel.PDPage;
 import org.pdfbox.pdmodel.font.PDFont;
 import org.xml.sax.Attributes;
 
-public class TextTag extends CompositeSVGComponent {
+public class TextTag extends CompositeSVGTag {
 	protected String[] xs = null;
 	protected String[] ys = null;
 	

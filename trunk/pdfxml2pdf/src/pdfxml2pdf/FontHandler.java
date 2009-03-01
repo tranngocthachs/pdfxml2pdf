@@ -1,3 +1,4 @@
+package pdfxml2pdf;
 import org.xml.sax.helpers.*;
 import org.xml.sax.*;
 import org.pdfbox.pdmodel.*;

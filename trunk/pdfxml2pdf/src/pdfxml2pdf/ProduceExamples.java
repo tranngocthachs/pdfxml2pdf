@@ -1,3 +1,4 @@
+package pdfxml2pdf;
 /**
  * Copyright (c) 2004, www.pdfbox.org
  * All rights reserved.

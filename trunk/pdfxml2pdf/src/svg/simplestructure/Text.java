@@ -4,20 +4,18 @@ import org.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.pdfbox.pdmodel.PDPage;
 
 
-public class Text implements SVGComponent {
-	private PDPageContentStream pageContentStream = null;
-	private PDPage page = null;
+public class Text extends SVGComponent {
 	private String str = "";
 	private String[] xs = null;
 	private String[] ys = null;
 	
 	public Text(PDPageContentStream pageContentStream, PDPage page, String str, String[] xs, String[] ys) {
-		this.pageContentStream = pageContentStream;
-		this.page = page;
+		super(pageContentStream, page);
 		this.str = str;
 		this.xs = xs;
 		this.ys = ys;
 	}
+	
 	public void serialise() throws IOException {
 		// TODO Auto-generated method stub
 		

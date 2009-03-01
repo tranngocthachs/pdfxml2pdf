@@ -1,3 +1,4 @@
+package pdfxml2pdf;
 import java.io.*;
 import java.util.zip.*;
 import org.pdfbox.pdmodel.*;

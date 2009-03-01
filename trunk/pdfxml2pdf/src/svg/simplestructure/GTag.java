@@ -6,7 +6,7 @@ import org.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.pdfbox.pdmodel.PDPage;
 import org.xml.sax.Attributes;
 
-public class GTag extends CompositeSVGComponent {
+public class GTag extends CompositeSVGTag {
 	public GTag(PDPageContentStream pageContentStream, PDPage page, Attributes attributes) {
 		super(pageContentStream, page, attributes);
 	}
