@@ -321,7 +321,14 @@ public class HelloWorld
             contentStream.appendRawCommands("q\n");
             contentStream.appendRawCommands("1 0 0 1 72 0 cm\n");
             contentStream.appendRawCommands("1 0 0 -1 0 0 cm\n");
-            contentStream.drawString("Founded in 1999, Global Electronics is a leading manufacturer of consumer and busines");
+            contentStream.drawString("Founded in 1999, Global Electronics ");
+            contentStream.appendRawCommands("q\n");
+            contentStream.setNonStrokingColorSpace(PDDeviceRGB.INSTANCE);
+            float[] colorComponents1 = {255, 255, 0};
+            contentStream.setNonStrokingColor(colorComponents1);
+            contentStream.drawString("is a leading manufacturer");
+            contentStream.appendRawCommands("Q\n");
+            contentStream.drawString("of consumer and busines");
             contentStream.appendRawCommands("Q\n");
             contentStream.appendRawCommands("q\n");
             contentStream.appendRawCommands("1 0 0 1 72 13.8 cm\n");

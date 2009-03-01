@@ -25,6 +25,8 @@ public class PageContentHandler extends DefaultHandler {
 	private PDPageContentStream pageContentStream;
 	private NumberFormat formatDecimal = NumberFormat.getNumberInstance( Locale.US );
 	private StringBuffer buffer = null;
+	private String[] xs = null;
+	private String[] ys = null;
 	
 	public PageContentHandler(File pageContentFile, PDPage page) {
 		this.pageContentFile = pageContentFile;
@@ -179,6 +181,7 @@ public class PageContentHandler extends DefaultHandler {
 		
 		// process g tag
 		if (qName.equals("g")) {
+			
 			try {
 				pageContentStream.appendRawCommands("q\n");
 				handlePaintPropertiesAtt(attributes);
@@ -236,18 +239,42 @@ public class PageContentHandler extends DefaultHandler {
 			
 		}
 		
-		// text and tspan below gonna fail on array of coordinates supplied for x-attributes or y-attributes
 		
 		if (qName.equals("text")) {
 			try {
 				String str = buffer.toString().trim();
+				
 				if (str.length() != 0) {
-					pageContentStream.appendRawCommands("1 0 0 -1 0 0 cm\n");
-					pageContentStream.drawString(str);
+					int lengthToProcess = (xs.length > ys.length)?xs.length:ys.length;
+					if (lengthToProcess == 1) {
+						String cmd = "1 0 0 1 " + xs[0] + " " + ys[0] + " cm\n";
+						pageContentStream.appendRawCommands(cmd);
+						pageContentStream.appendRawCommands("1 0 0 -1 0 0 cm\n");
+						pageContentStream.drawString(str);
+					}
+					else {
+						for (int i = 0; i<lengthToProcess; i++) {
+							pageContentStream.appendRawCommands("q\n");
+							String x = (i<xs.length)?xs[i]:"0";
+							String y = (i<ys.length)?ys[i]:"0";
+							pageContentStream.appendRawCommands("1 0 0 1 " + x + " " + y +" cm\n");
+							pageContentStream.appendRawCommands("1 0 0 -1 0 0 cm\n");
+							if (i<lengthToProcess-1)
+								pageContentStream.drawString(str.substring(i, i+1));
+							else
+								pageContentStream.drawString(str.substring(i));
+							pageContentStream.appendRawCommands("Q\n");
+						}
+						
+					}
 				}
+				
+				// clean up
 				buffer = null;
 				pageContentStream.endText();
 				pageContentStream.appendRawCommands("Q\n");
+				xs = null;
+				ys = null;
 			}
 			catch (IOException e) {
 				e.printStackTrace();
@@ -256,10 +283,38 @@ public class PageContentHandler extends DefaultHandler {
 		if (qName.equals("tspan")) {
 			try {
 				String str = buffer.toString().trim();
-				pageContentStream.appendRawCommands("1 0 0 -1 0 0 cm\n");
-				pageContentStream.drawString(str);
+				
+				if (str.length() != 0) {
+					int lengthToProcess = (xs.length > ys.length)?xs.length:ys.length;
+					if (lengthToProcess == 1) {
+						String cmd = "1 0 0 1 " + xs[0] + " " + ys[0] + " cm\n";
+						pageContentStream.appendRawCommands(cmd);
+						pageContentStream.appendRawCommands("1 0 0 -1 0 0 cm\n");
+						pageContentStream.appendRawCommands("(" + str + ") Tj\n" );
+					}
+					else {
+						for (int i = 0; i<lengthToProcess; i++) {
+							pageContentStream.appendRawCommands("q\n");
+							String x = (i<xs.length)?xs[i]:"0";
+							String y = (i<ys.length)?ys[i]:"0";
+							pageContentStream.appendRawCommands("1 0 0 1 " + x + " " + y +" cm\n");
+							pageContentStream.appendRawCommands("1 0 0 -1 0 0 cm\n");
+							if (i<lengthToProcess-1)
+								pageContentStream.drawString(str.substring(i, i+1));
+							else
+								pageContentStream.drawString(str.substring(i));
+							pageContentStream.appendRawCommands("Q\n");
+						}
+						
+					}
+				}
+				
+				
+				// clean up
 				buffer = new StringBuffer();
 				pageContentStream.appendRawCommands("Q\n");
+				xs = null;
+				ys = null;
 			}
 			catch(IOException e) {
 				e.printStackTrace();
@@ -571,13 +626,18 @@ public class PageContentHandler extends DefaultHandler {
 					pageContentStream.setFont(	fontMappings.get(attributes.getValue("font-family")), 
 												Float.parseFloat(attributes.getValue("font-size")));
 			}
-			if (attributes.getValue("x") != null) {
-				String cmd = "1 0 0 1 " + attributes.getValue("x") + " ";
-				if (attributes.getValue("y") != null) 
-					cmd = cmd + attributes.getValue("y") + " ";
-				else
-					cmd = cmd + "0 ";
-				pageContentStream.appendRawCommands(cmd + "cm \n");
+			if (attributes.getValue("x") != null)
+				xs = attributes.getValue("x").trim().split("( *, *)|( +)");
+			else {
+				xs = new String[1];
+				xs[0] = "0";
+			}
+				
+			if (attributes.getValue("y") != null) 
+				ys = attributes.getValue("y").trim().split("( *, *)|( +)");
+			else {
+				ys = new String[1];
+				ys[0] = "0";
 			}
 		}
 		catch (IOException e) {
