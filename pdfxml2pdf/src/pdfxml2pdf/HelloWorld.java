@@ -1,3 +1,4 @@
+package pdfxml2pdf;
 import java.io.*;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -240,11 +241,9 @@ public class HelloWorld
             // Images
             PDXObjectImage img1 = new PDJpeg(doc, new FileInputStream("im_764-1.jpg"));
             PDXObjectImage img2 = new PDJpeg(doc, new FileInputStream("im_764-2.jpg"));
-            img1.setWidth(619);
-            img1.setHeight(83);
+            System.out.println(img1.getHeight());
+            System.out.println(img1.getWidth());
             //img1.setColorSpace(col2);
-            img2.setWidth(619);
-            img2.setHeight(83);
             //img2.setColorSpace(col3);
 //            COSArray decodeArr1 = new COSArray();
 //            decodeArr1.add(new COSInteger(0));
@@ -255,16 +254,18 @@ public class HelloWorld
 //            imgDict2.setItem("Decode", decodeArr1);
 
             
-//            PDResources temp = new PDResources();
-//            
-//            temp.getXObjects().put("Im0", img1);
-//            temp.getXObjects().put("Im1", img2);
-//            page.setResources(temp);
+            PDResources temp = new PDResources();
+            
+            temp.getXObjects().put("Im0", img1);
+            temp.getXObjects().put("Im1", img2);
+            page.setResources(temp);
 //
 //            pageHeight = page.findMediaBox().getHeight();
 //            
             // Start page content
             PDPageContentStream contentStream = new PDPageContentStream(doc, page, false, false);
+            contentStream.appendRawCommands("1 0 0 -1 0 792 cm\n");
+            contentStream.appendRawCommands("1 0 0 -1 0 792 cm\n");
 //
 //            
 ////            // generated from svg's pages
@@ -311,7 +312,15 @@ public class HelloWorld
 //            
 //            contentStream.drawImage(img1, 72, 708.06f-(float)(img1.getHeight() * 0.4764), (float)(img1.getWidth() * 0.4805) , (float)(img1.getHeight() * 0.4764));
 //            contentStream.drawImage(img2, 72, 668.52f-(float)(img2.getHeight() * 0.4764), (float)(img2.getWidth() * 0.4805) , (float)(img2.getHeight() * 0.4764));
-            
+            String imgCmd = "";
+            imgCmd+="q\n";
+            imgCmd+="1 0 0 1 72 708.06 cm\n"; //translate
+            imgCmd+="0.4805 0 0 -0.4764 0 0 cm\n"; //transform
+            imgCmd+="619 0 0 83 0 0 cm\n"; // scale
+            imgCmd+="1 0 0 -1 0 1 cm\n"; // flip the image
+            imgCmd+="/Im0 Do\n";
+            imgCmd+="Q\n";
+            contentStream.appendRawCommands(imgCmd);
             contentStream.beginText();
             contentStream.setFont(font2, 12);
             contentStream.setNonStrokingColorSpace(new PDDeviceGray());

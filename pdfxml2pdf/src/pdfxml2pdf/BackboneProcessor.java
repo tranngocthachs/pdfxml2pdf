@@ -1,20 +1,20 @@
+package pdfxml2pdf;
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;
 import org.pdfbox.pdmodel.*;
-import org.pdfbox.pdmodel.font.*;
 import java.io.*;
 
-public class FontProcessor {
-	
-	private File fontFile;
-	
-	public FontProcessor(File fontFile) {
-		this.fontFile = fontFile;
+public class BackboneProcessor {
+
+	private File bbFile;
+	public BackboneProcessor(File bbFile) {
+		this.bbFile = bbFile;
 	}
 
-	public PDFont process() {
-		PDFont font = null;
+	public void process() {
+		
 		try {
+
 			// Prepare the parser
 			XMLReader parser; 
 			try {
@@ -28,24 +28,21 @@ public class FontProcessor {
 					throw new NoClassDefFoundError("No SAX parser is available");
 				}
 			}
-
+			
 			// Set the correct handler
-			FontHandler fontHandler = new FontHandler(fontFile);
-			parser.setContentHandler(fontHandler);
-			parser.parse(new InputSource(new FileInputStream(fontFile)));
-			font = fontHandler.getFont();
+			BackboneHandler bbHandler = new BackboneHandler(bbFile);
+			parser.setContentHandler(bbHandler);
+			InputSource inputSource = new InputSource(new FileInputStream(bbFile));
+			parser.parse(inputSource);
 		}
 		catch (SAXException e) {
-			System.out.println(fontFile.getName() + " is not well-formed.");
+			System.out.println("backbone.xml is not well-formed.");
 		}
 		catch (IOException e) {
-			System.out.println("Due to an IOException, the parser could not check " + fontFile.getName());
+			System.out.println("Due to an IOException, the parser could not check backbone.xml");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		return font;
-		
 	}
-	
 }

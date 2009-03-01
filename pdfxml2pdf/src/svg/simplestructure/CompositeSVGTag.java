@@ -1,4 +1,5 @@
 package svg.simplestructure;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import org.pdfbox.pdmodel.edit.PDPageContentStream;
@@ -6,17 +7,12 @@ import org.pdfbox.pdmodel.graphics.color.PDColorSpace;
 import org.pdfbox.pdmodel.PDPage;
 import org.xml.sax.Attributes;
 
-public class CompositeSVGComponent implements SVGComponent {
+public class CompositeSVGTag extends GeneralSVGTag {
 
 	protected ArrayList<SVGComponent> childComponents = new ArrayList<SVGComponent>();
-	protected PDPageContentStream pageContentStream = null;
-	protected PDPage page = null;
-	protected Attributes attributes = null;
 	
-	public CompositeSVGComponent(PDPageContentStream pageContentStream, PDPage page, Attributes attributes) {
-		this.pageContentStream = pageContentStream;
-		this.page = page;
-		this.attributes = attributes;
+	protected CompositeSVGTag(PDPageContentStream pageContentStream, PDPage page, Attributes attributes) {
+		super(pageContentStream, page, attributes);
 	}
 	
 	public void serialise() throws java.io.IOException {

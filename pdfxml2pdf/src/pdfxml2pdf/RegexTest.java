@@ -1,3 +1,4 @@
+package pdfxml2pdf;
 import java.util.regex.*;
 import java.util.Vector;
 import java.util.Iterator;

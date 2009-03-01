@@ -3,7 +3,7 @@ package svg.simplestructure;
 import org.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.pdfbox.pdmodel.PDPage;
 import org.xml.sax.Attributes;
-public class SVGTag extends CompositeSVGComponent {
+public class SVGTag extends CompositeSVGTag {
 	
 	public SVGTag(PDPageContentStream pageContentStream, PDPage page, Attributes attributes) {
 		super(pageContentStream, page, attributes);	

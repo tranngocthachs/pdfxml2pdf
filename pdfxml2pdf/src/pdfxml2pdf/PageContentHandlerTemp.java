@@ -1,3 +1,4 @@
+package pdfxml2pdf;
 import java.io.*;
 
 import org.pdfbox.cos.COSArray;
@@ -34,7 +35,7 @@ public class PageContentHandlerTemp extends DefaultHandler {
 	
 	private StringBuffer buffer = null;
 	private Stack<SVGComponent> stack = new Stack<SVGComponent>();
-	private SVGComponent rootSVG = null;
+	private GeneralSVGTag rootSVG = null;
 	
 	public PageContentHandlerTemp(File pageContentFile, PDPage page) {
 		this.pageContentFile = pageContentFile;
@@ -191,21 +192,21 @@ public class PageContentHandlerTemp extends DefaultHandler {
 		
 		if (qName.equals("g")) {
 			SVGComponent g = new GTag(pageContentStream, page, new AttributesImpl(attributes));
-			CompositeSVGComponent comp = (CompositeSVGComponent)stack.peek();
+			CompositeSVGTag comp = (CompositeSVGTag)stack.peek();
 			comp.add(g);
 			stack.push(g);
 		}
 		
 		if (qName.equals("text")) {
 			SVGComponent text = new TextTag(pageContentStream, page, new AttributesImpl(attributes));
-			CompositeSVGComponent comp = (CompositeSVGComponent)stack.peek();
+			CompositeSVGTag comp = (CompositeSVGTag)stack.peek();
 			comp.add(text);
 			stack.push(text);
 			buffer = new StringBuffer();
 		}
 		
 		if (qName.equals("tspan")) {
-			CompositeSVGComponent comp = (CompositeSVGComponent)stack.peek();
+			CompositeSVGTag comp = (CompositeSVGTag)stack.peek();
 			if (buffer != null) {
 				String str = buffer.toString().trim();
 				if (str.length() != 0) {
@@ -241,7 +242,7 @@ public class PageContentHandlerTemp extends DefaultHandler {
 		
 		if (qName.equals("svg")) {
 			
-			rootSVG = stack.pop();
+			rootSVG = (GeneralSVGTag)stack.pop();
 		}
 		
 		if (qName.equals("g")) {
@@ -249,7 +250,7 @@ public class PageContentHandlerTemp extends DefaultHandler {
 		}
 		
 		if (qName.equals("text")) {
-			CompositeSVGComponent comp = (CompositeSVGComponent)stack.pop();
+			CompositeSVGTag comp = (CompositeSVGTag)stack.pop();
 			String str = buffer.toString().trim();
 			if (str.length() != 0)
 				comp.add(new Text(pageContentStream, page, str, ((TextTag)comp).getXs(), ((TextTag)comp).getYs()));
@@ -257,7 +258,7 @@ public class PageContentHandlerTemp extends DefaultHandler {
 		}
 		
 		if (qName.equals("tspan")) {
-			CompositeSVGComponent comp = (CompositeSVGComponent)stack.pop();
+			CompositeSVGTag comp = (CompositeSVGTag)stack.pop();
 			String str = buffer.toString().trim();
 			if (str.length() != 0)
 				comp.add(new Text(pageContentStream, page, str, ((TspanTag)comp).getXs(), ((TspanTag)comp).getYs()));
