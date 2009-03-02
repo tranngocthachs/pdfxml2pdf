@@ -2,7 +2,8 @@ package pdfxml2pdf;
 import java.io.*;
 import java.text.NumberFormat;
 import java.util.Locale;
-
+import java.awt.image.*;
+import javax.imageio.*;
 import org.pdfbox.exceptions.COSVisitorException;
 import org.pdfbox.pdmodel.*;
 import org.pdfbox.pdmodel.graphics.*;
@@ -214,8 +215,12 @@ public class HelloWorld
             		in.close();
             	}
             }
-            COSString str = new COSString(b);
-            indexedArr.add(str);
+            PDStream pdstream1 = new PDStream(doc);
+            OutputStream out1 = pdstream1.createOutputStream();
+            out1.write(b);
+            out1.close();
+            
+            indexedArr.add(pdstream1);
             PDIndexed col2 = new PDIndexed(indexedArr); 
             
             indexedArr = new COSArray();
@@ -234,29 +239,51 @@ public class HelloWorld
             		in.close();
             	}
             }
-            str = new COSString(b);
+            COSString str = new COSString(b);
             indexedArr.add(str);
             PDIndexed col3 = new PDIndexed(indexedArr); 
             
             // Images
             PDXObjectImage img1 = new PDJpeg(doc, new FileInputStream("im_764-1.jpg"));
             PDXObjectImage img2 = new PDJpeg(doc, new FileInputStream("im_764-2.jpg"));
-            System.out.println(img1.getHeight());
-            System.out.println(img1.getWidth());
+            
+            BufferedImage imgBuff = ImageIO.read(new File("im_764-1.png"));
+            byte[] imageByteArr =((DataBufferByte)(imgBuff.getData().getDataBuffer())).getData();
+            System.out.println(imageByteArr.length);
+            PDStream imageStream = new PDStream(doc);
+            OutputStream outStre = imageStream.createOutputStream();
+            outStre.write(imageByteArr);
+            outStre.close();
+            COSStream stre = imageStream.getStream();
+            stre.setItem(COSName.FILTER, COSName.FLATE_DECODE);
+            stre.setItem( COSName.SUBTYPE, COSName.IMAGE);
+            stre.setItem( COSName.TYPE, COSName.getPDFName( "XObject" ) );
+            
+            
+            
+            PDPixelMap img3 = new PDPixelMap(imageStream);
+            img3.setColorSpace(col2);
+            img3.setBitsPerComponent(8);
+            img3.setHeight(imgBuff.getHeight());
+            img3.setWidth(imgBuff.getWidth());
+            
+            
+            System.out.println(img3.getHeight());
+            System.out.println(img3.getWidth());
             //img1.setColorSpace(col2);
             //img2.setColorSpace(col3);
-//            COSArray decodeArr1 = new COSArray();
-//            decodeArr1.add(new COSInteger(0));
-//            decodeArr1.add(new COSInteger(255));
-//            COSDictionary imgDict1 = (COSDictionary)img1.getCOSObject();
-//            imgDict1.setItem("Decode", decodeArr1);
+            COSArray decodeArr1 = new COSArray();
+            decodeArr1.add(new COSInteger(0));
+            decodeArr1.add(new COSInteger(255));
+            COSDictionary imgDict1 = (COSDictionary)img3.getCOSObject();
+            imgDict1.setItem("Decode", decodeArr1);
 //            COSDictionary imgDict2 = (COSDictionary)img2.getCOSObject();
 //            imgDict2.setItem("Decode", decodeArr1);
 
             
             PDResources temp = new PDResources();
             
-            temp.getXObjects().put("Im0", img1);
+            temp.getXObjects().put("Im0", img3);
             temp.getXObjects().put("Im1", img2);
             page.setResources(temp);
 //

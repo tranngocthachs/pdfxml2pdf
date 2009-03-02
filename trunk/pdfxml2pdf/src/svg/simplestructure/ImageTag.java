@@ -6,6 +6,8 @@ import java.io.File;
 import org.pdfbox.pdmodel.PDPage;
 import org.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.xml.sax.Attributes;
+import java.awt.image.*;
+import javax.imageio.ImageIO;
 public class ImageTag extends GeneralSVGTag {
 	private File pageFile = null;
 	public ImageTag(PDPageContentStream pageContentStream, PDPage page, Attributes attributes, File pageFile) {
@@ -27,8 +29,17 @@ public class ImageTag extends GeneralSVGTag {
 			width = Integer.parseInt(attributes.getValue("width"));
 		if (attributes.getValue("height") != null)
 			height = Integer.parseInt(attributes.getValue("height"));
-		if (attributes.getValue("xlink:href") != null)
-			imgFile = ConverterUtils.getFile(pageFile, attributes.getValue("xlink:href"));
+		imgFile = ConverterUtils.getFile(pageFile, attributes.getValue("xlink:href"));
+		if (imgFile.getName().endsWith("png")) {
+			BufferedImage img = ImageIO.read(imgFile);
+			int type = img.getData().getDataBuffer().getDataType();
+			switch (type) {
+				case DataBuffer.TYPE_BYTE:
+					ByteData
+					
+			}
+		}
+		
 			
 		pageContentStream.appendRawCommands("q\n");
 		// TODO Auto-generated method stub
