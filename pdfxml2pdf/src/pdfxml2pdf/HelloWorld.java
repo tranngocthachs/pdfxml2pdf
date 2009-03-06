@@ -202,19 +202,24 @@ public class HelloWorld
             indexedArr.add(col1);
             indexedArr.add(new COSInteger(54));
             
-            File f = new File("lut-0.lut");
-            in = null;
-            byte[] b;
-            try {
-            	in = new FileInputStream(f);
-            	b = new byte[(int)(f.length())];
-            	in.read(b);
-            }
-            finally {
-            	if (in != null) {
-            		in.close();
-            	}
-            }
+//            File f = new File("lut-0.lut");
+//            in = null;
+//            byte[] b;
+//            try {
+//            	in = new FileInputStream(f);
+//            	b = new byte[(int)(f.length())];
+//            	in.read(b);
+//            }
+//            finally {
+//            	if (in != null) {
+//            		in.close();
+//            	}
+//            }
+            byte[] b = Base64.decodeFromFile("lut-0.lut");
+//            for (int i=0; i<b.length; i++) {
+//            	System.out.print(Integer.toBinaryString(b[i]));
+//            }
+//            System.out.println();
             PDStream pdstream1 = new PDStream(doc);
             OutputStream out1 = pdstream1.createOutputStream();
             out1.write(b);
@@ -227,7 +232,7 @@ public class HelloWorld
             indexedArr.add(COSName.getPDFName("Indexed"));
             indexedArr.add(col1);
             indexedArr.add(new COSInteger(55));
-            f = new File("lut-1.lut");
+            File f = new File("lut-1.lut");
             in = null;
             try {
             	in = new FileInputStream(f);
@@ -263,7 +268,8 @@ public class HelloWorld
             
             PDPixelMap img3 = new PDPixelMap(imageStream);
             img3.setColorSpace(col2);
-            img3.setBitsPerComponent(8);
+            int[] compSize = imgBuff.getColorModel().getComponentSize();
+            img3.setBitsPerComponent(compSize[0]);
             img3.setHeight(imgBuff.getHeight());
             img3.setWidth(imgBuff.getWidth());
             
