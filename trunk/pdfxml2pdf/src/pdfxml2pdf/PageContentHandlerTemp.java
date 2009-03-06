@@ -4,7 +4,6 @@ import java.io.*;
 import org.pdfbox.cos.COSArray;
 import org.pdfbox.cos.COSInteger;
 import org.pdfbox.cos.COSName;
-import org.pdfbox.cos.COSString;
 import org.pdfbox.pdmodel.PDPage;
 import org.pdfbox.pdmodel.PDResources;
 import org.pdfbox.pdmodel.common.PDStream;
@@ -167,19 +166,22 @@ public class PageContentHandlerTemp extends DefaultHandler {
             // hival parameter comes next
             indexedArr.add(new COSInteger(Integer.parseInt(attributes.getValue("HiVal"))));
             
-            InputStream in = null;
             byte[] buffer = null;
             File lut = ConverterUtils.getFile(pageContentFile, attributes.getValue("LookupTableSrc"));
+            buffer = Base64.decodeFromFile(lut.getAbsolutePath());
+            PDStream lutStream = new PDStream(ConverterUtils.getTargetPDF());
+            OutputStream out = null;
             try {
-            	in = new FileInputStream(lut);
-            	buffer = new byte[(int)(lut.length())];
-            	in.read(buffer);
+            	out = lutStream.createOutputStream();
+            	out.write(buffer);
+            	out.close();
             }
-            catch (Exception e) { }
-            COSString lookupString = new COSString(buffer);
+            catch (IOException e) {
+            	e.printStackTrace();
+            }
             
             // the lookup table is last
-            indexedArr.add(lookupString);
+            indexedArr.add(lutStream);
             
             // make a color space from this array 
             PDColorSpace colorSpace = new PDIndexed(indexedArr);
@@ -217,6 +219,12 @@ public class PageContentHandlerTemp extends DefaultHandler {
 				comp.add(tspan);
 				stack.push(tspan);
 			} 
+		}
+		
+		if (qName.equals("image")) {
+			SVGComponent image = new ImageTag(pageContentStream, page, new AttributesImpl(attributes), pageContentFile);
+			CompositeSVGTag comp = (CompositeSVGTag)stack.peek();
+			comp.add(image);
 		}
 	}
 	
