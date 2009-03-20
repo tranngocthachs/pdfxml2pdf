@@ -36,7 +36,7 @@ public class PageContentHandler extends DefaultHandler {
 	
 	public void startDocument() {
 		try {
-			pageContentStream = new PDPageContentStream(ConverterUtils.getTargetPDF(), page, false, false);
+			pageContentStream = new PDPageContentStream(ConverterUtils.getTargetPDF(), page);
 			float pageHeight = page.findMediaBox().getHeight();
 			pageContentStream.appendRawCommands("1 0 0 -1 0 " +
 					formatDecimal.format(pageHeight) + " cm\n");

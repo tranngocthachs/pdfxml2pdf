@@ -1,9 +1,9 @@
 package svg.simplestructure;
-
 import pdfxml2pdf.ConverterUtils;
 import java.io.IOException;
 import java.io.File;
 import java.io.OutputStream;
+import java.io.FileInputStream;
 import java.util.Map;
 import org.pdfbox.cos.COSArray;
 import org.pdfbox.cos.COSDictionary;
@@ -16,6 +16,7 @@ import org.pdfbox.pdmodel.common.PDStream;
 import org.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.pdfbox.pdmodel.graphics.color.PDColorSpace;
 import org.pdfbox.pdmodel.graphics.xobject.PDPixelMap;
+import org.pdfbox.pdmodel.graphics.xobject.PDJpeg;
 import org.pdfbox.pdmodel.graphics.xobject.PDXObjectImage;
 import org.pdfbox.util.MapUtil;
 import org.xml.sax.Attributes;
@@ -53,7 +54,12 @@ public class ImageTag extends GeneralSVGTag {
 			if (attributes.getValue("color-profile") != null) {
 				PDColorSpace col = (PDColorSpace)((page.findResources().getColorSpaces()).get(attributes.getValue("color-profile")));
 				byte[] imageByteArr =((DataBufferByte)(img.getData().getDataBuffer())).getData();
-	            PDStream imageStream = new PDStream(ConverterUtils.getTargetPDF());
+				COSStream imgStream = null;
+	            try {
+	            	imgStream = new COSStream(new org.pdfbox.io.RandomAccessFile(File.createTempFile("pdfbox", ".png"), "rw"));
+	            }
+	            catch (Exception e) {}
+	            PDStream imageStream = new PDStream(imgStream);
 	            OutputStream outStre = imageStream.createOutputStream();
 	            outStre.write(imageByteArr);
 	            outStre.close();
@@ -69,6 +75,9 @@ public class ImageTag extends GeneralSVGTag {
 	            pdImg.setHeight(img.getHeight());
 	            pdImg.setWidth(img.getWidth());   
 			}	
+		}
+		else if (imgFile.getName().endsWith("jpg") || imgFile.getName().endsWith("jpeg")) {
+			pdImg = new PDJpeg(ConverterUtils.getTargetPDF(), new FileInputStream(imgFile));
 		}
 		
 		if (attributes.getValue("pdf:Decode") != null) {
@@ -109,10 +118,6 @@ public class ImageTag extends GeneralSVGTag {
         pageContentStream.appendRawCommands("1 0 0 -1 0 1 cm\n");
         pageContentStream.appendRawCommands("/" + imageKey + " Do\n");
         pageContentStream.appendRawCommands("Q\n");
-		
-		
-		
-
 	}
 
 }
