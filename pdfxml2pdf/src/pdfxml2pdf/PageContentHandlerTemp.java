@@ -4,6 +4,8 @@ import java.io.*;
 import org.pdfbox.cos.COSArray;
 import org.pdfbox.cos.COSInteger;
 import org.pdfbox.cos.COSName;
+import org.pdfbox.cos.COSStream;
+import org.pdfbox.io.*;
 import org.pdfbox.pdmodel.PDPage;
 import org.pdfbox.pdmodel.PDResources;
 import org.pdfbox.pdmodel.common.PDStream;
@@ -15,6 +17,7 @@ import org.pdfbox.pdmodel.graphics.color.PDIndexed;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.AttributesImpl;
+
 
 import svg.simplestructure.*;
 
@@ -109,10 +112,15 @@ public class PageContentHandlerTemp extends DefaultHandler {
             iccArr.add(COSName.getPDFName(PDICCBased.NAME));
             
             // create a stream holding the data from the .icc file
-            PDStream pdstream = new PDStream(ConverterUtils.getTargetPDF());
+            COSStream stream = null;
+            try {
+            	stream = new COSStream(new org.pdfbox.io.RandomAccessFile(File.createTempFile("pdfbox", ".icc"), "rw"));
+            }
+            catch (Exception e) {}
+            PDStream iccStream = new PDStream(stream);
             try {
             	in = new FileInputStream(iccFile);
-            	out = pdstream.createOutputStream();
+            	out = iccStream.createOutputStream();
             	int c;
             	while ((c = in.read()) != -1)
             		out.write(c);
@@ -121,12 +129,12 @@ public class PageContentHandlerTemp extends DefaultHandler {
             	out.close();
             	
             }
-            catch (IOException e) { 
-            	
+            catch (IOException e) {
+            	e.printStackTrace();
             }
             
             // the data from .icc file is second in the array
-            iccArr.add(pdstream);
+            iccArr.add(iccStream);
             
             // finally, make the color space object out of this array
             PDColorSpace colorSpace = new PDICCBased(iccArr);
@@ -168,8 +176,14 @@ public class PageContentHandlerTemp extends DefaultHandler {
             
             byte[] buffer = null;
             File lut = ConverterUtils.getFile(pageContentFile, attributes.getValue("LookupTableSrc"));
+            
             buffer = Base64.decodeFromFile(lut.getAbsolutePath());
-            PDStream lutStream = new PDStream(ConverterUtils.getTargetPDF());
+            COSStream stream = null;
+            try {
+            	stream = new COSStream(new org.pdfbox.io.RandomAccessFile(File.createTempFile("pdfbox", ".lut"), "rw"));
+            }
+            catch (Exception e) {}
+            PDStream lutStream = new PDStream(stream);
             OutputStream out = null;
             try {
             	out = lutStream.createOutputStream();
@@ -226,6 +240,13 @@ public class PageContentHandlerTemp extends DefaultHandler {
 			CompositeSVGTag comp = (CompositeSVGTag)stack.peek();
 			comp.add(image);
 		}
+		
+		if (qName.equals("path")) {
+			SVGComponent path = new PathTag(pageContentStream, page, new AttributesImpl(attributes));
+			CompositeSVGTag comp = (CompositeSVGTag)stack.peek();
+			comp.add(path);
+		}
+		
 	}
 	
 	public void endElement(String uri, String localname, String qName) {

@@ -378,6 +378,35 @@ public class HelloWorld
             contentStream.drawString("electronic products, including cellular phones, digital projectors, and PDAs to start. The");
             contentStream.appendRawCommands("Q\n");
             contentStream.endText();
+            /*
+            contentStream.appendRawCommands("1 0 0 1 241.98 281.28 cm\n");
+            contentStream.setNonStrokingColor(154, 154, 255);
+            String test = "0.0 0.0 m\n19.659 0.015 39.622 -1.415 58.98 -4.92 c\n70.658 -7.299 85.772 -10.6310005 95.46 -17.94 c\n0.0 -25.98 l\n0.0 0.0 l\nh\n";
+            test+="f\n";
+            contentStream.appendRawCommands(test);
+            */
+            /*
+            contentStream.setNonStrokingColor(255, 255, 255);
+            String test = "101.82 186.3 m\n";
+            test+="352.8 186.3 l\n";
+            test+="352.8 286.02002 l\n";
+            test+="101.82 286.02002 l\n";
+            test+="h\n";
+            test+="f\n";
+            contentStream.appendRawCommands(test);
+            
+            */
+            contentStream.setNonStrokingColor(77, 77, 128);
+            contentStream.appendRawCommands("1 0 0 1 241.98 255.3 cm\n");
+            String test = "0 0 m\n" 	
+            	+ 	"95.4 8.04 l\n"
+            	+ 	"95.4 -19.68 l\n"
+            	+	"0.0 -27.72 l\n"
+            	+	"0.0 0.0 l\n"
+            	+ 	"h\n"
+            	+	"f\n";
+            contentStream.appendRawCommands(test);
+    
             
             /*
             // M101.82,186.3H352.8v99.72H101.82z
