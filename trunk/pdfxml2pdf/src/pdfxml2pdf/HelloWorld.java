@@ -15,6 +15,7 @@ import org.pdfbox.pdmodel.font.*;
 import org.pdfbox.io.*;
 import org.pdfbox.cos.*;
 import org.pdfbox.pdmodel.graphics.xobject.*;
+import java.awt.geom.*;
 /**
  * This is an example that creates a simple document.
  *
@@ -345,16 +346,67 @@ public class HelloWorld
 //            
 //            contentStream.drawImage(img1, 72, 708.06f-(float)(img1.getHeight() * 0.4764), (float)(img1.getWidth() * 0.4805) , (float)(img1.getHeight() * 0.4764));
 //            contentStream.drawImage(img2, 72, 668.52f-(float)(img2.getHeight() * 0.4764), (float)(img2.getWidth() * 0.4805) , (float)(img2.getHeight() * 0.4764));
+            float[] floats = {1, 0, 0, 1, 72, 708.06f};
+            AffineTransform transform = new AffineTransform(floats);
+            transform.scale(0.4805, -0.4764);
+            transform.scale(619, 83);
+            float[] floats1 = {1, 0, 0, -1, 0, 1};
+            transform.concatenate(new AffineTransform(floats1));
+            double[] transformOut = new double[6];
+            transform.getMatrix(transformOut);
+            
             String imgCmd = "";
             imgCmd+="q\n";
-            imgCmd+="1 0 0 1 72 708.06 cm\n"; //translate
-            imgCmd+="0.4805 0 0 -0.4764 0 0 cm\n"; //transform
-            imgCmd+="619 0 0 83 0 0 cm\n"; // scale
-            imgCmd+="1 0 0 -1 0 1 cm\n"; // flip the image
+            for (int i=0; i<transformOut.length; i++)
+            	imgCmd+=(ConverterUtils.formatDecimal.format(transformOut[i]) + " ");
+            imgCmd+="cm\n";
+//            imgCmd+="1 0 0 1 72 708.06 cm\n"; //translate
+//            imgCmd+="0.4805 0 0 -0.4764 0 0 cm\n"; //transform
+//            imgCmd+="619 0 0 83 0 0 cm\n"; // scale
+//            imgCmd+="1 0 0 -1 0 1 cm\n"; // flip the image
             imgCmd+="/Im0 Do\n";
             imgCmd+="Q\n";
             contentStream.appendRawCommands(imgCmd);
+            
+            // Company Overview
+            contentStream.appendRawCommands("q\n");
+            contentStream.appendRawCommands("1 0 0 1 0 571.5643 cm\n");
             contentStream.beginText();
+            contentStream.setFont(font1, 16.02f);
+            contentStream.setNonStrokingColor(0);
+            contentStream.moveTextPositionByAmount(72, 0);
+            contentStream.drawString("Company Overview");
+            contentStream.endText();
+            contentStream.appendRawCommands("Q\n");
+            
+            /*
+            <text transform="matrix(1 0 0 -1 0 554.1)" font-size="12" font-family="F1" fill="rgb(0,0,0) device-color(DeviceGray,0)">
+				<tspan x="72">
+					Founded in 1999, Global Electronics is a leading manufacturer of consumer and business
+				</tspan>
+				<tspan y=" 13.8" x="72">
+					electronic products, including cellular phones, digital projectors, and PDAs to start. The
+				</tspan>
+				<tspan y="27.6" x="72">
+					company has 2,200 employees worldwide supporting a strong global sales &amp; marketing and
+				</tspan>
+			</text>
+            */
+            contentStream.appendRawCommands("q\n");
+            contentStream.appendRawCommands("1 0 0 -1 0 554.1 cm\n");
+            contentStream.beginText();
+            contentStream.setFont(font2, 12);
+            contentStream.setNonStrokingColor(0);
+            contentStream.appendRawCommands("1 0 0 -1 72 0 Tm\n");
+            contentStream.drawString("Founded in 1999, Global Electronics is a leading manufacturer of consumer and business");
+            contentStream.appendRawCommands("1 0 0 -1 72 13.8 Tm\n");
+            contentStream.drawString("electronic products, including cellular phones, digital projectors, and PDAs to start. The");
+            contentStream.appendRawCommands("1 0 0 -1 72 27.6 Tm\n");
+            contentStream.drawString("company has 2,200 employees worldwide supporting a strong global sales & marketing and");
+            contentStream.endText();
+            contentStream.appendRawCommands("Q\n");
+            
+            /*
             contentStream.setFont(font2, 12);
             contentStream.setNonStrokingColorSpace(new PDDeviceGray());
             float[] colorComponents0 = {0};
@@ -378,6 +430,7 @@ public class HelloWorld
             contentStream.drawString("electronic products, including cellular phones, digital projectors, and PDAs to start. The");
             contentStream.appendRawCommands("Q\n");
             contentStream.endText();
+            */
             /*
             contentStream.appendRawCommands("1 0 0 1 241.98 281.28 cm\n");
             contentStream.setNonStrokingColor(154, 154, 255);

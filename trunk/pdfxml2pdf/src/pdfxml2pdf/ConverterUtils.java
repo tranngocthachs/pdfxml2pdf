@@ -1,6 +1,8 @@
 package pdfxml2pdf;
 import java.io.File;
 import java.io.IOException;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import org.pdfbox.pdmodel.PDDocument;
 public class ConverterUtils {
@@ -9,6 +11,8 @@ public class ConverterUtils {
 	
 	// sometimes it's necessary to refer to the PDDocument
 	private static PDDocument targetPDF;
+	
+	public static final NumberFormat formatDecimal = NumberFormat.getNumberInstance( Locale.US );
 	private ConverterUtils() {
 		
 	}

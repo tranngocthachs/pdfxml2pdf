@@ -5,6 +5,8 @@ import org.pdfbox.pdmodel.PDPage;
 import org.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.pdfbox.pdmodel.graphics.color.PDColorSpace;
 
+import pdfxml2pdf.ConverterUtils;
+
 public class GeneralSVGTag extends SVGComponent {
 	protected Attributes attributes = null;
 
@@ -129,13 +131,16 @@ public class GeneralSVGTag extends SVGComponent {
 				
 				else if (colors[1].startsWith("icc-color")) {
 					PDColorSpace color = (PDColorSpace)page.findResources().getColorSpaces().get(colorElems[0]);
-					if (color != null)
+					if (color != null) {
 						pageContentStream.appendRawCommands("/" + colorElems[0] + " cs\n");
-					float[] colorComponents = new float[colorElems.length-1];
-					for (int i = 0; i<colorComponents.length; i++) {
-						colorComponents[i] = Float.parseFloat(colorElems[i+1]);
+						String cmd = "";
+						for (int i=1; i<colorElems.length; i++) {
+							cmd+=ConverterUtils.formatDecimal.format(Float.parseFloat(colorElems[i]));
+							cmd+=" ";
+						}
+						pageContentStream.appendRawCommands(cmd + "scn\n");
+						
 					}
-					pageContentStream.setNonStrokingColor(colorComponents);
 				}
 				
 			}
@@ -195,16 +200,16 @@ public class GeneralSVGTag extends SVGComponent {
 				
 				else if (colors[1].startsWith("icc-color")) {
 					PDColorSpace color = (PDColorSpace)page.findResources().getColorSpaces().get(colorElems[0]);
-					if (color != null)
-						pageContentStream.appendRawCommands("/" + colorElems[0] + " CS\n");
-					pageContentStream.setStrokingColorSpace(color);
-					float[] colorComponents = new float[colorElems.length-1];
-					for (int i = 0; i<colorComponents.length; i++) {
-						colorComponents[i] = Float.parseFloat(colorElems[i+1]);
+					if (color != null) {
+						pageContentStream.appendRawCommands("/" + colorElems[0] + " cs\n");
+						String cmd = "";
+						for (int i=1; i<colorElems.length; i++) {
+							cmd+=ConverterUtils.formatDecimal.format(Float.parseFloat(colorElems[i]));
+							cmd+=" ";
+						}
+						pageContentStream.appendRawCommands(cmd + "SCN\n");
 					}
-					pageContentStream.setStrokingColor(colorComponents);
 				}
-				
 			}
 			catch (IOException e) {
 				e.printStackTrace();
