@@ -84,13 +84,19 @@ public class SVGPathHandler extends DefaultPathHandler {
     }
     
     private void moveto() {
-    	returnPDFCmd+=(currentX + " " + currentY + " m\n");
+    	returnPDFCmd+=(ConverterUtils.formatDecimal.format(currentX) + " " + ConverterUtils.formatDecimal.format(currentY) + " m\n");
     }
     private void lineto() {
-    	returnPDFCmd+=(currentX + " " + currentY + " l\n");
+    	returnPDFCmd+=(ConverterUtils.formatDecimal.format(currentX) + " " + ConverterUtils.formatDecimal.format(currentY) + " l\n");
     }
     private void curveto(float x1, float y1, float x2, float y2) {
-    	returnPDFCmd+=(x1 + " " + y1 + " " + x2 + " " + y2 + " " + currentX + " " + currentY + " c\n");
+    	returnPDFCmd+=(ConverterUtils.formatDecimal.format(x1) + " "); 
+    	returnPDFCmd+=(ConverterUtils.formatDecimal.format(y1) + " ");
+    	returnPDFCmd+=(ConverterUtils.formatDecimal.format(x2) + " "); 
+    	returnPDFCmd+=(ConverterUtils.formatDecimal.format(y2) + " ");
+    	returnPDFCmd+=(ConverterUtils.formatDecimal.format(currentX) + " "); 
+    	returnPDFCmd+=(ConverterUtils.formatDecimal.format(currentY) + " ");
+    	returnPDFCmd+=("c\n");
     	lastX2 = x2;
     	lastY2 = y2;
     	hasLastCurveTo = true;
