@@ -1,20 +1,19 @@
 package svg.simplestructure;
 import pdfxml2pdf.ConverterUtils;
-import java.io.IOException;
-import java.io.File;
-import java.io.OutputStream;
-import java.io.FileInputStream;
+import java.io.*;
 import java.util.Map;
 import org.pdfbox.cos.COSArray;
 import org.pdfbox.cos.COSDictionary;
 import org.pdfbox.cos.COSInteger;
 import org.pdfbox.cos.COSName;
 import org.pdfbox.cos.COSStream;
+import org.pdfbox.pdmodel.PDDocument;
 import org.pdfbox.pdmodel.PDPage;
 import org.pdfbox.pdmodel.PDResources;
 import org.pdfbox.pdmodel.common.PDStream;
 import org.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.pdfbox.pdmodel.graphics.color.PDColorSpace;
+import org.pdfbox.pdmodel.graphics.color.PDDeviceRGB;
 import org.pdfbox.pdmodel.graphics.xobject.PDPixelMap;
 import org.pdfbox.pdmodel.graphics.xobject.PDJpeg;
 import org.pdfbox.pdmodel.graphics.xobject.PDXObjectImage;
@@ -22,7 +21,7 @@ import org.pdfbox.util.MapUtil;
 import org.xml.sax.Attributes;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-
+import org.jpedal.jbig2.JBIG2Decoder;
 import javax.imageio.ImageIO;
 
 public class ImageTag extends GeneralSVGTag {
@@ -58,15 +57,16 @@ public class ImageTag extends GeneralSVGTag {
 	            try {
 	            	imgStream = new COSStream(new org.pdfbox.io.RandomAccessFile(File.createTempFile("pdfbox", ".png"), "rw"));
 	            }
-	            catch (Exception e) {}
-	            PDStream imageStream = new PDStream(imgStream);
-	            OutputStream outStre = imageStream.createOutputStream();
+	            catch (IOException e) {
+	            	e.printStackTrace();
+	            }
+	            OutputStream outStre = imgStream.createUnfilteredStream();
 	            outStre.write(imageByteArr);
 	            outStre.close();
-	            COSStream stre = imageStream.getStream();
-	            stre.setItem(COSName.FILTER, COSName.FLATE_DECODE);
-	            stre.setItem( COSName.SUBTYPE, COSName.IMAGE);
-	            stre.setItem( COSName.TYPE, COSName.getPDFName( "XObject" ) );
+	            imgStream.setItem(COSName.FILTER, COSName.FLATE_DECODE);
+	            imgStream.setItem( COSName.SUBTYPE, COSName.IMAGE);
+	            imgStream.setItem( COSName.TYPE, COSName.getPDFName( "XObject" ) );
+	            PDStream imageStream = new PDStream(imgStream);
 	            
 	            pdImg = new PDPixelMap(imageStream);
 	            pdImg.setColorSpace(col);
@@ -77,7 +77,104 @@ public class ImageTag extends GeneralSVGTag {
 			}	
 		}
 		else if (imgFile.getName().endsWith("jpg") || imgFile.getName().endsWith("jpeg")) {
-			pdImg = new PDJpeg(ConverterUtils.getTargetPDF(), new FileInputStream(imgFile));
+			COSStream imgStream = null;
+            try {
+            	imgStream = new COSStream(new org.pdfbox.io.RandomAccessFile(File.createTempFile("pdfbox", ".jpg"), "rw"));
+            }
+            catch (IOException e) {
+            	e.printStackTrace();
+            }
+            imgStream.setFilters(COSName.DCT_DECODE);
+            OutputStream outStre = null;
+            InputStream in = null;
+            try {
+            	outStre = imgStream.createFilteredStream();
+            	in = new BufferedInputStream(new FileInputStream(imgFile));
+            	int c;
+            	while ((c = in.read()) != -1)
+            		outStre.write(c);
+            } finally {
+            	if (in != null)
+            		in.close();
+            	if (outStre != null)
+            		outStre.close();
+            }
+            imgStream.setItem(COSName.SUBTYPE, COSName.IMAGE);
+            imgStream.setItem(COSName.TYPE, COSName.getPDFName( "XObject" ));
+            PDStream imageStream = new PDStream(imgStream);
+            
+            pdImg = new PDJpeg(imageStream);
+            pdImg.setBitsPerComponent( 8 );
+            BufferedImage buffImg = pdImg.getRGBImage(); 
+            pdImg.setColorSpace( PDDeviceRGB.INSTANCE );
+            pdImg.setHeight( buffImg.getHeight() );
+            pdImg.setWidth( buffImg.getWidth() );
+            
+			//pdImg = new PDJpeg(ConverterUtils.getTargetPDF(), new FileInputStream(imgFile));
+		}
+		else if (imgFile.getName().endsWith("jb2") || imgFile.getName().endsWith("jbig2")) {
+			COSStream imgStream = null;
+            try {
+            	imgStream = new COSStream(new org.pdfbox.io.RandomAccessFile(File.createTempFile("pdfbox", ".jb2"), "rw"));
+            }
+            catch (IOException e) {
+            	e.printStackTrace();
+            }
+            imgStream.setFilters(COSName.DCT_DECODE);
+            OutputStream outStre = null;
+            InputStream in = null;
+            try {
+            	outStre = imgStream.createFilteredStream();
+            	in = new BufferedInputStream(new FileInputStream(imgFile));
+            	int c;
+            	while ((c = in.read()) != -1)
+            		outStre.write(c);
+            } finally {
+            	if (in != null)
+            		in.close();
+            	if (outStre != null)
+            		outStre.close();
+            }
+            imgStream.setItem(COSName.SUBTYPE, COSName.IMAGE);
+            imgStream.setItem(COSName.TYPE, COSName.getPDFName( "XObject" ));
+            PDStream imageStream = new PDStream(imgStream);
+            
+            pdImg = new PDJpeg(imageStream);
+            pdImg.setBitsPerComponent( 8 );
+            BufferedImage buffImg = pdImg.getRGBImage(); 
+            pdImg.setColorSpace( PDDeviceRGB.INSTANCE );
+            pdImg.setHeight( buffImg.getHeight() );
+            pdImg.setWidth( buffImg.getWidth() );
+            /*
+			System.err.println("Unsupported image format");
+			System.exit(1);
+            
+			byte[] imageByteArr =((DataBufferByte)(img.getData().getDataBuffer())).getData();
+			COSStream imgStream = null;
+            try {
+            	imgStream = new COSStream(new org.pdfbox.io.RandomAccessFile(File.createTempFile("pdfbox", ".jb2"), "rw"));
+            }
+            catch (Exception e) {}
+            PDStream imageStream = new PDStream(imgStream);
+            OutputStream outStre = imageStream.createOutputStream();
+            outStre.write(imageByteArr);
+            outStre.close();
+            COSStream stre = imageStream.getStream();
+            stre.setItem(COSName.FILTER, COSName.FLATE_DECODE);
+            stre.setItem( COSName.SUBTYPE, COSName.IMAGE);
+            stre.setItem( COSName.TYPE, COSName.getPDFName( "XObject" ) );
+            
+			
+            pdImg = new PDPixelMap(imageStream);
+            if (attributes.getValue("color-profile") != null) 
+                pdImg.setColorSpace((PDColorSpace)((page.findResources().getColorSpaces()).get(attributes.getValue("color-profile"))));
+            
+            int[] compSize = img.getColorModel().getComponentSize();
+            pdImg.setBitsPerComponent(compSize[0]);
+            pdImg.setHeight(img.getHeight());
+            pdImg.setWidth(img.getWidth());
+            
+            */
 		}
 		
 		if (attributes.getValue("pdf:Decode") != null) {

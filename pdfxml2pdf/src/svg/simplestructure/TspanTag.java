@@ -10,7 +10,6 @@ public class TspanTag extends TextTag {
 	}
 	
 	public void serialise() throws IOException {
-		pageContentStream.appendRawCommands("q\n");
 		handlePaintPropertiesAtt(attributes);
 		handleTextPropertiesAtt(attributes);
 		if (attributes.getValue("transform") != null) 
@@ -18,6 +17,5 @@ public class TspanTag extends TextTag {
 		for (SVGComponent comp : childComponents) {
 			comp.serialise();
 		}
-		pageContentStream.appendRawCommands("Q\n");
 	}
 }
