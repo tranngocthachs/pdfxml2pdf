@@ -52,10 +52,9 @@ public class BackboneHandler extends DefaultHandler {
 			
 			// process the page file
 			File pageFile = ConverterUtils.getFile(bbFile, attributes.getValue("src"));
-			PageProcessor pageProcessor = new PageProcessor(pageFile);
-			PDPage page = pageProcessor.process();
 			
-			// set its MediaBox
+			PDPage page = new PDPage();
+			
 			PDRectangle pageMediaBox = new PDRectangle();
 			pageMediaBox.setLowerLeftX(new Float(attributes.getValue("x1")));
 			pageMediaBox.setLowerLeftY(new Float(attributes.getValue("y1")));
@@ -63,9 +62,16 @@ public class BackboneHandler extends DefaultHandler {
 			pageMediaBox.setUpperRightY(new Float(attributes.getValue("y2")));
 			page.setMediaBox(pageMediaBox);
 			
+			ConverterUtils.getTargetPDF().addPage(page);
+			PageProcessor pageProcessor = new PageProcessor(pageFile, page);
+			pageProcessor.process();
+			
+			// set its MediaBox
+			
+			
 			
 			// add it to the target PDF
-			ConverterUtils.getTargetPDF().addPage(page);
+			//ConverterUtils.getTargetPDF().addPage(page);
 			
 //			String pagePath = attributes.getValue("src");
 //			if (pagePath.charAt(0) == '/') {

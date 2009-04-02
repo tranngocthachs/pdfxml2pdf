@@ -7,6 +7,8 @@ import org.pdfbox.pdmodel.PDPage;
 import org.pdfbox.pdmodel.font.PDFont;
 import org.xml.sax.Attributes;
 
+import pdfxml2pdf.ConverterUtils;
+
 public class TextTag extends CompositeSVGTag {
 	protected String[] xs = null;
 	protected String[] ys = null;
@@ -30,12 +32,12 @@ public class TextTag extends CompositeSVGTag {
 	}
 	public void serialise() throws java.io.IOException {
 		pageContentStream.appendRawCommands("q\n");
-		pageContentStream.beginText();
-		handlePaintPropertiesAtt(attributes);
-		handleTextPropertiesAtt(attributes);
 		if (attributes.getValue("transform") != null) { 
 			handleTransformAtt(attributes.getValue("transform"));
 		}
+		pageContentStream.beginText();
+		handlePaintPropertiesAtt(attributes);
+		handleTextPropertiesAtt(attributes);
 		super.serialise();
 		pageContentStream.endText();
 		pageContentStream.appendRawCommands("Q\n");
@@ -46,7 +48,10 @@ public class TextTag extends CompositeSVGTag {
 			if (attributes.getValue("font-family") != null &&
 				attributes.getValue("font-size") != null) {
 				PDFont font = (PDFont)page.findResources().getFonts().get(attributes.getValue("font-family"));
-				pageContentStream.setFont(font, Float.parseFloat(attributes.getValue("font-size")));
+				if (font != null)
+					pageContentStream.appendRawCommands("/" + attributes.getValue("font-family") + " "
+													+ ConverterUtils.formatDecimal.format(Float.parseFloat(attributes.getValue("font-size")))
+													+ " Tf\n");
 			}
 			
 		}

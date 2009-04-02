@@ -7,13 +7,13 @@ import java.io.*;
 public class PageProcessor {
 	
 	private File pageFile;
-	
-	public PageProcessor(File pageFile) {
+	private PDPage page;
+	public PageProcessor(File pageFile, PDPage page) {
 		this.pageFile = pageFile;
+		this.page = page;
 	}
 
 	public PDPage process() {
-		PDPage page = null;
 		try {
 			// Prepare the parser
 			XMLReader parser; 
@@ -30,10 +30,10 @@ public class PageProcessor {
 			}
 
 			// Set the correct handler
-			PageHandler pageHandler = new PageHandler(pageFile);
+			PageHandler pageHandler = new PageHandler(pageFile, page);
 			parser.setContentHandler(pageHandler);
 			parser.parse(new InputSource(new FileInputStream(pageFile)));
-			page = pageHandler.getPage();
+			
 		}
 		catch (SAXException e) {
 			System.out.println(pageFile.getName() + " is not well-formed.");

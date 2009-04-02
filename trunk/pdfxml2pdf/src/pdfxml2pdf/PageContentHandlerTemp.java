@@ -12,6 +12,9 @@ import org.pdfbox.pdmodel.common.PDStream;
 import org.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.pdfbox.pdmodel.font.PDFont;
 import org.pdfbox.pdmodel.graphics.color.PDColorSpace;
+import org.pdfbox.pdmodel.graphics.color.PDDeviceCMYK;
+import org.pdfbox.pdmodel.graphics.color.PDDeviceGray;
+import org.pdfbox.pdmodel.graphics.color.PDDeviceRGB;
 import org.pdfbox.pdmodel.graphics.color.PDICCBased;
 import org.pdfbox.pdmodel.graphics.color.PDIndexed;
 import org.xml.sax.Attributes;
@@ -51,7 +54,6 @@ public class PageContentHandlerTemp extends DefaultHandler {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public void endDocument() {
@@ -168,8 +170,32 @@ public class PageContentHandlerTemp extends DefaultHandler {
             // the name of the color space is first (/Indexed)
             indexedArr.add(COSName.getPDFName(PDIndexed.NAME));
             
-            // the base of this indexed color space is second, this should be a PDColorSpace's object
-            indexedArr.add(colorMappings.get(attributes.getValue("Base")));
+            // the base of this indexed color space is second
+            // first check whether the based color was defined previously
+            if (colorMappings == null)
+            	colorMappings = new HashMap<String, PDColorSpace>();
+            PDColorSpace base = colorMappings.get(attributes.getValue("Base"));
+            if (base == null) {
+            	// base color should be device colors
+            	String deviceColorName = attributes.getValue("Base");
+            	COSName deviceColorCOSName = null;
+            	if (deviceColorName.equals("DeviceGray"))
+            		deviceColorCOSName = COSName.getPDFName(PDDeviceGray.NAME);
+            	else if (deviceColorName.equals("DeviceRGB"))
+            		deviceColorCOSName = COSName.getPDFName(PDDeviceRGB.NAME);
+            	else if (deviceColorName.equals("DeviceCMYK"))
+            		deviceColorCOSName = COSName.getPDFName(PDDeviceCMYK.NAME);
+            	else {
+            		System.err.println("Unknown based color");
+            		System.exit(1);
+            	}
+            	indexedArr.add(deviceColorCOSName);
+            }
+            else {
+            	// base color should be previously defined
+            	indexedArr.add(base);
+            }
+            
             
             // hival parameter comes next
             indexedArr.add(new COSInteger(Integer.parseInt(attributes.getValue("HiVal"))));
@@ -201,8 +227,6 @@ public class PageContentHandlerTemp extends DefaultHandler {
             PDColorSpace colorSpace = new PDIndexed(indexedArr);
             
             // put this color space into our collection
-            if (colorMappings == null)
-            	colorMappings = new HashMap<String, PDColorSpace>();
             colorMappings.put(colorID, colorSpace);   
 		}
 		

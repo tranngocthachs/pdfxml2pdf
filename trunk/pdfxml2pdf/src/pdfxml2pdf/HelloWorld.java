@@ -250,8 +250,7 @@ public class HelloWorld
             PDIndexed col3 = new PDIndexed(indexedArr); 
             
             // Images
-            PDXObjectImage img1 = new PDJpeg(doc, new FileInputStream("im_764-1.jpg"));
-            PDXObjectImage img2 = new PDJpeg(doc, new FileInputStream("im_764-2.jpg"));
+            
             
             BufferedImage imgBuff = ImageIO.read(new File("im_764-1.png"));
             byte[] imageByteArr =((DataBufferByte)(imgBuff.getData().getDataBuffer())).getData();
@@ -291,13 +290,15 @@ public class HelloWorld
             PDResources temp = new PDResources();
             
             temp.getXObjects().put("Im0", img3);
-            temp.getXObjects().put("Im1", img2);
+            //temp.getXObjects().put("Im1", img2);
             page.setResources(temp);
 //
 //            pageHeight = page.findMediaBox().getHeight();
 //            
             // Start page content
             PDPageContentStream contentStream = new PDPageContentStream(doc, page, false, false);
+            PDXObjectImage img1 = new PDJpeg(doc, new FileInputStream("im_764-1.jpg"));
+            PDXObjectImage img2 = new PDJpeg(doc, new FileInputStream("im_764-2.jpg"));
             contentStream.appendRawCommands("1 0 0 -1 0 792 cm\n");
             contentStream.appendRawCommands("1 0 0 -1 0 792 cm\n");
 //
@@ -344,8 +345,8 @@ public class HelloWorld
 //            contentStream.appendRawCommands("/Im1 Do");
 //            contentStream.appendRawCommands("Q\n");
 //            
-//            contentStream.drawImage(img1, 72, 708.06f-(float)(img1.getHeight() * 0.4764), (float)(img1.getWidth() * 0.4805) , (float)(img1.getHeight() * 0.4764));
-//            contentStream.drawImage(img2, 72, 668.52f-(float)(img2.getHeight() * 0.4764), (float)(img2.getWidth() * 0.4805) , (float)(img2.getHeight() * 0.4764));
+            contentStream.drawImage(img1, 72, 708.06f-(float)(img1.getHeight() * 0.4764), (float)(img1.getWidth() * 0.4805) , (float)(img1.getHeight() * 0.4764));
+            contentStream.drawImage(img2, 72, 668.52f-(float)(img2.getHeight() * 0.4764), (float)(img2.getWidth() * 0.4805) , (float)(img2.getHeight() * 0.4764));
             float[] floats = {1, 0, 0, 1, 72, 708.06f};
             AffineTransform transform = new AffineTransform(floats);
             transform.scale(0.4805, -0.4764);

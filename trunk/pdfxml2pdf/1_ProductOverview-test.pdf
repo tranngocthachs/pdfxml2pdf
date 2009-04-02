@@ -19,9 +19,9 @@ endobj
 <<
 /Type /Page
 /MediaBox [0 0 612 792]
+/Parent 2 0 R
 /Resources 4 0 R
 /Contents 5 0 R
-/Parent 2 0 R
 >>
 endobj
 4 0 obj
@@ -54,128 +54,69 @@ q
 /Im1 Do
 Q
 q
-BT
-0 g
-/F0 16.0200004578 Tf
 1 0 0 -1 0 571.5643 cm
-q
-1 0 0 1 72. 0 cm
-1 0 0 -1 0 0 cm
+BT
+0 g
+/F0 16.02 Tf
+1 0 0 -1 72. 0 Tm
 (Company Overview) Tj
-1 0 0 -1 0 0 cm
-Q
 ET
 Q
 q
-BT
-0 g
-/F1 12 Tf
 1 0 0 -1 0 554.1 cm
-q
-1 0 0 1 72 0 cm
-1 0 0 -1 0 0 cm
+BT
+0 g
+/F1 12 Tf
+1 0 0 -1 72 0 Tm
 (Founded in 1999, Global Electronics is a leading manufacturer of consumer and business) Tj
-1 0 0 -1 0 0 cm
-Q
-q
-1 0 0 1 72 13.8 cm
-1 0 0 -1 0 0 cm
+1 0 0 -1 72 13.8 Tm
 (electronic products, including cellular phones, digital projectors, and PDAs to start. The) Tj
-1 0 0 -1 0 0 cm
-Q
-q
-1 0 0 1 72 27.6 cm
-1 0 0 -1 0 0 cm
+1 0 0 -1 72 27.6 Tm
 (company has 2,200 employees worldwide supporting a strong global sales & marketing and) Tj
-1 0 0 -1 0 0 cm
-Q
-q
-1 0 0 1 72 41.4 cm
-1 0 0 -1 0 0 cm
+1 0 0 -1 72 41.4 Tm
 (service network that spans Asia-Pacific, Europe and the Americas.  Custom) Tj
-1 0 0 -1 0 0 cm
-Q
-q
-1 0 0 1 72 55.2 cm
-1 0 0 -1 0 0 cm
+1 0 0 -1 72 55.2 Tm
 (Communications, Inc. has research and development facilities in Taiwan, China and the) Tj
-1 0 0 -1 0 0 cm
-Q
-q
-1 0 0 1 72 69 cm
-1 0 0 -1 0 0 cm
+1 0 0 -1 72 69 Tm
 (United States.  The company has 1,243 global patents.) Tj
-1 0 0 -1 0 0 cm
-Q
 ET
 Q
 q
-BT
-0 g
-/F0 16.0200004578 Tf
 1 0 0 -1 0 424.978 cm
-q
-1 0 0 1 72 0 cm
-1 0 0 -1 0 0 cm
+BT
+0 g
+/F0 16.02 Tf
+1 0 0 -1 72 0 Tm
 (Target Market) Tj
-1 0 0 -1 0 0 cm
-Q
 ET
 Q
 q
-BT
-0 g
-/F1 12 Tf
 1 0 0 -1 0 407.52 cm
-q
-1 0 0 1 72 0 cm
-1 0 0 -1 0 0 cm
-(Global Electronics products are targeted at a variety of customers.  The EXR-55 is likely to) Tj
-1 0 0 -1 0 0 cm
-Q
-q
-1 0 0 1 72 13.8 cm
-1 0 0 -1 0 0 cm
-(attract both the retail consumer and business sphere because of its sleek design, portability) Tj
-1 0 0 -1 0 0 cm
-Q
-q
-1 0 0 1 72 27.6 cm
-1 0 0 -1 0 0 cm
-(and picture quality. Distribution is worldwide with primary target countries being North) Tj
-1 0 0 -1 0 0 cm
-Q
-q
-1 0 0 1 72 41.4 cm
-1 0 0 -1 0 0 cm
-(America, China, UK, France and Germany. Global Electronics has limited bandwidth in) Tj
-1 0 0 -1 0 0 cm
-Q
-q
-1 0 0 1 72 55.2 cm
-1 0 0 -1 0 0 cm
-(other areas of the world.) Tj
-1 0 0 -1 0 0 cm
-Q
-ET
-Q
-q
 BT
 0 g
 /F1 12 Tf
+1 0 0 -1 72 0 Tm
+(Global Electronics products are targeted at a variety of customers.  The EXR-55 is likely to) Tj
+1 0 0 -1 72 13.8 Tm
+(attract both the retail consumer and business sphere because of its sleek design, portability) Tj
+1 0 0 -1 72 27.6 Tm
+(and picture quality. Distribution is worldwide with primary target countries being North) Tj
+1 0 0 -1 72 41.4 Tm
+(America, China, UK, France and Germany. Global Electronics has limited bandwidth in) Tj
+1 0 0 -1 72 55.2 Tm
+(other areas of the world.) Tj
+ET
+Q
+q
 1 0 0 -1 0 324.7201 cm
-q
-1 0 0 1 72 0 cm
-1 0 0 -1 0 0 cm
+BT
+0 g
+/F1 12 Tf
+1 0 0 -1 72 0 Tm
 (Table 1:) Tj
-1 0 0 -1 0 0 cm
-Q
-q
-1 0 0 1 114 0 cm
-1 0 0 -1 0 0 cm
+/F2 12 Tf
+1 0 0 -1 114 0 Tm
 (Worldwide Distribution) Tj
-1 0 0 -1 0 0 cm
-Q
 ET
 Q
 q
@@ -598,16 +539,12 @@ h
 S
 Q
 q
+1 0 0 -1.0019 0 258.6 cm
 BT
 0 g
-/F0 7.964799881 Tf
-1 0 0 -1.0019 0 258.6 cm
-q
-1 0 0 1 388.44 0 cm
-1 0 0 -1 0 0 cm
+/F0 7.965 Tf
+1 0 0 -1 388.44 0 Tm
 (North America) Tj
-1 0 0 -1 0 0 cm
-Q
 ET
 Q
 q
@@ -634,16 +571,12 @@ h
 S
 Q
 q
+1 0 0 -1.0019 0 245.94 cm
 BT
 0 g
-/F0 7.964799881 Tf
-1 0 0 -1.0019 0 245.94 cm
-q
-1 0 0 1 388.44 0 cm
-1 0 0 -1 0 0 cm
+/F0 7.965 Tf
+1 0 0 -1 388.44 0 Tm
 (China) Tj
-1 0 0 -1 0 0 cm
-Q
 ET
 Q
 q
@@ -670,16 +603,12 @@ h
 S
 Q
 q
+1 0 0 -1.0019 0 233.28 cm
 BT
 0 g
-/F0 7.964799881 Tf
-1 0 0 -1.0019 0 233.28 cm
-q
-1 0 0 1 388.44 0 cm
-1 0 0 -1 0 0 cm
+/F0 7.965 Tf
+1 0 0 -1 388.44 0 Tm
 (Germany) Tj
-1 0 0 -1 0 0 cm
-Q
 ET
 Q
 q
@@ -706,16 +635,12 @@ h
 S
 Q
 q
+1 0 0 -1.0019 0 220.6201 cm
 BT
 0 g
-/F0 7.964799881 Tf
-1 0 0 -1.0019 0 220.6201 cm
-q
-1 0 0 1 388.44 0 cm
-1 0 0 -1 0 0 cm
+/F0 7.965 Tf
+1 0 0 -1 388.44 0 Tm
 (France) Tj
-1 0 0 -1 0 0 cm
-Q
 ET
 Q
 q
@@ -742,60 +667,12 @@ h
 S
 Q
 q
-BT
-0 g
-/F0 7.964799881 Tf
 1 0 0 -1.0019 0 207.9601 cm
-q
-1 0 0 1 388.44 0 cm
-1 0 0 -1 0 0 cm
+BT
+0 g
+/F0 7.965 Tf
+1 0 0 -1 388.44 0 Tm
 (UK) Tj
-1 0 0 -1 0 0 cm
-Q
-ET
-Q
-q
-BT
-0 g
-/F0 16.0200004578 Tf
-1 0 0 -1 0 137.2201 cm
-q
-1 0 0 1 72 0 cm
-1 0 0 -1 0 0 cm
-(EXR-55 Product Overview) Tj
-1 0 0 -1 0 0 cm
-Q
-ET
-Q
-q
-BT
-0 g
-/F1 12 Tf
-1 0 0 -1 0 119.7 cm
-q
-1 0 0 1 72 0 cm
-1 0 0 -1 0 0 cm
-(Perfect for filling both small and large venue with vivid images is the EXR-55 multimedia) Tj
-1 0 0 -1 0 0 cm
-Q
-q
-1 0 0 1 72 13.8 cm
-1 0 0 -1 0 0 cm
-(LCD projector, featuring innovative color technology. Its sleek, modern design allows for) Tj
-1 0 0 -1 0 0 cm
-Q
-q
-1 0 0 1 72 27.6 cm
-1 0 0 -1 0 0 cm
-(easy use, hiding loose cords and cables, make it the perfect choice for any situation when) Tj
-1 0 0 -1 0 0 cm
-Q
-q
-1 0 0 1 72 41.4 cm
-1 0 0 -1 0 0 cm
-(presentation is paramount.) Tj
-1 0 0 -1 0 0 cm
-Q
 ET
 Q
 Q
@@ -825,7 +702,7 @@ endobj
 >>
 endobj
 9 0 obj
-9346
+7892
 endobj
 10 0 obj
 <<
@@ -1073,32 +950,32 @@ xref
 0000000158 00000 n
 0000000262 00000 n
 0000000328 00000 n
-0000009729 00000 n
-0000009783 00000 n
-0000009923 00000 n
-0000009968 00000 n
-0000009988 00000 n
-0000010388 00000 n
-0000011121 00000 n
-0000011481 00000 n
-0000014687 00000 n
-0000014906 00000 n
-0000015128 00000 n
-0000018296 00000 n
-0000023322 00000 n
-0000023569 00000 n
-0000023831 00000 n
-0000024118 00000 n
-0000024139 00000 n
-0000024159 00000 n
-0000024179 00000 n
-0000024200 00000 n
+0000008275 00000 n
+0000008329 00000 n
+0000008469 00000 n
+0000008514 00000 n
+0000008534 00000 n
+0000008934 00000 n
+0000009667 00000 n
+0000010027 00000 n
+0000013233 00000 n
+0000013452 00000 n
+0000013674 00000 n
+0000016842 00000 n
+0000021868 00000 n
+0000022115 00000 n
+0000022377 00000 n
+0000022664 00000 n
+0000022685 00000 n
+0000022705 00000 n
+0000022725 00000 n
+0000022746 00000 n
 trailer
 <<
 /Root 1 0 R
-/ID [<EC1E6E2046213025B4FDD296A6E991C9> <EC1E6E2046213025B4FDD296A6E991C9>]
+/ID [<5A55AE22D7CA78080D46AB2D9DEC3B86> <5A55AE22D7CA78080D46AB2D9DEC3B86>]
 /Size 26
 >>
 startxref
-24221
+22767
 %%EOF

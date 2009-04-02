@@ -167,7 +167,7 @@ public class FontHandler extends DefaultHandler {
 			String[] widths = buffer.toString().split(" ");
 			ArrayList<Integer> widthArr = new ArrayList<Integer>(widths.length);
 			for (int i=0; i<widths.length; i++) {
-				widthArr.add(Integer.parseInt(widths[i]));
+				widthArr.add(Integer.parseInt(widths[i].trim()));
 			}
 			font.setWidths(widthArr);
 			buffer = null;
