@@ -5,7 +5,7 @@
 	<classpathentry kind="lib" path="batik-parser.jar"/>
 	<classpathentry kind="lib" path="batik-util.jar"/>
 	<classpathentry kind="lib" path="PDFBox-0.7.3-dev.jar" sourcepath="PDFBox-0.7.3-dev.zip"/>
-	<classpathentry kind="lib" path="jbig2.jar"/>
+	<classpathentry kind="lib" path="jbig2.jar" sourcepath="jbig2_src.zip"/>
 	<classpathentry kind="lib" path="FontBox-0.2.0-dev.jar" sourcepath="fontbox.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

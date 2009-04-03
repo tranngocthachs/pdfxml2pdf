@@ -248,12 +248,21 @@ public class PageContentHandlerTemp extends DefaultHandler {
 		if (qName.equals("tspan")) {
 			CompositeSVGTag comp = (CompositeSVGTag)stack.peek();
 			if (buffer != null) {
-				String str = buffer.toString().trim();
+				String str = buffer.toString();
 				if (str.length() != 0) {
-					comp.add(new Text(pageContentStream, page, str, ((TextTag)comp).getXs(), ((TextTag)comp).getYs()));
+					comp.add(new Text(	pageContentStream,
+										page, 
+										str, 
+										((TextTag)comp).getXs(), 
+										((TextTag)comp).getYs(),
+										(TextTag)comp));
 					buffer = new StringBuffer();
 				}
-				SVGComponent tspan = new TspanTag(pageContentStream, page, new AttributesImpl(attributes)); 
+				SVGComponent tspan = new TspanTag(	pageContentStream,
+													page,
+													new AttributesImpl(attributes),
+													(TextTag)comp
+													); 
 				comp.add(tspan);
 				stack.push(tspan);
 			} 
@@ -304,17 +313,27 @@ public class PageContentHandlerTemp extends DefaultHandler {
 		
 		if (qName.equals("text")) {
 			CompositeSVGTag comp = (CompositeSVGTag)stack.pop();
-			String str = buffer.toString().trim();
+			String str = buffer.toString();
 			if (str.length() != 0)
-				comp.add(new Text(pageContentStream, page, str, ((TextTag)comp).getXs(), ((TextTag)comp).getYs()));
+				comp.add(new Text(	pageContentStream, 
+									page, 
+									str, 
+									((TextTag)comp).getXs(), 
+									((TextTag)comp).getYs(),
+									(TextTag)comp));
 			buffer = null;
 		}
 		
 		if (qName.equals("tspan")) {
 			CompositeSVGTag comp = (CompositeSVGTag)stack.pop();
-			String str = buffer.toString().trim();
+			String str = buffer.toString();
 			if (str.length() != 0)
-				comp.add(new Text(pageContentStream, page, str, ((TspanTag)comp).getXs(), ((TspanTag)comp).getYs()));
+				comp.add(new Text(	pageContentStream,
+									page,
+									str, 
+									((TextTag)comp).getXs(), 
+									((TextTag)comp).getYs(),
+									(TextTag)comp));
 			buffer = new StringBuffer();
 		}
 		

@@ -14,6 +14,7 @@ import org.pdfbox.pdmodel.common.PDStream;
 import org.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.pdfbox.pdmodel.graphics.color.PDColorSpace;
 import org.pdfbox.pdmodel.graphics.color.PDDeviceRGB;
+import org.pdfbox.pdmodel.graphics.color.PDDeviceGray;
 import org.pdfbox.pdmodel.graphics.xobject.PDPixelMap;
 import org.pdfbox.pdmodel.graphics.xobject.PDJpeg;
 import org.pdfbox.pdmodel.graphics.xobject.PDXObjectImage;
@@ -21,7 +22,7 @@ import org.pdfbox.util.MapUtil;
 import org.xml.sax.Attributes;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import org.jpedal.jbig2.JBIG2Decoder;
+import org.jpedal.jbig2.*;
 import javax.imageio.ImageIO;
 
 public class ImageTag extends GeneralSVGTag {
@@ -113,6 +114,20 @@ public class ImageTag extends GeneralSVGTag {
 			//pdImg = new PDJpeg(ConverterUtils.getTargetPDF(), new FileInputStream(imgFile));
 		}
 		else if (imgFile.getName().endsWith("jb2") || imgFile.getName().endsWith("jbig2")) {
+			// quick and dirty way of embedding jb2
+			// optimal way would be strip off file header and use JBIG2Decode
+			// either way, in case of multi-page image, only first page will be converted since PDF
+			// requires each page has to be in different image XObject
+			JBIG2Decoder decoder = new JBIG2Decoder();
+			try {
+				decoder.decodeJBIG2(imgFile);
+			}
+			catch (JBIG2Exception e) {
+				e.printStackTrace();
+			}
+			
+			BufferedImage img = decoder.getPageAsBufferedImage(0);
+			byte[] imageByteArr =((DataBufferByte)(img.getData().getDataBuffer())).getData();
 			COSStream imgStream = null;
             try {
             	imgStream = new COSStream(new org.pdfbox.io.RandomAccessFile(File.createTempFile("pdfbox", ".jb2"), "rw"));
@@ -120,31 +135,22 @@ public class ImageTag extends GeneralSVGTag {
             catch (IOException e) {
             	e.printStackTrace();
             }
-            imgStream.setFilters(COSName.DCT_DECODE);
-            OutputStream outStre = null;
-            InputStream in = null;
-            try {
-            	outStre = imgStream.createFilteredStream();
-            	in = new BufferedInputStream(new FileInputStream(imgFile));
-            	int c;
-            	while ((c = in.read()) != -1)
-            		outStre.write(c);
-            } finally {
-            	if (in != null)
-            		in.close();
-            	if (outStre != null)
-            		outStre.close();
-            }
-            imgStream.setItem(COSName.SUBTYPE, COSName.IMAGE);
-            imgStream.setItem(COSName.TYPE, COSName.getPDFName( "XObject" ));
+            OutputStream outStre = imgStream.createUnfilteredStream();
+            outStre.write(imageByteArr);
+            outStre.close();
+            imgStream.setItem(COSName.FILTER, COSName.FLATE_DECODE);
+            imgStream.setItem( COSName.SUBTYPE, COSName.IMAGE);
+            imgStream.setItem( COSName.TYPE, COSName.getPDFName( "XObject" ) );
             PDStream imageStream = new PDStream(imgStream);
             
-            pdImg = new PDJpeg(imageStream);
-            pdImg.setBitsPerComponent( 8 );
-            BufferedImage buffImg = pdImg.getRGBImage(); 
-            pdImg.setColorSpace( PDDeviceRGB.INSTANCE );
-            pdImg.setHeight( buffImg.getHeight() );
-            pdImg.setWidth( buffImg.getWidth() );
+            pdImg = new PDPixelMap(imageStream);
+            pdImg.setBitsPerComponent(1);
+            pdImg.setHeight(img.getHeight());
+            pdImg.setWidth(img.getWidth());
+            if (attributes.getValue("color-profile") != null) {
+            	PDColorSpace col = (PDColorSpace)((page.findResources().getColorSpaces()).get(attributes.getValue("color-profile")));
+            	pdImg.setColorSpace(col);
+            }
             /*
 			System.err.println("Unsupported image format");
 			System.exit(1);
