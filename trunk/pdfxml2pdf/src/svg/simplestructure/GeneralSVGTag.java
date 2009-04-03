@@ -126,7 +126,11 @@ public class GeneralSVGTag extends SVGComponent {
 																Double.parseDouble(colorElems[3]),
 																Double.parseDouble(colorElems[4]));
 					}
-					
+					else if (colorElems[0].equals("DeviceRGB")) {
+						pageContentStream.setNonStrokingColor(	(int)(Double.parseDouble(colorElems[1])*255),
+																(int)(Double.parseDouble(colorElems[2])*255), 
+																(int)(Double.parseDouble(colorElems[3])*255));
+					}
 				}
 				
 				else if (colors[1].startsWith("icc-color")) {
@@ -194,6 +198,11 @@ public class GeneralSVGTag extends SVGComponent {
 															Double.parseDouble(colorElems[2]), 
 															Double.parseDouble(colorElems[3]),
 															Double.parseDouble(colorElems[4]));
+					}
+					else if (colorElems[0].equals("DeviceRGB")) {
+						pageContentStream.setStrokingColor(	(int)(Double.parseDouble(colorElems[1])*255),
+																(int)(Double.parseDouble(colorElems[2])*255), 
+																(int)(Double.parseDouble(colorElems[3])*255));
 					}
 					
 				}

@@ -12,22 +12,23 @@ import pdfxml2pdf.ConverterUtils;
 public class TextTag extends CompositeSVGTag {
 	protected String[] xs = null;
 	protected String[] ys = null;
-	
+	protected TextTag parentTextTag = null;
 	public TextTag(PDPageContentStream pageContentStream, PDPage page, Attributes attributes) {
 		super(pageContentStream, page, attributes);
 		if (attributes.getValue("x") != null)
 			xs = attributes.getValue("x").trim().split("( *, *)|( +)");
-		else {
-			xs = new String[1];
-			xs[0] = "0";
-		}
+		
+//		else {
+//			xs = new String[1];
+//			xs[0] = "0";
+//		}
 			
 		if (attributes.getValue("y") != null) 
 			ys = attributes.getValue("y").trim().split("( *, *)|( +)");
-		else {
-			ys = new String[1];
-			ys[0] = "0";
-		}
+//		else {
+//			ys = new String[1];
+//			ys[0] = "0";
+//		}
 		
 	}
 	public void serialise() throws java.io.IOException {
@@ -36,44 +37,41 @@ public class TextTag extends CompositeSVGTag {
 			handleTransformAtt(attributes.getValue("transform"));
 		}
 		pageContentStream.beginText();
-		handlePaintPropertiesAtt(attributes);
-		handleTextPropertiesAtt(attributes);
+//		handlePaintPropertiesAtt(attributes);
+//		handleTextPropertiesAtt(attributes);
 		super.serialise();
 		pageContentStream.endText();
 		pageContentStream.appendRawCommands("Q\n");
 	} 
 	
-	protected void handleTextPropertiesAtt(Attributes attributes) {
-		try {
-			if (attributes.getValue("font-family") != null &&
-				attributes.getValue("font-size") != null) {
-				PDFont font = (PDFont)page.findResources().getFonts().get(attributes.getValue("font-family"));
-				if (font != null)
-					pageContentStream.appendRawCommands("/" + attributes.getValue("font-family") + " "
-													+ ConverterUtils.formatDecimal.format(Float.parseFloat(attributes.getValue("font-size")))
-													+ " Tf\n");
-			}
-			
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
+	public Attributes getAtt() {
+		return attributes;
 	}
-	
+	public TextTag getParentTextTag() {
+		return parentTextTag;
+	}
 	public String[] getXs() {
+//		String[] temp = xs;
+//		if ( !(xs.length == 1 && xs[0].equals("0")) ) {
+//			xs = new String[1];
+//			xs[0] = "0";
+//		}
+//		return temp;
 		String[] temp = xs;
-		if ( !(xs.length == 1 && xs[0].equals("0")) ) {
-			xs = new String[1];
-			xs[0] = "0";
-		}
+		xs = null;
 		return temp;
 	}
 	public String[] getYs() {
+//		String[] temp = ys;
+//		if ( !(ys.length == 1 && ys[0].equals("0")) ) {
+//			ys = new String[1];
+//			ys[0] = "0";
+//		}
+//		return temp;
 		String[] temp = ys;
-		if ( !(ys.length == 1 && ys[0].equals("0")) ) {
-			ys = new String[1];
-			ys[0] = "0";
-		}
+		ys = null;
 		return temp;
 	}
+	
+	
 }

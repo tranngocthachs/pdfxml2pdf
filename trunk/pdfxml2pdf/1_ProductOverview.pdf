@@ -19,27 +19,27 @@ endobj
 <<
 /Type /Page
 /MediaBox [0 0 612 792]
+/Parent 2 0 R
 /Resources 6 0 R
 /Contents 7 0 R
-/Parent 2 0 R
 >>
 endobj
 4 0 obj
 <<
 /Type /Page
 /MediaBox [0 0 612 792]
+/Parent 2 0 R
 /Resources 8 0 R
 /Contents 9 0 R
-/Parent 2 0 R
 >>
 endobj
 5 0 obj
 <<
 /Type /Page
 /MediaBox [0 0 612 792]
+/Parent 2 0 R
 /Resources 10 0 R
 /Contents 11 0 R
-/Parent 2 0 R
 >>
 endobj
 6 0 obj
@@ -75,11 +75,9 @@ q
 1 0 0 -1 0 571.5643 cm
 BT
 0 g
-/F0 16.0200004578 Tf
-q
+/F0 16.02 Tf
 1 0 0 -1 72. 0 Tm
-(Company Overview) Tj
-Q
+(Company Overview ) Tj
 ET
 Q
 q
@@ -87,41 +85,34 @@ q
 BT
 0 g
 /F1 12 Tf
-q
+(\n) Tj
 1 0 0 -1 72 0 Tm
-(Founded in 1999, Global Electronics is a leading manufacturer of consumer and business) Tj
-Q
-q
+(Founded in 1999, Global Electronics is a leading manufacturer of consumer and business ) Tj
+(\n) Tj
 1 0 0 -1 72 13.8 Tm
-(electronic products, including cellular phones, digital projectors, and PDAs to start. The) Tj
-Q
-q
+(electronic products, including cellular phones, digital projectors, and PDAs to start. The ) Tj
+(\n) Tj
 1 0 0 -1 72 27.6 Tm
-(company has 2,200 employees worldwide supporting a strong global sales & marketing and) Tj
-Q
-q
+(company has 2,200 employees worldwide supporting a strong global sales & marketing and ) Tj
+(\n) Tj
 1 0 0 -1 72 41.4 Tm
-(service network that spans Asia-Pacific, Europe and the Americas.  Custom) Tj
-Q
-q
+(service network that spans Asia-Pacific, Europe and the Americas.  Custom ) Tj
+(\n) Tj
 1 0 0 -1 72 55.2 Tm
-(Communications, Inc. has research and development facilities in Taiwan, China and the) Tj
-Q
-q
+(Communications, Inc. has research and development facilities in Taiwan, China and the ) Tj
+(\n) Tj
 1 0 0 -1 72 69 Tm
-(United States.  The company has 1,243 global patents.) Tj
-Q
+(United States.  The company has 1,243 global patents. ) Tj
+(\n) Tj
 ET
 Q
 q
 1 0 0 -1 0 424.978 cm
 BT
 0 g
-/F0 16.0200004578 Tf
-q
+/F0 16.02 Tf
 1 0 0 -1 72 0 Tm
-(Target Market) Tj
-Q
+(Target Market ) Tj
 ET
 Q
 q
@@ -129,26 +120,21 @@ q
 BT
 0 g
 /F1 12 Tf
-q
 1 0 0 -1 72 0 Tm
-(Global Electronics products are targeted at a variety of customers.  The EXR-55 is likely to) Tj
-Q
-q
+(Global Electronics products are targeted at a variety of customers.  The EXR-55 is likely to ) Tj
+(\n) Tj
 1 0 0 -1 72 13.8 Tm
-(attract both the retail consumer and business sphere because of its sleek design, portability) Tj
-Q
-q
+(attract both the retail consumer and business sphere because of its sleek design, portability ) Tj
+(\n) Tj
 1 0 0 -1 72 27.6 Tm
-(and picture quality. Distribution is worldwide with primary target countries being North) Tj
-Q
-q
+(and picture quality. Distribution is worldwide with primary target countries being North ) Tj
+(\n) Tj
 1 0 0 -1 72 41.4 Tm
-(America, China, UK, France and Germany. Global Electronics has limited bandwidth in) Tj
-Q
-q
+(America, China, UK, France and Germany. Global Electronics has limited bandwidth in ) Tj
+(\n) Tj
 1 0 0 -1 72 55.2 Tm
-(other areas of the world.) Tj
-Q
+(other areas of the world. ) Tj
+(\n) Tj
 ET
 Q
 q
@@ -156,14 +142,12 @@ q
 BT
 0 g
 /F1 12 Tf
-q
 1 0 0 -1 72 0 Tm
-(Table 1:) Tj
-Q
-q
+(Table 1: ) Tj
+(\n) Tj
 1 0 0 -1 114 0 Tm
 (Worldwide Distribution) Tj
-Q
+(\n) Tj
 ET
 Q
 q
@@ -589,11 +573,9 @@ q
 1 0 0 -1.0019 0 258.6 cm
 BT
 0 g
-/F0 7.964799881 Tf
-q
+/F0 7.965 Tf
 1 0 0 -1 388.44 0 Tm
 (North America) Tj
-Q
 ET
 Q
 q
@@ -623,11 +605,9 @@ q
 1 0 0 -1.0019 0 245.94 cm
 BT
 0 g
-/F0 7.964799881 Tf
-q
+/F0 7.965 Tf
 1 0 0 -1 388.44 0 Tm
 (China) Tj
-Q
 ET
 Q
 q
@@ -657,11 +637,9 @@ q
 1 0 0 -1.0019 0 233.28 cm
 BT
 0 g
-/F0 7.964799881 Tf
-q
+/F0 7.965 Tf
 1 0 0 -1 388.44 0 Tm
 (Germany) Tj
-Q
 ET
 Q
 q
@@ -691,11 +669,9 @@ q
 1 0 0 -1.0019 0 220.6201 cm
 BT
 0 g
-/F0 7.964799881 Tf
-q
+/F0 7.965 Tf
 1 0 0 -1 388.44 0 Tm
 (France) Tj
-Q
 ET
 Q
 q
@@ -725,22 +701,19 @@ q
 1 0 0 -1.0019 0 207.9601 cm
 BT
 0 g
-/F0 7.964799881 Tf
-q
+/F0 7.965 Tf
 1 0 0 -1 388.44 0 Tm
 (UK) Tj
-Q
 ET
 Q
 q
 1 0 0 -1 0 137.2201 cm
 BT
 0 g
-/F0 16.0200004578 Tf
-q
+/F0 16.02 Tf
 1 0 0 -1 72 0 Tm
-(EXR-55 Product Overview) Tj
-Q
+(EXR-55 Product Overview ) Tj
+(\n) Tj
 ET
 Q
 q
@@ -748,22 +721,19 @@ q
 BT
 0 g
 /F1 12 Tf
-q
+(\n) Tj
 1 0 0 -1 72 0 Tm
-(Perfect for filling both small and large venue with vivid images is the EXR-55 multimedia) Tj
-Q
-q
+(Perfect for filling both small and large venue with vivid images is the EXR-55 multimedia ) Tj
+(\n) Tj
 1 0 0 -1 72 13.8 Tm
-(LCD projector, featuring innovative color technology. Its sleek, modern design allows for) Tj
-Q
-q
+(LCD projector, featuring innovative color technology. Its sleek, modern design allows for ) Tj
+(\n) Tj
 1 0 0 -1 72 27.6 Tm
-(easy use, hiding loose cords and cables, make it the perfect choice for any situation when) Tj
-Q
-q
+(easy use, hiding loose cords and cables, make it the perfect choice for any situation when ) Tj
+(\n) Tj
 1 0 0 -1 72 41.4 Tm
-(presentation is paramount.) Tj
-Q
+(presentation is paramount. ) Tj
+(\n) Tj
 ET
 Q
 Q
@@ -788,33 +758,28 @@ q
 BT
 0 g
 /F0 12 Tf
-q
+(\n) Tj
 1 0 0 -1 72 0 Tm
-(The EXR-55 contains a super bright 5500 ANSI lumens, a sharp 600:1 contrast ratio, and) Tj
-Q
-q
+(The EXR-55 contains a super bright 5500 ANSI lumens, a sharp 600:1 contrast ratio, and ) Tj
+(\n) Tj
 1 0 0 -1 72 13.8 Tm
-(both horizontal and vertical lens shift for installation flexibility. For consistent, realistic color) Tj
-Q
-q
+(both horizontal and vertical lens shift for installation flexibility. For consistent, realistic color ) Tj
+(\n) Tj
 1 0 0 -1 72 27.6 Tm
-(the projector utilizes our Natural Hue Tuner and sRGB color profile technology that ensures) Tj
-Q
-q
+(the projector utilizes our Natural Hue Tuner and sRGB color profile technology that ensures ) Tj
+(\n) Tj
 1 0 0 -1 72 41.4 Tm
-(uniform color reproduction regardless of the input source.) Tj
-Q
+(uniform color reproduction regardless of the input source.  ) Tj
+(\n) Tj
 ET
 Q
 q
 1 0 0 -1 0 614.82 cm
 BT
 0 g
-/F1 13.0200004578 Tf
-q
+/F1 13.02 Tf
 1 0 0 -1 72 0 Tm
-(Major Features) Tj
-Q
+(Major Features ) Tj
 ET
 Q
 q
@@ -822,66 +787,51 @@ q
 BT
 0 g
 /F0 12 Tf
-q
+(\n) Tj
 1 0 0 -1 72 0 Tm
-(Optional Lenses & Motorized Lens Shift) Tj
-Q
-q
+(Optional Lenses & Motorized Lens Shift ) Tj
+(\n) Tj
 1 0 0 -1 72 13.8 Tm
-(The EXR-55 is compatible with a variety of lenses to meet your presentation needs. It has a) Tj
-Q
-q
+(The EXR-55 is compatible with a variety of lenses to meet your presentation needs. It has a ) Tj
+(\n) Tj
 1 0 0 -1 72 27.6 Tm
-(motorized lens shift feature that allows for easy adjustment of the horizontal and vertical) Tj
-Q
-q
+(motorized lens shift feature that allows for easy adjustment of the horizontal and vertical ) Tj
+(\n) Tj
 1 0 0 -1 72 41.4 Tm
-(image shape as well as auto-focusing capabilities.) Tj
-Q
-q
+(image shape as well as auto-focusing capabilities.  ) Tj
+(\n) Tj
 1 0 0 -1 72 69 Tm
-(Security Features) Tj
-Q
-q
+(Security Features ) Tj
+(\n) Tj
 1 0 0 -1 72 82.8 Tm
-(Compatible Kensington lock slot; Password lockout capability which protects the projector) Tj
-Q
-q
+(Compatible Kensington lock slot; Password lockout capability which protects the projector ) Tj
+(\n) Tj
 1 0 0 -1 72 96.6 Tm
-(from unauthorized use; Audible motion sensor built-into projector for theft prevention.) Tj
-Q
-q
+(from unauthorized use; Audible motion sensor built-into projector for theft prevention. ) Tj
+(\n) Tj
 1 0 0 -1 72 124.4 Tm
-(Low Lamp Mode) Tj
-Q
-q
+(Low Lamp Mode ) Tj
+(\n) Tj
 1 0 0 -1 72 138.0 Tm
-(Extended lamp life and quieter noise operation) Tj
-Q
-q
+(Extended lamp life and quieter noise operation ) Tj
+(\n) Tj
 1 0 0 -1 72 165.6 Tm
-(DVI-D input \(HDCP\)) Tj
-Q
-q
+(DVI-D input \(HDCP\) ) Tj
+(\n) Tj
 1 0 0 -1 72 179.4 Tm
-(True digital connection from both PC, Mac or video sources) Tj
-Q
-q
+(True digital connection from both PC, Mac or video sources ) Tj
+(\n) Tj
 1 0 0 -1 72 207 Tm
-(RJ45 for RS232 Control) Tj
-Q
-q
+(RJ45 for RS232 Control ) Tj
+(\n) Tj
 1 0 0 -1 72 220.8 Tm
 (Allows users to integrate with third party control systems for projector control) Tj
-Q
-q
+(\n) Tj
 1 0 0 -1 72 250.8 Tm
 (Natural Hue Toner) Tj
-Q
-q
+(\n) Tj
 1 0 0 -1 72 264.6 Tm
-(Allows users to adjust individual hues with affecting overall color scheme) Tj
-Q
+(Allows users to adjust individual hues with affecting overall color scheme ) Tj
 ET
 Q
 Q
@@ -1729,11 +1679,9 @@ q
 1 0 0 -1 0 683.82 cm
 BT
 0 g
-/F0 13.0200004578 Tf
-q
+/F0 13.02 Tf
 1 0 0 -1 72 0 Tm
-(Detailed Specification) Tj
-Q
+(Detailed Specification ) Tj
 ET
 Q
 q
@@ -1760,11 +1708,9 @@ q
 1 0 0 -1 0 651.36 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
 (EXR-55 Technical Features) Tj
-Q
 ET
 Q
 q
@@ -1865,11 +1811,9 @@ q
 1 0 0 -1 0 630.12 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Model name) Tj
-Q
+(Model name ) Tj
 ET
 Q
 q
@@ -1896,11 +1840,9 @@ q
 1 0 0 -1 0 630.12 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
 (EXR-55) Tj
-Q
 ET
 Q
 q
@@ -1963,11 +1905,9 @@ q
 1 0 0 -1 0 615.12 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Product type) Tj
-Q
+(Product type ) Tj
 ET
 Q
 q
@@ -1994,11 +1934,9 @@ q
 1 0 0 -1 0 615.12 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(Digital Projector) Tj
-Q
+(Digital Projector ) Tj
 ET
 Q
 q
@@ -2061,11 +1999,9 @@ q
 1 0 0 -1 0 600.12 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Color) Tj
-Q
+(Color ) Tj
 ET
 Q
 q
@@ -2092,11 +2028,9 @@ q
 1 0 0 -1 0 600.12 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(Gray/White) Tj
-Q
+(Gray/White ) Tj
 ET
 Q
 q
@@ -2159,11 +2093,9 @@ q
 1 0 0 -1 0 585.12 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Display) Tj
-Q
+(Display ) Tj
 ET
 Q
 q
@@ -2246,11 +2178,9 @@ q
 1 0 0 -1 0 564.36 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Imaging Technology) Tj
-Q
+(Imaging Technology ) Tj
 ET
 Q
 q
@@ -2277,11 +2207,9 @@ q
 1 0 0 -1 0 570.12 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(1.3 in. polysilicon TFT panel x 3) Tj
-Q
+(1.3 in. polysilicon TFT panel x 3 ) Tj
 ET
 Q
 q
@@ -2297,11 +2225,9 @@ q
 1 0 0 -1 0 558.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(\(w/microlens\)) Tj
-Q
+(\(w/microlens\)  ) Tj
 ET
 Q
 q
@@ -2364,11 +2290,9 @@ q
 1 0 0 -1 0 543.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Brightness/Lumens) Tj
-Q
+(Brightness/Lumens ) Tj
 ET
 Q
 q
@@ -2395,11 +2319,9 @@ q
 1 0 0 -1 0 543.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(5500 ANSI Lumens) Tj
-Q
+(5500 ANSI Lumens ) Tj
 ET
 Q
 q
@@ -2462,11 +2384,9 @@ q
 1 0 0 -1 0 528.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Native Resolution) Tj
-Q
+(Native Resolution ) Tj
 ET
 Q
 q
@@ -2493,11 +2413,9 @@ q
 1 0 0 -1 0 528.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(1024 x 768) Tj
-Q
+(1024 x 768 ) Tj
 ET
 Q
 q
@@ -2560,11 +2478,9 @@ q
 1 0 0 -1 0 513.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Maximum Resolution) Tj
-Q
+(Maximum Resolution ) Tj
 ET
 Q
 q
@@ -2591,11 +2507,9 @@ q
 1 0 0 -1 0 513.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(1600 x 1200) Tj
-Q
+(1600 x 1200 ) Tj
 ET
 Q
 q
@@ -2658,11 +2572,9 @@ q
 1 0 0 -1 0 498.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Viewable Size) Tj
-Q
+(Viewable Size ) Tj
 ET
 Q
 q
@@ -2689,11 +2601,9 @@ q
 1 0 0 -1 0 498.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(60-300 inches diagonal) Tj
-Q
+(60-300 inches diagonal ) Tj
 ET
 Q
 q
@@ -2756,11 +2666,9 @@ q
 1 0 0 -1 0 483.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Contrast Ratio) Tj
-Q
+(Contrast Ratio ) Tj
 ET
 Q
 q
@@ -2787,11 +2695,9 @@ q
 1 0 0 -1 0 483.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(600 : 1 \(on/off\)) Tj
-Q
+(600 : 1 \(on/off\) ) Tj
 ET
 Q
 q
@@ -2854,11 +2760,9 @@ q
 1 0 0 -1 0 468.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Color Wheel) Tj
-Q
+(Color Wheel ) Tj
 ET
 Q
 q
@@ -2885,11 +2789,9 @@ q
 1 0 0 -1 0 468.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
 (N/A) Tj
-Q
 ET
 Q
 q
@@ -2952,11 +2854,9 @@ q
 1 0 0 -1 0 453.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
 (Lens) Tj
-Q
 ET
 Q
 q
@@ -3039,11 +2939,9 @@ q
 1 0 0 -1 0 438.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Lens Throw Ratio) Tj
-Q
+(Lens Throw Ratio ) Tj
 ET
 Q
 q
@@ -3070,11 +2968,9 @@ q
 1 0 0 -1 0 438.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(1.80-2.10) Tj
-Q
+(1.80-2.10 ) Tj
 ET
 Q
 q
@@ -3137,11 +3033,9 @@ q
 1 0 0 -1 0 423.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Zoom & Focus Adjustment) Tj
-Q
+(Zoom & Focus Adjustment ) Tj
 ET
 Q
 q
@@ -3168,11 +3062,9 @@ q
 1 0 0 -1 0 423.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(Motorized zoom, focus & lens shift) Tj
-Q
+(Motorized zoom, focus & lens shift ) Tj
 ET
 Q
 q
@@ -3235,11 +3127,9 @@ q
 1 0 0 -1 0 408.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Compatibility) Tj
-Q
+(Compatibility ) Tj
 ET
 Q
 q
@@ -3322,11 +3212,9 @@ q
 1 0 0 -1 0 392.1 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(PC, MAC Compatibility) Tj
-Q
+(PC, MAC Compatibility ) Tj
 ET
 Q
 q
@@ -3353,11 +3241,9 @@ q
 1 0 0 -1 0 392.1 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
 (Yes) Tj
-Q
 ET
 Q
 q
@@ -3420,11 +3306,9 @@ q
 1 0 0 -1 0 375.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Operation) Tj
-Q
+(Operation ) Tj
 ET
 Q
 q
@@ -3507,11 +3391,9 @@ q
 1 0 0 -1 0 360.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Scanning Frequency) Tj
-Q
+(Scanning Frequency ) Tj
 ET
 Q
 q
@@ -3538,11 +3420,9 @@ q
 1 0 0 -1 0 360.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-([H] 15-100 kHz, [V] 50-120 Hz) Tj
-Q
+([H] 15-100 kHz, [V] 50-120 Hz ) Tj
 ET
 Q
 q
@@ -3605,45 +3485,25 @@ q
 1 0 0 -1 0 345.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
 (I) Tj
-Q
-q
 1 0 0 -1 73.5346 0 Tm
 (n) Tj
-Q
-q
 1 0 0 -1 78.5426 0 Tm
 (t) Tj
-Q
-q
 1 0 0 -1 81.3261 0 Tm
 (e) Tj
-Q
-q
 1 0 0 -1 85.773 0 Tm
 (r) Tj
-Q
-q
 1 0 0 -1 89.1076 0 Tm
 (f) Tj
-Q
-q
 1 0 0 -1 92.4422 0 Tm
 (a) Tj
-Q
-q
 1 0 0 -1 96.8891 0 Tm
 (c) Tj
-Q
-q
 1 0 0 -1 101.3359 0 Tm
 (e) Tj
-Q
-Q
 ET
 Q
 q
@@ -3726,11 +3586,9 @@ q
 1 0 0 -1 0 309.12 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(NTSC, PAL, SECAM) Tj
-Q
+(NTSC, PAL, SECAM ) Tj
 ET
 Q
 q
@@ -3757,11 +3615,9 @@ q
 1 0 0 -1 0 333.6 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
 (NTSC/NTSC 4.43/PAL \(including PAL-) Tj
-Q
 ET
 Q
 q
@@ -3777,11 +3633,9 @@ q
 1 0 0 -1 0 322.14 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(M,N\)/SECAM/PAL-60, Component Video;) Tj
-Q
+(M,N\)/SECAM/PAL-60, Component Video; ) Tj
 ET
 Q
 q
@@ -3797,11 +3651,9 @@ q
 1 0 0 -1 0 310.62 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(480i/p\(525i/p\), 576i/p\(625i/p\), 720p\(750p\),) Tj
-Q
+(480i/p\(525i/p\), 576i/p\(625i/p\), 720p\(750p\), ) Tj
 ET
 Q
 q
@@ -3817,11 +3669,9 @@ q
 1 0 0 -1 0 299.1 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(1080i\(1125i 60Hz\), 1080i\(1125i 50Hz\),) Tj
-Q
+(1080i\(1125i 60Hz\), 1080i\(1125i 50Hz\), ) Tj
 ET
 Q
 q
@@ -3837,11 +3687,9 @@ q
 1 0 0 -1 0 287.64 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(1080i\(1250 50Hz\), SCART \(RGB+1V sync\)) Tj
-Q
+(1080i\(1250 50Hz\), SCART \(RGB+1V sync\) ) Tj
 ET
 Q
 q
@@ -3904,11 +3752,9 @@ q
 1 0 0 -1 0 251.16 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Computer/Video Input Support) Tj
-Q
+(Computer/Video Input Support ) Tj
 ET
 Q
 q
@@ -3935,11 +3781,9 @@ q
 1 0 0 -1 0 275.64 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(RGB: 5BNC x1, Mini D-sub 15 pin x1) Tj
-Q
+(RGB: 5BNC x1, Mini D-sub 15 pin x1 ) Tj
 ET
 Q
 q
@@ -3955,11 +3799,9 @@ q
 1 0 0 -1 0 264.1201 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
 (Video: RCA x1 or BNC x1, \(2\) S-Video \(4-) Tj
-Q
 ET
 Q
 q
@@ -3975,11 +3817,9 @@ q
 1 0 0 -1 0 252.6001 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(pin\) x1 or S-Video Y/C \(BNC jack\)) Tj
-Q
+(pin\) x1 or S-Video Y/C \(BNC jack\) ) Tj
 ET
 Q
 q
@@ -3995,11 +3835,9 @@ q
 1 0 0 -1 0 241.14 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-<417564696F3A2053746572656F206D696E69206A61636B2028F820332E356D6D292078312028666F72> Tj
-Q
+<417564696F3A2053746572656F206D696E69206A61636B2028F820332E356D6D292078312028666F7220> Tj
 ET
 Q
 q
@@ -4015,11 +3853,9 @@ q
 1 0 0 -1 0 229.6201 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(PC\) RCA jack \(L/R\) x1 \(for video\)) Tj
-Q
+(PC\) RCA jack \(L/R\) x1 \(for video\) ) Tj
 ET
 Q
 q
@@ -4082,11 +3918,9 @@ q
 1 0 0 -1 0 204.66 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Computer Monitor Loop-out) Tj
-Q
+(Computer Monitor Loop-out  ) Tj
 ET
 Q
 q
@@ -4113,11 +3947,9 @@ q
 1 0 0 -1 0 217.6201 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(RGB: Mini D-sub 15 pin x1) Tj
-Q
+(RGB: Mini D-sub 15 pin x1 ) Tj
 ET
 Q
 q
@@ -4133,11 +3965,9 @@ q
 1 0 0 -1 0 206.1001 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(Audio: Stereo mini jack \(3.5mm\) \(variable) Tj
-Q
+(Audio: Stereo mini jack \(3.5mm\) \(variable ) Tj
 ET
 Q
 q
@@ -4153,11 +3983,9 @@ q
 1 0 0 -1 0 194.64 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(out\)) Tj
-Q
+(out\) ) Tj
 ET
 Q
 q
@@ -4220,11 +4048,9 @@ q
 1 0 0 -1 0 181.2 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Lamp) Tj
-Q
+(Lamp ) Tj
 ET
 Q
 q
@@ -4307,11 +4133,9 @@ q
 1 0 0 -1 0 166.2601 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Lamp Life/Backlight) Tj
-Q
+(Lamp Life/Backlight ) Tj
 ET
 Q
 q
@@ -4338,11 +4162,9 @@ q
 1 0 0 -1 0 166.2601 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(2000 hours \(low mode\)) Tj
-Q
+(2000 hours \(low mode\) ) Tj
 ET
 Q
 q
@@ -4405,11 +4227,9 @@ q
 1 0 0 -1 0 151.3801 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Usage Replacement Lamp) Tj
-Q
+(Usage Replacement Lamp  ) Tj
 ET
 Q
 q
@@ -4436,11 +4256,9 @@ q
 1 0 0 -1 0 151.3801 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(Replacement Lamp Bulb \(VLT-XL5950LP\)) Tj
-Q
+(Replacement Lamp Bulb \(VLT-XL5950LP\) ) Tj
 ET
 Q
 q
@@ -4503,11 +4321,9 @@ q
 1 0 0 -1 0 136.5001 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
 (Physical) Tj
-Q
 ET
 Q
 q
@@ -4590,11 +4406,9 @@ q
 1 0 0 -1 0 121.5601 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Weight) Tj
-Q
+(Weight   ) Tj
 ET
 Q
 q
@@ -4621,11 +4435,9 @@ q
 1 0 0 -1 0 121.5601 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(19.9 lbs.) Tj
-Q
+(19.9 lbs. ) Tj
 ET
 Q
 q
@@ -4688,11 +4500,9 @@ q
 1 0 0 -1 0 106.6801 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Dimensions \(W x H x D\)) Tj
-Q
+(Dimensions \(W x H x D\)   ) Tj
 ET
 Q
 q
@@ -4719,11 +4529,9 @@ q
 1 0 0 -1 0 106.6801 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.4 0 Tm
-(17.4" x 6.9" x 17.1") Tj
-Q
+(17.4" x 6.9" x 17.1" ) Tj
 ET
 Q
 q
@@ -4786,11 +4594,9 @@ q
 1 0 0 -1 0 91.8 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 70.2 0 Tm
-(Power Requirements) Tj
-Q
+(Power Requirements  ) Tj
 ET
 Q
 q
@@ -4817,11 +4623,9 @@ q
 1 0 0 -1 0 91.8 cm
 BT
 0 g
-/F1 10.0200004578 Tf
-q
+/F1 10.02 Tf
 1 0 0 -1 266.45 0 Tm
-<4143203130302D32343056202F20B13130252C2035302F363020487A> Tj
-Q
+<4143203130302D32343056202F20B13130252C2035302F363020487A20> Tj
 ET
 Q
 q
@@ -4914,7 +4718,7 @@ endobj
 >>
 endobj
 15 0 obj
-8571
+8596
 endobj
 16 0 obj
 <<
@@ -4923,7 +4727,7 @@ endobj
 >>
 endobj
 17 0 obj
-1926
+2018
 endobj
 18 0 obj
 <<
@@ -4932,7 +4736,7 @@ endobj
 >>
 endobj
 19 0 obj
-34857
+34118
 endobj
 20 0 obj
 <<
@@ -5352,48 +5156,48 @@ xref
 0000000378 00000 n
 0000000484 00000 n
 0000000553 00000 n
-0000009180 00000 n
-0000009214 00000 n
-0000011196 00000 n
-0000011231 00000 n
-0000046145 00000 n
-0000046200 00000 n
-0000046341 00000 n
-0000046387 00000 n
-0000046408 00000 n
-0000046452 00000 n
-0000046473 00000 n
-0000046517 00000 n
-0000046539 00000 n
-0000046939 00000 n
-0000047672 00000 n
-0000048032 00000 n
-0000051238 00000 n
-0000051457 00000 n
-0000051679 00000 n
-0000054847 00000 n
-0000059873 00000 n
-0000060606 00000 n
-0000061006 00000 n
-0000061406 00000 n
-0000062139 00000 n
-0000062386 00000 n
-0000062648 00000 n
-0000062935 00000 n
-0000062956 00000 n
-0000062976 00000 n
-0000062996 00000 n
-0000063017 00000 n
-0000063038 00000 n
-0000063300 00000 n
-0000063547 00000 n
-0000063794 00000 n
+0000009205 00000 n
+0000009239 00000 n
+0000011313 00000 n
+0000011348 00000 n
+0000045523 00000 n
+0000045578 00000 n
+0000045719 00000 n
+0000045765 00000 n
+0000045786 00000 n
+0000045830 00000 n
+0000045851 00000 n
+0000045895 00000 n
+0000045917 00000 n
+0000046317 00000 n
+0000047050 00000 n
+0000047410 00000 n
+0000050616 00000 n
+0000050835 00000 n
+0000051057 00000 n
+0000054225 00000 n
+0000059251 00000 n
+0000059984 00000 n
+0000060384 00000 n
+0000060784 00000 n
+0000061517 00000 n
+0000061764 00000 n
+0000062026 00000 n
+0000062313 00000 n
+0000062334 00000 n
+0000062354 00000 n
+0000062374 00000 n
+0000062395 00000 n
+0000062416 00000 n
+0000062678 00000 n
+0000062925 00000 n
+0000063172 00000 n
 trailer
 <<
 /Root 1 0 R
-/ID [<94E628C71AE0560B34EA2E49A5FCEAB8> <94E628C71AE0560B34EA2E49A5FCEAB8>]
+/ID [<11DACABA484963314B0BC693443A6D7F> <11DACABA484963314B0BC693443A6D7F>]
 /Size 44
 >>
 startxref
-64056
+63434
 %%EOF
