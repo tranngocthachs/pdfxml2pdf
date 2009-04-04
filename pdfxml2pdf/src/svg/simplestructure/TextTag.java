@@ -15,6 +15,7 @@ public class TextTag extends CompositeSVGTag {
 	protected TextTag parentTextTag = null;
 	public TextTag(PDPageContentStream pageContentStream, PDPage page, Attributes attributes) {
 		super(pageContentStream, page, attributes);
+		handlingTransform = new HandlingTransformAtt();
 		if (attributes.getValue("x") != null)
 			xs = attributes.getValue("x").trim().split("( *, *)|( +)");
 		
@@ -33,8 +34,9 @@ public class TextTag extends CompositeSVGTag {
 	}
 	public void serialise() throws java.io.IOException {
 		pageContentStream.appendRawCommands("q\n");
-		if (attributes.getValue("transform") != null) { 
-			handleTransformAtt(attributes.getValue("transform"));
+		if (attributes.getValue("transform") != null) {
+			String transCmd = handlingTransform.handleTransformAtt(attributes.getValue("transform"));
+			pageContentStream.appendRawCommands(transCmd);
 		}
 		pageContentStream.beginText();
 //		handlePaintPropertiesAtt(attributes);

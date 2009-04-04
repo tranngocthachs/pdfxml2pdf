@@ -12,13 +12,17 @@ public class TspanTag extends TextTag {
 	public TspanTag(PDPageContentStream pageContentStream, PDPage page, Attributes attributes, TextTag parentTag) {
 		super(pageContentStream, page, attributes);
 		this.parentTextTag = parentTag;
+		handlingTransform = new HandlingTransformAtt();
 	}
 	public TextTag getParentTextTag() {
 		return parentTextTag;
 	}
 	public void serialise() throws IOException {
-		if (attributes.getValue("transform") != null) 
-			handleTransformAtt(attributes.getValue("transform"));
+		if (attributes.getValue("transform") != null) {
+			String transCmd = handlingTransform.handleTransformAtt(attributes.getValue("transform"));
+			pageContentStream.appendRawCommands(transCmd);
+		} 
+			
 		for (SVGComponent comp : childComponents) {
 			comp.serialise();
 		}

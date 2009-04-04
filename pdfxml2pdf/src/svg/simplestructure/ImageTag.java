@@ -30,6 +30,7 @@ public class ImageTag extends GeneralSVGTag {
 	public ImageTag(PDPageContentStream pageContentStream, PDPage page, Attributes attributes, File pageFile) {
 		super(pageContentStream, page, attributes);
 		this.pageFile = pageFile;
+		handlingTransform = new HandlingTransformAtt();
 	}
 
 	public void serialise() throws IOException {
@@ -215,8 +216,10 @@ public class ImageTag extends GeneralSVGTag {
 //        imgCmd+="Q\n";
         pageContentStream.appendRawCommands("q\n");
         pageContentStream.appendRawCommands("1 0 0 1 " + x + " "+ y + " cm\n");
-        if (attributes.getValue("transform") != null)
-        	handleTransformAtt(attributes.getValue("transform"));
+        if (attributes.getValue("transform") != null) {
+        	String transCmd = handlingTransform.handleTransformAtt(attributes.getValue("transform"));
+        	pageContentStream.appendRawCommands(transCmd);
+        }
         pageContentStream.appendRawCommands(width + " 0 0 " + height + " 0 0 cm\n" );
         pageContentStream.appendRawCommands("1 0 0 -1 0 1 cm\n");
         pageContentStream.appendRawCommands("/" + imageKey + " Do\n");

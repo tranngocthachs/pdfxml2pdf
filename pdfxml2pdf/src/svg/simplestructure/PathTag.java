@@ -7,24 +7,29 @@ import org.xml.sax.Attributes;
 
 
 import org.apache.batik.parser.PathParser;
-import pdfxml2pdf.SVGPathHandler;
 
 public class PathTag extends GeneralSVGTag {
 	public PathTag(PDPageContentStream pageContentStream, PDPage page, Attributes attributes) {
 		super(pageContentStream, page, attributes);
+		handlingTransform = new HandlingTransformAtt();
+		handlingPaint = new HandlingPaintAtt();
 	}
 
 	public void serialise() throws IOException {
 		pageContentStream.appendRawCommands("q\n");
-		if (attributes.getValue("transform") != null)
-			handleTransformAtt(attributes.getValue("transform"));
-		handlePaintPropertiesAtt(attributes);
+		if (attributes.getValue("transform") != null) {
+			String transCmd = handlingTransform.handleTransformAtt(attributes.getValue("transform"));
+			pageContentStream.appendRawCommands(transCmd);
+		}
+			
+		String paintCmd = handlingPaint.handlePaintPropertiesAtt(attributes);
+		pageContentStream.appendRawCommands(paintCmd);
 		PathParser pp = new PathParser();
 		SVGPathHandler ph = new SVGPathHandler();
 		pp.setPathHandler(ph);
 		pp.parse(attributes.getValue("d"));
 		pageContentStream.appendRawCommands(ph.getPDFCmd());
-		String paintCmd = "";
+		paintCmd = "";
 		if (attributes.getValue("fill") != null) {
 			if (attributes.getValue("stroke") != null) {
 				if (attributes.getValue("fill-rule") != null) {
