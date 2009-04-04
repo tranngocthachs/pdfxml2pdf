@@ -9,17 +9,18 @@ import org.xml.sax.helpers.AttributesImpl;
 import pdfxml2pdf.ConverterUtils;
 
 
-public class Text extends GeneralSVGTag {
+public class Text extends SVGComponent {
 	private String str = "";
 	private String[] xs = null;
 	private String[] ys = null;
 	private TextTag parentTag;
 	public Text(PDPageContentStream pageContentStream, PDPage page, String str, String[] xs, String[] ys, TextTag parentTag) {
-		super(pageContentStream, page, null);
+		super(pageContentStream, page);
 		this.str = str;
 		this.xs = xs;
 		this.ys = ys;
 		this.parentTag = parentTag;
+		handlingPaint = new HandlingPaintAtt();
 	}
 	private void amendAtt(Attributes att, Attributes parentAtt) {
 		if (att == null) {
@@ -74,8 +75,9 @@ public class Text extends GeneralSVGTag {
 				iterator = iterator.getParentTextTag();
 			}
 			
-			
-			handlePaintPropertiesAtt(att);
+			String paintCmd = handlingPaint.handlePaintPropertiesAtt(att);
+			pageContentStream.appendRawCommands(paintCmd);
+//			parentTag.handlePaintPropertiesAtt(att);
 			handleTextPropertiesAtt(att);
 			if (xs == null && ys == null) {
 				pageContentStream.drawString(str);

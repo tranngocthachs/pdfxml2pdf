@@ -1,5 +1,7 @@
-package pdfxml2pdf;
+package test;
 import org.apache.batik.parser.*;
+
+import svg.simplestructure.SVGPathHandler;
 public class SVGPathDataToPDFCmd {
 	public static void main(String[] args) {
 		String pathData1 = "M101.82,186.3H352.8v99.72H101.82z";

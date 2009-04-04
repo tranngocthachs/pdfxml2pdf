@@ -1,7 +1,9 @@
-package pdfxml2pdf;
+package svg.simplestructure;
 
 import org.apache.batik.parser.DefaultPathHandler;
 import org.apache.batik.parser.ParseException;
+
+import pdfxml2pdf.ConverterUtils;
 
 public class SVGPathHandler extends DefaultPathHandler {
 	private String returnPDFCmd = "";

@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="batik-parser.jar"/>
+	<classpathentry kind="lib" path="batik-parser.jar" sourcepath="batik-parser-src.zip"/>
 	<classpathentry kind="lib" path="batik-util.jar"/>
 	<classpathentry kind="lib" path="PDFBox-0.7.3-dev.jar" sourcepath="PDFBox-0.7.3-dev.zip"/>
 	<classpathentry kind="lib" path="jbig2.jar" sourcepath="jbig2_src.zip"/>
