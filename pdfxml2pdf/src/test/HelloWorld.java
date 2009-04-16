@@ -1,4 +1,4 @@
-package pdfxml2pdf;
+package test;
 import java.io.*;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -15,6 +15,10 @@ import org.pdfbox.pdmodel.font.*;
 import org.pdfbox.io.*;
 import org.pdfbox.cos.*;
 import org.pdfbox.pdmodel.graphics.xobject.*;
+
+import pdfxml2pdf.Base64;
+import pdfxml2pdf.ConverterUtils;
+
 import java.awt.geom.*;
 /**
  * This is an example that creates a simple document.

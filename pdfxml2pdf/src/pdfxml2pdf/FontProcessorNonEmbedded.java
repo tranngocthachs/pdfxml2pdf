@@ -5,11 +5,11 @@ import org.pdfbox.pdmodel.*;
 import org.pdfbox.pdmodel.font.*;
 import java.io.*;
 
-public class FontProcessor {
+public class FontProcessorNonEmbedded {
 	
 	private File fontFile;
 	
-	public FontProcessor(File fontFile) {
+	public FontProcessorNonEmbedded(File fontFile) {
 		this.fontFile = fontFile;
 	}
 
@@ -31,7 +31,7 @@ public class FontProcessor {
 			}
 
 			// Set the correct handler
-			FontHandler fontHandler = new FontHandler(fontFile);
+			FontHandlerNonEmbedded fontHandler = new FontHandlerNonEmbedded(fontFile);
 			parser.setContentHandler(fontHandler);
 			parser.parse(new InputSource(new FileInputStream(fontFile)));
 			font = fontHandler.getFont();

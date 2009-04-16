@@ -11,7 +11,7 @@ public class ConverterUtils {
 	
 	// sometimes it's necessary to refer to the PDDocument
 	private static PDDocument targetPDF;
-	
+	private static String docID;
 	public static final NumberFormat formatDecimal = NumberFormat.getNumberInstance( Locale.US );
 	private ConverterUtils() {
 		
@@ -22,7 +22,12 @@ public class ConverterUtils {
 		if (srcRoot == null) 
 			srcRoot = srcFolder;
 	}
-	
+	public static void setDocID(String documentID) {
+		docID = documentID;
+	}
+	public static String getDocID() {
+		return docID;
+	}
 	public static File getFile(File currentFile, String path) {
 		if (srcRoot != null) {
 			if (path.charAt(0) == '/') {

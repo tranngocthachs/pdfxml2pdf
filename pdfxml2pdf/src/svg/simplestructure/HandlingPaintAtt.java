@@ -7,7 +7,7 @@ import org.xml.sax.Attributes;
 
 import pdfxml2pdf.ConverterUtils;
 
-public class HandlingPaintAtt implements svg.simplestructure.Paintable {
+public class HandlingPaintAtt implements Paintable {
 	private static final String RG_STROKING = "RG\n";
     private static final String RG_NON_STROKING = "rg\n";
     private static final String K_STROKING = "K\n";

@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.*;
 
 
-public class FontHandler extends DefaultHandler {
+public class FontHandlerNonEmbedded extends DefaultHandler {
 	private PDFont font;
 	private File fontFile;
 	private StringBuffer buffer = null;
@@ -28,7 +28,7 @@ public class FontHandler extends DefaultHandler {
 	
 	
 	
-	public FontHandler(File fontFile) {
+	public FontHandlerNonEmbedded(File fontFile) {
 		this.fontFile = fontFile;
 	}
 	

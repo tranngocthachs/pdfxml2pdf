@@ -76,7 +76,18 @@ public class Text extends SVGComponent {
 			}
 			
 			String paintCmd = handlingPaint.handlePaintPropertiesAtt(att);
+			
+			
+			
 			pageContentStream.appendRawCommands(paintCmd);
+			// take care of text rendering mode
+			if ((att.getValue("fill") != null) && (att.getValue("stroke") == null))
+				pageContentStream.appendRawCommands("0 Tr\n");
+			if ((att.getValue("fill") != null) && (att.getValue("stroke") != null) && (att.getValue("stroke-width") == null ) )
+				pageContentStream.appendRawCommands("2 Tr\n");
+			if ((att.getValue("fill") == null) && (att.getValue("stroke") != null) && (att.getValue("stroke-width") == null ))
+				pageContentStream.appendRawCommands("1 Tr\n");
+				
 //			parentTag.handlePaintPropertiesAtt(att);
 			handleTextPropertiesAtt(att);
 			if (xs == null && ys == null) {
@@ -100,20 +111,42 @@ public class Text extends SVGComponent {
 					pageContentStream.drawString(str);
 				}
 				else {
-					for (int i = 0; i<lengthToProcess; i++) {
-						String x = (i<xs.length)?xs[i]:"0";
-						String y = (i<ys.length)?ys[i]:"0";
-						pageContentStream.appendRawCommands("1 0 0 -1 " + x + " " + y +" Tm\n");
-						if (i<lengthToProcess-1)
-							pageContentStream.drawString(str.substring(i, i+1));
-						else
-							pageContentStream.drawString(str.substring(i));
+					if (xs.length>=ys.length) {
+						for (int i = 0; i<lengthToProcess; i++) {
+							String x = (i<xs.length)?xs[i]:xs[xs.length-1];
+							String y = (i<ys.length)?ys[i]:ys[ys.length-1];
+							pageContentStream.appendRawCommands("1 0 0 -1 " + x + " " + y +" Tm\n");
+							if (i<lengthToProcess-1)
+								pageContentStream.drawString(str.substring(i, i+1));
+							else
+								pageContentStream.drawString(str.substring(i));
+						}
 					}
+					else {
+						
+						// this is an experimental hack
+						
+						for (int i = 0; i<lengthToProcess; i++) {
+							if (i<(xs.length)) {
+								pageContentStream.appendRawCommands("1 0 0 -1 " + xs[i] + " " + ys[i] +" Tm\n");
+								pageContentStream.drawString(str.substring(i, i+1));
+							}
+								
+							else {
+								Double amountToRaise = Double.parseDouble(ys[i]) - Double.parseDouble(ys[xs.length-1]);
+								pageContentStream.appendRawCommands(ConverterUtils.formatDecimal.format(amountToRaise*(-1)) + " Ts\n") ;
+								if (i<lengthToProcess-1)
+									pageContentStream.drawString(str.substring(i, i+1));
+								else
+									pageContentStream.drawString(str.substring(i));
+							}
+						}
+						pageContentStream.appendRawCommands("0 Ts\n");
 					
+					}
 				}
 			}
 				
-			
 		}
 
 	}

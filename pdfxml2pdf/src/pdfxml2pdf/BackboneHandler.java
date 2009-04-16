@@ -40,6 +40,15 @@ public class BackboneHandler extends DefaultHandler {
 			if (attributes.getValue("PageMode") != null) {
 				targetPDF.getDocumentCatalog().setPageLayout(attributes.getValue("PageMode"));
 			}
+			
+			// save the document ID, it might be needed for font processing later
+			if (attributes.getValue("DocumentID") != null) {
+				ConverterUtils.setDocID(attributes.getValue("DocumentID"));
+			}
+			else {
+				System.err.println("Invalid pdfxml file! There's no DocumentID");
+				System.exit(1);
+			}
 		}
 		
 		// handle the <Page> tag
