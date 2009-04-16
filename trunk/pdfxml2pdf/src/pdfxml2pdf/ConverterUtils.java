@@ -57,4 +57,8 @@ public class ConverterUtils {
 		}
 		return targetPDF;
 	}
+	public static void reset() {
+		targetPDF = null;
+		srcRoot = null;
+	}
 }
