@@ -34,7 +34,7 @@ public class FontTest {
 			TrueTypeFont ttfont = parser.parseTTF("f0-2.ttf");
 			*/
 			PDDocument doc = new PDDocument();
-			File file = new File("f0-2.ttf");
+			File file = new File("font.otf");
 			
 			//////////////////////////////////////////////
 			PDTrueTypeFont retval = new PDTrueTypeFont();

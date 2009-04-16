@@ -31,7 +31,7 @@ public class PageContentProcessor {
 			}
 
 			// Set the correct handler
-			PageContentHandlerTemp pageContentHandler = new PageContentHandlerTemp(pageContentFile, page);
+			PageContentHandler pageContentHandler = new PageContentHandler(pageContentFile, page);
 			parser.setContentHandler(pageContentHandler);
 			parser.parse(new InputSource(new FileInputStream(pageContentFile)));
 		}

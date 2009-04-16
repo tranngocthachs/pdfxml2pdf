@@ -9,7 +9,7 @@ import org.apache.batik.parser.TransformListParser;
 
 import pdfxml2pdf.ConverterUtils;
 
-public class HandlingTransformAtt implements svg.simplestructure.Transformable {
+public class HandlingTransformAtt implements Transformable {
 	private static final String CONCATENATE_MATRIX = "cm\n";
 	private static final String SPACE = " ";
 	public String handleTransformAtt(String transformString) {
