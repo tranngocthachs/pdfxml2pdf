@@ -27,38 +27,18 @@ public class Text extends SVGComponent {
 			att = new AttributesImpl(parentAtt);
 		}
 		else {
-			if ( (parentAtt.getValue("font-family") != null) && (att.getValue("font-family") == null) ) {
-				int index = parentAtt.getIndex("font-family");
-				((AttributesImpl)att).addAttribute(	parentAtt.getURI(index), 
-													parentAtt.getLocalName(index), 
-													parentAtt.getQName(index), 
-													parentAtt.getType(index), 
-													parentAtt.getValue(index));
+			int length = parentAtt.getLength();
+			for (int i=0; i<length; i++) {
+				if (att.getValue(parentAtt.getQName(i)) == null) {
+					((AttributesImpl)att).addAttribute(	parentAtt.getURI(i), 
+							parentAtt.getLocalName(i), 
+							parentAtt.getQName(i), 
+							parentAtt.getType(i), 
+							parentAtt.getValue(i));
+				}
+
 			}
-			if ( (parentAtt.getValue("font-size") != null) && (att.getValue("font-size") == null) ) {
-				int index = parentAtt.getIndex("font-size");
-				((AttributesImpl)att).addAttribute(	parentAtt.getURI(index), 
-													parentAtt.getLocalName(index), 
-													parentAtt.getQName(index), 
-													parentAtt.getType(index), 
-													parentAtt.getValue(index));
-			}
-			if ( (parentAtt.getValue("fill") != null) && (att.getValue("fill") == null) ) {
-				int index = parentAtt.getIndex("fill");
-				((AttributesImpl)att).addAttribute(	parentAtt.getURI(index), 
-													parentAtt.getLocalName(index), 
-													parentAtt.getQName(index), 
-													parentAtt.getType(index), 
-													parentAtt.getValue(index));
-			}
-			if ( (parentAtt.getValue("stroke") != null) && (att.getValue("stroke") == null) ) {
-				int index = parentAtt.getIndex("stroke");
-				((AttributesImpl)att).addAttribute(	parentAtt.getURI(index), 
-													parentAtt.getLocalName(index), 
-													parentAtt.getQName(index), 
-													parentAtt.getType(index), 
-													parentAtt.getValue(index));
-			}
+
 		}
 	}
 	public void serialise() throws IOException {
